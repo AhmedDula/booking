@@ -1,8 +1,10 @@
 const dotenv = require("dotenv");
 const Joi = require("joi");
+const path = require("path");
 
 dotenv.config();
 
+console.log("Mongo URI:", process.env.MONGO_URI);
 const envSchema = Joi.object({
   // App
   NODE_ENV: Joi.string()
@@ -67,3 +69,5 @@ const env = {
     url: value.CLIENT_URL,
   },
 };
+
+module.exports = { env };
