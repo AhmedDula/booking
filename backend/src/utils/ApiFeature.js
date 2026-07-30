@@ -13,7 +13,7 @@ class ApiFeatures {
     // Support gte, gt, lte, lt operators — e.g. ?price[gte]=10
     const queryStr = JSON.stringify(queryObj).replace(
       /\b(gte|gt|lte|lt)\b/g,
-      (match) => `$${match}`
+      (match) => `$${match}`,
     );
 
     this.query = this.query.find(JSON.parse(queryStr));
@@ -49,4 +49,4 @@ class ApiFeatures {
   }
 }
 
-export default ApiFeatures;
+module.exports = ApiFeatures;

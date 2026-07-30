@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { env } = require("../config/env.js");
+const { env } = require("./env.js");
 
 const MAX_RETRIES = 5;
 const RETRY_INTERVAL_MS = 5000; // 5 seconds
@@ -13,7 +13,9 @@ const connectDB = async () => {
     // retries = 0; // reset on success
   } catch (error) {
     retries++;
-    console.error(` MongoDB connection failed (attempt ${retries}/${MAX_RETRIES}): ${error.message}`);
+    console.error(
+      ` MongoDB connection failed (attempt ${retries}/${MAX_RETRIES}): ${error.message}`,
+    );
 
     if (retries >= MAX_RETRIES) {
       console.error(" Max retries reached. Shutting down.");
@@ -42,3 +44,5 @@ process.on("SIGINT", async () => {
   console.log(" MongoDB connection closed.");
   process.exit(0);
 });
+
+module.exports = connectDB;
