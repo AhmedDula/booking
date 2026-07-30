@@ -59,9 +59,13 @@ app.get("/api/health", (req, res) => {
 });
 
 // ── Routes ────────────────────────────────────────────
-// const authRoutes = require( "./modules/auth/auth.routes.js");
-// app.use("/api/auth", authRoutes);
+// const authRoutes = require( "./modules/auth/auth.routes.js");// app.use("/api/auth", authRoutes);
 
+const roomRoutes = require("./modules/rooms/room.routes");
+app.use("/api/rooms", roomRoutes);
+
+const disputesRoutes = require("./modules/disputes/disputes.routes");
+app.use("/api/disputes", disputesRoutes)
 
 // ── 404 Handler ───────────────────────────────────────
 app.use((req, res, next) => {
@@ -71,4 +75,4 @@ app.use((req, res, next) => {
 // ── Global Error Handler ──────────────────────────────Dula
 app.use(errorMiddleware);
 
-export default app;
+module.export = app;
