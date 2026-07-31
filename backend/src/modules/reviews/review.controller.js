@@ -1,4 +1,4 @@
-const AppError = require("../../utils/AppError");
+const ApiError = require("../../utils/ApiError");
 const catchAsync = require("../../utils/catchAsync");
 const reviewService = require("./review.service");
 const addReview = require("./review.validation");
@@ -17,8 +17,13 @@ exports.getAll = catchAsync(async (req, res, next) => {
 });
 
 exports.getById = catchAsync(async (req, res, next) => {
-  const review = await reviewService.getById(req.params.id);
-  if (!review) return next(new AppError(404, `Review not found with this id ${req.params.id}`));
+  const review = await reviewService.getById(Number(req.params.id));
+
+  if (!review) {
+    return next(
+      ApiError.notFound(`Review not found with this id ${req.params.id}`)
+    );
+  }
 
   res.status(200).json({
     success: true,
@@ -27,8 +32,19 @@ exports.getById = catchAsync(async (req, res, next) => {
 });
 
 exports.create = catchAsync(async (req, res, next) => {
-  const validated = await addReview.validate(req.body, { abortEarly: false });
-  const review = await reviewService.create(validated);
+  const { error, value } = addReview.validate(req.body, {
+    abortEarly: false,
+  });
+
+  if (error) {
+    return next(
+      ApiError.badRequest(
+        error.details.map((err) => err.message).join(", ")
+      )
+    );
+  }
+
+  const review = await reviewService.create(value);
 
   res.status(201).json({
     success: true,
@@ -38,8 +54,16 @@ exports.create = catchAsync(async (req, res, next) => {
 });
 
 exports.Update = catchAsync(async (req, res, next) => {
-  const review = await reviewService.Update(req.params.id, req.body);
-  if (!review) return next(new AppError(404, `Review not found with this id ${req.params.id}`));
+  const review = await reviewService.Update(
+    Number(req.params.id),
+    req.body
+  );
+
+  if (!review) {
+    return next(
+      ApiError.notFound(`Review not found with this id ${req.params.id}`)
+    );
+  }
 
   res.status(200).json({
     success: true,
@@ -49,15 +73,32 @@ exports.Update = catchAsync(async (req, res, next) => {
 });
 
 exports.softDelete = catchAsync(async (req, res, next) => {
-  const review = await reviewService.softDelete(req.params.id);
-  if (!review) return next(new AppError(404, `Review not found with this id ${req.params.id}`));
+  const review = await reviewService.softDelete(
+    Number(req.params.id)
+  );
 
-  res.status(204).send();
+  if (!review) {
+    return next(
+      ApiError.notFound(`Review not found with this id ${req.params.id}`)
+    );
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "review soft deleted successfully",
+  });
 });
 
 exports.Delete = catchAsync(async (req, res, next) => {
-  const review = await reviewService.Delete(req.params.id);
-  if (!review) return next(new AppError(404, `Review not found with this id ${req.params.id}`));
+  const review = await reviewService.Delete(
+    Number(req.params.id)
+  );
+
+  if (!review) {
+    return next(
+      ApiError.notFound(`Review not found with this id ${req.params.id}`)
+    );
+  }
 
   res.status(200).json({
     success: true,

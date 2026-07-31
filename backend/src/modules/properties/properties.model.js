@@ -2,19 +2,27 @@ const mongoose = require("mongoose");
 
 const propertySchema = new mongoose.Schema(
   {
+    id: {
+      type: Number,
+      unique: true,
+    },
+
     title: {
       type: String,
       required: true,
     },
+
     description: {
       type: String,
       required: true,
     },
+
     propertyType: {
       type: String,
       required: true,
       enum: ["Apartment", "House", "Villa", "Cabin", "Studio"],
     },
+
     location: {
       country: {
         type: String,
@@ -29,26 +37,32 @@ const propertySchema = new mongoose.Schema(
         required: true,
       },
     },
+
     amenities: [String],
+
     images: [String],
+
     available: {
       type: Boolean,
       default: true,
     },
+
     rating: {
       type: Number,
       default: 0,
       min: 0,
       max: 5,
     },
+
     reviewsCount: {
       type: Number,
       default: 0,
     },
+
     isDeleted: {
-  type: Boolean,
-  default: false,
-},
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

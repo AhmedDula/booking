@@ -1,15 +1,19 @@
-const yup = require("yup");
+const Joi = require("joi");
 
-const addReview = yup.object({
+const addReview = Joi.object({
+  rating: Joi.number()
+    .min(1)
+    .max(5)
+    .required(),
 
-rating:yup.number().required("rating is required").min(1,"min rating is 1").max(5,"max rating is 5"),
+  comment: Joi.string()
+    .required(),
 
-comment:yup.string().required("comment is required"),
+  user: Joi.string()
+    .pattern(/^[0-9a-fA-F]{24}$/),
 
-user:yup.string().required("user is required").matches(/^[0-9a-fA-F]{24}$/, "invalid user id"),
-
-property:yup.string().required("property is required").matches(/^[0-9a-fA-F]{24}$/, "invalid user id"),
-
-})
+  property: Joi.string()
+    .pattern(/^[0-9a-fA-F]{24}$/),
+});
 
 module.exports = addReview;

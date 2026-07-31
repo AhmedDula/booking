@@ -1,25 +1,75 @@
-const yup = require("yup");
+const Joi = require("joi");
 
-const addProperty = yup.object({
-title:yup.string().required("title is required"),
+const addProperty = Joi.object({
+  title: Joi.string()
+    .required()
+    .messages({
+      "any.required": "title is required",
+      "string.empty": "title is required",
+    }),
 
-description:yup.string().required("description is required"),
+  description: Joi.string()
+    .required()
+    .messages({
+      "any.required": "description is required",
+      "string.empty": "description is required",
+    }),
 
-propertyType:yup.string().required( "propertyType is required ")
-. oneOf(["Apartment", "House", "Villa", "Cabin", "Studio"] , "invalid property type"),
+  propertyType: Joi.string()
+    .valid("Apartment", "House", "Villa", "Cabin", "Studio")
+    .required()
+    .messages({
+      "any.required": "propertyType is required",
+      "any.only": "invalid property type",
+    }),
 
-location:yup.object({
-country: yup.string().required("Country is required"),
-city:yup.string().required("City is required"),
-address:yup.string().required("Address is required"),
-}).required("location is required"),
+  location: Joi.object({
+    country: Joi.string()
+      .required()
+      .messages({
+        "any.required": "Country is required",
+        "string.empty": "Country is required",
+      }),
 
-amenities: yup.array().of(yup.string()),
+    city: Joi.string()
+      .required()
+      .messages({
+        "any.required": "City is required",
+        "string.empty": "City is required",
+      }),
 
-images:yup.array().of(yup.string()),
+    address: Joi.string()
+      .required()
+      .messages({
+        "any.required": "Address is required",
+        "string.empty": "Address is required",
+      }),
+  })
+    .required()
+    .messages({
+      "any.required": "location is required",
+    }),
 
-available: yup.boolean(),
+  amenities: Joi.array().items(Joi.string()),
+
+  images: Joi.array().items(Joi.string()),
+
+  available: Joi.boolean(),
+});
 
 
-})
-module.exports = addProperty;
+const updateProperty = addProperty.fork(
+  [
+    "title",
+    "description",
+    "propertyType",
+    "location",
+  ],
+  (schema) => schema.optional()
+);
+
+
+module.exports = {
+  addProperty,
+  updateProperty,
+};

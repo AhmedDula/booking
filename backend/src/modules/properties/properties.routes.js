@@ -1,4 +1,5 @@
 const router = require("express").Router();
+
 const {
   create,
   getAll,
@@ -7,20 +8,32 @@ const {
   softDelete,
   Delete,
 } = require("./properties.controller");
+
+
 const validate = require("../../middlewares/validate");
-const addProperty = require("./properties.validation");
+
+const {
+  addProperty,
+  updateProperty,
+} = require("./properties.validation");
+
 
 router
   .route("/")
   .post(validate(addProperty), create)
   .get(getAll);
 
-router.route("/soft-delete/:id").patch(softDelete);
+
+router
+  .route("/soft-delete/:id")
+  .patch(softDelete);
+
 
 router
   .route("/:id")
   .get(getById)
-  .patch(validate(addProperty), Update)
+  .patch(validate(updateProperty), Update)
   .delete(Delete);
+
 
 module.exports = router;

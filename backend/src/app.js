@@ -8,11 +8,7 @@ const morgan = require("morgan");
 const hpp = require("hpp");
 const compression = require("compression");
 
-
-const {errorMiddleware} = require("./middlewares/error.middleware");
-
-
-
+const { errorMiddleware } = require("./middlewares/error.middleware");
 
 const ApiError = require("./utils/ApiError");
 
@@ -20,7 +16,7 @@ const ApiError = require("./utils/ApiError");
 const app = express();
 
 // ── Security ──────────────────────────────────────────
-app.use(helmet()); // Secure HTTP headers
+app.use(helmet());
 app.use((req, res, next) => {
   const sanitize = (obj) => {
     if (obj && typeof obj === "object") {
@@ -36,22 +32,22 @@ app.use((req, res, next) => {
   sanitize(req.body);
   sanitize(req.params);
   next();
-}); // Prevent NoSQL injection
-app.use(hpp()); // Prevent HTTP parameter pollution
+});
+app.use(hpp());
 
 // ── Rate Limiting ─────────────────────────────────────
-app.use("/api", apiLimiter); // Apply rate limiting to all /api routes
+app.use("/api", apiLimiter);
 
 // ── CORS ──────────────────────────────────────────────
 app.use(
   cors({
     origin: env.client.url,
-    credentials: true, // Allow cookies to be sent
+    credentials: true,
   }),
 );
 
 // ── Body Parsing ──────────────────────────────────────
-app.use(express.json({ limit: "10kb" })); // Prevent large payload attacks
+app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use(cookieParser());
 
@@ -70,8 +66,7 @@ app.get("/api/v1/health", (req, res) => {
 
 // ── Routes ────────────────────────────────────────────
 
-
-app.use("/api/v1/auth", require( "./modules/auth/auth.routes.js"));
+app.use("/api/v1/auth", require("./modules/auth/auth.routes"));
 
 app.use("/api/v1/bookings", require("./modules/bookings/booking.routes"));
 
@@ -80,18 +75,21 @@ app.use("/api/v1/bookings", require("./modules/bookings/booking.routes"));
 const roomRoutes = require("./modules/rooms/room.routes");
 app.use("/api/v1/rooms", roomRoutes);
 
+const disputesRoutes = require("./modules/disputes/dispute.routes")
+app.use("/api/v1/disputes", disputesRoutes);
 
-const disputesRoutes = require("./modules/disputes/dispute.routes.js");
-app.use("/api/v1/disputes", disputesRoutes)
+const propertiesRoutes = require("./modules/properties/properties.routes");
+app.use("/api/v1/properties", propertiesRoutes);
 
-
+const reviewsRoutes = require("./modules/reviews/review.routes");
+app.use("/api/v1/reviews", reviewsRoutes);
 
 // ── 404 Handler ───────────────────────────────────────
 app.use((req, res, next) => {
   next(ApiError.notFound(`Route ${req.originalUrl} not found`));
 });
 
-// ── Global Error Handler ──────────────────────────────Dula
+// ── Global Error Handler ──────────────────────────────
 app.use(errorMiddleware);
 
 
