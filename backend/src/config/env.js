@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 const Joi = require("joi");
 
-dotenv.config({path: "src/config.env"});
+dotenv.config({path: "src/.env"});
 
 const envSchema = Joi.object({
   // App
