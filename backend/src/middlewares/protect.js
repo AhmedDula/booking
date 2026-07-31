@@ -1,9 +1,12 @@
+
 const asyncHandler = require("./asyncHandler.js");
 const ApiError = require("../utils/ApiError.js");
 const { verifyAccessToken } = require("../utils/token.js");
 
+
 // Protect routes — verify JWT access token from cookie
 const protect = asyncHandler(async (req, res, next) => {
+
   const token = req.cookies?.accessToken;
 
   if (!token) {
@@ -12,6 +15,7 @@ const protect = asyncHandler(async (req, res, next) => {
 
   const decoded = verifyAccessToken(token);
   req.user = decoded;
+
 
   next();
 });

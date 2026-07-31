@@ -15,6 +15,11 @@ const propertySchema = new mongoose.Schema(
       required: true,
       enum: ["Apartment", "House", "Villa", "Cabin", "Studio"],
     },
+    pricePerNight: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
     location: {
       country: {
         type: String,
@@ -46,13 +51,13 @@ const propertySchema = new mongoose.Schema(
       default: 0,
     },
     isDeleted: {
-  type: Boolean,
-  default: false,
-},
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 module.exports = mongoose.model("Property", propertySchema);

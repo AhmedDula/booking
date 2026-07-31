@@ -1,3 +1,4 @@
+
 const ApiError = require("../utils/ApiError")
 const validate = (schema) => (req, res, next) => {
   const { error, value } = schema.validate(req.body || {}, {
@@ -14,3 +15,5 @@ const validate = (schema) => (req, res, next) => {
 };
 
 module.exports = validate
+
+

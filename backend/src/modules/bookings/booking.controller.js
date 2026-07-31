@@ -8,10 +8,10 @@ const {
 
 const catchAsync = require("../../utils/catchAsync");
 exports.createBooking = catchAsync(async (req, res) => {
-  console.log(req.user);
+ 
   
   const booking = await createBooking({
-    user: req.user._id,
+    user: req.user.id,
     ...req.body,
   });
   res.status(201).json({
@@ -21,7 +21,7 @@ exports.createBooking = catchAsync(async (req, res) => {
 });
 
 exports.getMyBookings = catchAsync(async (req, res) => {
-  const bookings = await getMyBookings(req.user._id);
+  const bookings = await getMyBookings(req.user.id);
   res.status(200).json({
     status: "success",
     bookings_num: bookings.length,
@@ -37,7 +37,7 @@ exports.getallBookings = catchAsync(async (req, res) => {
   });
 });
 exports.cancelBooking = catchAsync(async (req, res) => {
-  const booking = await cancelBooking(req.params.id, req.user._id);
+  const booking = await cancelBooking(req.params.id, req.user.id);
   res.status(200).json({
     status: "success",
     data: { booking },

@@ -127,6 +127,7 @@ exports.refresh = async (token) => {
   return { accessToken };
 };
 
+
 // Logout user
 exports.logout = async (token) => {
   if (!token) return;
@@ -139,3 +140,4 @@ exports.logout = async (token) => {
     }
   );
 };
+

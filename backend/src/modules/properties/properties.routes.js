@@ -7,13 +7,10 @@ const {
   softDelete,
   Delete,
 } = require("./properties.controller");
-const validate = require("../../middlewares/validate");
+const validate = require("../../middlewares/validateYup");
 const addProperty = require("./properties.validation");
 
-router
-  .route("/")
-  .post(validate(addProperty), create)
-  .get(getAll);
+router.route("/").post(validate(addProperty), create).get(getAll);
 
 router.route("/soft-delete/:id").patch(softDelete);
 

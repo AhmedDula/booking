@@ -7,8 +7,10 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const hpp = require("hpp");
 const compression = require("compression");
+
 const { errorMiddleware } = require("./middlewares/error.middleware");
 const ApiError = require("./utils/ApiError");
+
 const app = express();
 
 // ── Security ──────────────────────────────────────────
@@ -57,10 +59,11 @@ if (env.app.nodeEnv === "development") {
 
 // ── Health Check ──────────────────────────────────────
 app.get("/api/v1/health", (req, res) => {
-  res.status(200).json({ success: true, message: "Server is running" });
+  res.status(200).json({ success: true, message: "Server is running", timestamp: new Date().toISOString() });
 });
 
 // ── Routes ────────────────────────────────────────────
+
 app.use("/api/v1/auth", require("./modules/auth/auth.routes.js"));
 app.use("/api/v1/bookings", require("./modules/bookings/booking.routes"));
 app.use(
@@ -70,6 +73,7 @@ app.use(
 app.use("/api/v1/users", require("./modules/users/user.routes"));
 app.use("/api/v1/rooms", require("./modules/rooms/room.routes"));
 app.use("/api/v1/disputes", require("./modules/disputes/dispute.routes.js"));
+app.use("/api/v1/admin", require("./modules/admin/admin.routes.js"));
 
 // ── 404 Handler ───────────────────────────────────────
 app.use((req, res, next) => {
@@ -77,6 +81,8 @@ app.use((req, res, next) => {
 });
 
 // ── Global Error Handler ──────────────────────────────Dula
+
 app.use(errorMiddleware);
+
 
 module.exports = app;

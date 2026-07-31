@@ -1,16 +1,22 @@
 const Booking = require("./booking.model");
-const property = require("../properties/properties.model");
+
+
+const Rooms = require("../../modules/rooms/room.model");
+
 const calculatePrice = require("../../utils/priceCalculator");
 const BOOKING_STATUS = require("../../constants/bookingStatus");
 const ApiError = require("../../utils/ApiError");
 
 exports.createBooking = async (bookingData) => {
-  const { user, property, checkIn, checkOut, guests, specialRequests } =
-    bookingData;
-
-  const existingProperty = await property.findById(property);
-  if (!existingProperty) {
-    throw new Error("property not found");
+  
+  const { user, room, checkIn, checkOut, guests, specialRequests } =
+    bookingData.value;
+    
+    
+ 
+  const existingRoom = await Rooms.findOne({ _id: room , available: true });
+  if (!existingRoom) {
+    throw new Error("Room not found");
   }
 
 
@@ -18,11 +24,18 @@ exports.createBooking = async (bookingData) => {
   if (new Date(checkIn) >= new Date(checkOut)) {
     throw new ApiError(400, "Check-out date must be after check-in date");
   }
-  const totalPrice = calculatePrice(existingProperty.price, checkIn, checkOut);
+ 
+  const totalPrice = calculatePrice(
+    existingRoom.price,
+    checkIn,
+    checkOut,
+  );
 
+  existingRoom.available = false; // Mark the room as unavailable
+await existingRoom.save(); // Save the room to ensure any changes are persisted
   const booking = await Booking.create({
     user,
-    property,
+    room,
     checkIn,
     checkOut,
     guests,
@@ -36,12 +49,16 @@ exports.createBooking = async (bookingData) => {
 exports.getMyBookings = async (userId) => {
   const bookings = await Booking.find({
     user: userId,
-  }).populate("property");
+  }).populate("room");
   return bookings;
 };
+// exports.getBookings = async () => {
+//   const bookings = await Booking.find({}).populate("user").populate("room","");
+//   return bookings;
+// };
 
 exports.getAllBookings = async () => {
-  const bookings = await Booking.find().populate("user").populate("property");
+  const bookings = await Booking.find().populate("user").populate("room");
   return bookings;
 };
 
