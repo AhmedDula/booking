@@ -1,5 +1,5 @@
 const Booking = require("./booking.model");
-//const property = require("../properties/property.model");
+const property = require("../properties/properties.model");
 const calculatePrice = require("../../utils/priceCalculator");
 const BOOKING_STATUS = require("../../constants/bookingStatus");
 const ApiError = require("../../utils/ApiError");

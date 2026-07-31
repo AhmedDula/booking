@@ -16,7 +16,6 @@ const {errorMiddleware} = require("./middlewares/error.middleware");
 
 const ApiError = require("./utils/ApiError");
 
-const bookingRoutes = require("./modules/bookings/booking.routes");
 
 const app = express();
 
@@ -65,24 +64,24 @@ if (env.app.nodeEnv === "development") {
 }
 
 // ── Health Check ──────────────────────────────────────
-app.get("/api/health", (req, res) => {
+app.get("/api/v1/health", (req, res) => {
   res.status(200).json({ success: true, message: "Server is running" });
 });
 
 // ── Routes ────────────────────────────────────────────
 
-const authRoutes = require( "./modules/auth/auth.routes.js");
-app.use("/api/v1/auth", authRoutes);
 
-app.use("/bookings", bookingRoutes);
+app.use("/api/v1/auth", require( "./modules/auth/auth.routes.js"));
+
+app.use("/api/v1/bookings", require("./modules/bookings/booking.routes"));
 
 
 
 const roomRoutes = require("./modules/rooms/room.routes");
-app.use("/api/rooms", roomRoutes);
+app.use("/api/v1/rooms", roomRoutes);
 
 const disputesRoutes = require("./modules/disputes/disputes.routes");
-app.use("/api/disputes", disputesRoutes)
+app.use("/api/v1/disputes", disputesRoutes)
 
 
 // ── 404 Handler ───────────────────────────────────────
@@ -91,7 +90,7 @@ app.use((req, res, next) => {
 });
 
 // ── Global Error Handler ──────────────────────────────Dula
-//app.use(errorMiddleware);
+app.use(errorMiddleware);
 
 
 module.exports = app;

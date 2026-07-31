@@ -33,7 +33,7 @@ exports.login = asyncHandler(async (req, res) => {
 
 // POST /api/v1/auth/logout
 exports.logout = asyncHandler(async (req, res) => {
-  const token=   req.cookies?.refreshToken;
+  const token=req.cookies?.refreshToken;
   await authService.logout(token);
   res
     .clearCookie("accessToken", accessTokenCookieOptions)

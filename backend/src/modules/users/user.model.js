@@ -46,8 +46,22 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+
+     isActive: {
+      type: Boolean,
+      default: true,
+    },
+
+    refreshToken: {
+      type: String,
+      default: null,
+      select: false,
+    },
+  
   },
+  
   {
+    versionKey:false,
     timestamps: true,
   }
 );

@@ -6,11 +6,11 @@ const { hashPassword, comparePassword } = require("../../utils/hash");
 const {
   generateAccessToken,
   generateRefreshToken,
-  verifyRefreshToken,
 } = require("../../utils/token");
 const ApiError = require("../../utils/ApiError");
 
-const generateTokens = async (user) => {
+// Generate both tokens and save refresh token in DB
+const generateAndSaveTokens = async (user) => {
   const payload = {
     id: user._id,
     role: user.role,
@@ -19,21 +19,31 @@ const generateTokens = async (user) => {
   const accessToken = generateAccessToken(payload);
   const refreshToken = generateRefreshToken(payload);
 
-  return { accessToken, refreshToken };
+  // Save refresh token in DB
+  user.refreshToken = refreshToken;
+  await user.save();
+
+  return {
+    accessToken,
+    refreshToken,
+  };
 };
 
-// Register
+// Register new user
 exports.register = async (data) => {
   const { name, email, password, role } = data;
 
+  // Check if email already exists
   const existingUser = await Users.findOne({ email });
 
   if (existingUser) {
-    throw ApiError.conflict("Email already exists");
+    throw ApiError.unauthorized("Invalid Email or Password");
   }
 
+  // Hash password
   const hashedPassword = await hashPassword(password);
 
+  // Create user
   const user = await Users.create({
     name,
     email,
@@ -41,7 +51,7 @@ exports.register = async (data) => {
     role,
   });
 
-  const { accessToken, refreshToken } = await generateTokens(user);
+  const { accessToken, refreshToken } = await generateAndSaveTokens(user);
 
   return {
     user: {
@@ -55,23 +65,30 @@ exports.register = async (data) => {
   };
 };
 
-// Login
+// Login user
 exports.login = async (data) => {
   const { email, password } = data;
 
+  // Find user and include password
   const user = await Users.findOne({ email }).select("+password");
 
   if (!user) {
-    throw ApiError.unauthorized("Invalid Email or Password");
+    throw ApiError.unauthorized("Invalid credentials");
   }
 
+  // Check if account is active
+  if (!user.isActive) {
+    throw ApiError.forbidden("Account is deactivated");
+  }
+
+  // Compare password
   const isMatch = await comparePassword(password, user.password);
 
   if (!isMatch) {
-    throw ApiError.unauthorized("Invalid Email or Password");
+    throw ApiError.unauthorized("Invalid credentials");
   }
 
-  const { accessToken, refreshToken } = await generateTokens(user);
+  const { accessToken, refreshToken } = await generateAndSaveTokens(user);
 
   return {
     user: {
@@ -91,18 +108,13 @@ exports.refresh = async (token) => {
     throw ApiError.unauthorized("No refresh token");
   }
 
-  let decoded;
-
-  try {
-    decoded = verifyRefreshToken(token);
-  } catch {
-    throw ApiError.unauthorized("Invalid refresh token");
-  }
-
-  const user = await Users.findById(decoded.id);
+  // Find user with this refresh token
+  const user = await Users.findOne({ refreshToken: token }).select(
+    "+refreshToken"
+  );
 
   if (!user) {
-    throw ApiError.unauthorized("User not found");
+    throw ApiError.unauthorized("Invalid refresh token");
   }
 
   const payload = {
@@ -115,7 +127,15 @@ exports.refresh = async (token) => {
   return { accessToken };
 };
 
-// Logout
-exports.logout = async () => {
-  return;
+// Logout user
+exports.logout = async (token) => {
+  if (!token) return;
+
+  // Clear refresh token from DB
+  await Users.findOneAndUpdate(
+    { refreshToken: token },
+    {
+      refreshToken: null,
+    }
+  );
 };
