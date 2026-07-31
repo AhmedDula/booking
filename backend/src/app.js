@@ -64,7 +64,7 @@ app.get("/api/health", (req, res) => {
 const roomRoutes = require("./modules/rooms/room.routes");
 app.use("/api/rooms", roomRoutes);
 
-const disputesRoutes = require("./modules/disputes/disputes.routes");
+const disputesRoutes = require("./modules/disputes/dispute.routes");
 app.use("/api/disputes", disputesRoutes)
 
 // ── 404 Handler ───────────────────────────────────────

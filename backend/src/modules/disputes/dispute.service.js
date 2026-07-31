@@ -1,58 +1,49 @@
-const Dispute = require("./disputes.model");
+const Dispute = require("./dispute.model");
 const ApiError = require("../../utils/ApiError");
+const ApiFeatures = require("../../utils/ApiFeatures");
 const disputeStatus = require("../../constants/disputeStatus");
-
-const populateFields = [
-  { path: "booking" },
-  { path: "user" },
-  { path: "resolvedBy" },
-];
 
 const createDispute = async (data) => {
   const existing = await Dispute.findOne({ booking: data.booking });
+
   if (existing) {
     throw ApiError.conflict("A dispute already exists for this booking");
   }
-
-  const dispute = await Dispute.create(data);
-  return dispute.populate(populateFields);
+  return await Dispute.create(data);
 };
 
-const getDisputes = async ({ page = 1, limit = 10, userId, role }) => {
-  const query = {};
+const getDisputes = async (queryString, userId, role) => {
+  let query = {};
 
   if (role !== "admin") {
     query.user = userId;
   }
 
-  const skip = (Number(page) - 1) * Number(limit);
-  const [disputes, total] = await Promise.all([
-    Dispute.find(query).populate(populateFields).skip(skip).limit(Number(limit)).sort({ createdAt: -1 }),
-    Dispute.countDocuments(query),
-  ]);
+  const features = new ApiFeatures(
+    Dispute.find(query),
+    queryString).filter().sort().limitFields().paginate();
+
+  const disputes = await features.query;
+  const total = await Dispute.countDocuments(query);
 
   return {
     disputes,
-    pagination: {
-      total,
-      page: Number(page),
-      limit: Number(limit),
-      totalPages: Math.ceil(total / Number(limit)),
-    },
+    total,
+    page: Number(queryString.page) || 1,
+    limit: Number(queryString.limit) || 10,
+    pages: Math.ceil(total / (Number(queryString.limit) || 10)),
   };
 };
 
 const getDispute = async (id, userId, role) => {
-  const dispute = await Dispute.findById(id).populate(populateFields);
+  const dispute = await Dispute.findById(id);
 
   if (!dispute) {
     throw ApiError.notFound("Dispute not found");
   }
-
   if (role !== "admin" && dispute.user.toString() !== userId) {
     throw ApiError.forbidden("You do not have permission to view this dispute");
   }
-
   return dispute;
 };
 
@@ -69,7 +60,8 @@ const updateDispute = async (id, data, userId, role) => {
 
   Object.assign(dispute, data);
   await dispute.save();
-  return dispute.populate(populateFields);
+
+  return dispute;
 };
 
 const deleteDispute = async (id, role) => {
@@ -78,9 +70,11 @@ const deleteDispute = async (id, role) => {
   }
 
   const dispute = await Dispute.findByIdAndDelete(id);
+
   if (!dispute) {
     throw ApiError.notFound("Dispute not found");
   }
+
   return dispute;
 };
 
@@ -90,15 +84,22 @@ const updateStatus = async (id, status, role, resolvedBy) => {
   }
 
   const dispute = await Dispute.findById(id);
+
   if (!dispute) {
     throw ApiError.notFound("Dispute not found");
   }
 
   dispute.status = status;
   dispute.resolvedBy = resolvedBy;
-  dispute.resolvedAt = status === disputeStatus.RESOLVED || status === disputeStatus.REJECTED ? new Date() : null;
+  dispute.resolvedAt =
+    status === disputeStatus.RESOLVED ||
+    status === disputeStatus.REJECTED
+      ? new Date()
+      : null;
+
   await dispute.save();
-  return dispute.populate(populateFields);
+
+  return dispute;
 };
 
 module.exports = {

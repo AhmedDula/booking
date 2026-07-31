@@ -1,4 +1,4 @@
-const disputeService = require("./disputes.service");
+const disputeService = require("./dispute.service");
 const asyncHandler = require("../../middlewares/asyncHandler");
 
 

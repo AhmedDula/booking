@@ -1,62 +1,59 @@
 const Room = require("./room.model");
+const Property = require("../properties/property.model");
 const ApiError = require("../../utils/ApiError");
+const ApiFeatures = require("../../utils/ApiFeatures");
 
-const populateFields = [{ path: "property", select: "name location category" }];
+const createRoom = async (propertyId, data) => {
+  const property = await Property.exists({ _id: propertyId });
 
-const createRoom = async (data) => {
-  const room = await Room.create(data);
-  return room.populate(populateFields);
+  if (!property) {
+    throw ApiError.notFound("Property not found");
+  }
+  return await Room.create({...data, property: propertyId,});
 };
 
-const getRooms = async ({ page = 1, limit = 10, property } = {}) => {
-  const query = {};
-  if (property) query.property = property;
+const getRooms = async (queryString) => {
+  const features = new ApiFeatures(
+    Room.find({ isActive: true }),
+    queryString).filter().sort().limitFields().paginate();
 
-  const skip = (Number(page) - 1) * Number(limit);
-  const [rooms, total] = await Promise.all([
-    Room.find(query).populate(populateFields).skip(skip).limit(Number(limit)).sort({ createdAt: -1 }),
-    Room.countDocuments(query),
-  ]);
+  const rooms = await features.query;
+
+  const total = await Room.countDocuments({ isActive: true });
 
   return {
     rooms,
-    pagination: {
-      total,
-      page: Number(page),
-      limit: Number(limit),
-      totalPages: Math.ceil(total / Number(limit)),
-    },
+    total,
+    page: Number(queryString.page) || 1,
+    limit: Number(queryString.limit) || 10,
+    pages: Math.ceil(total / (Number(queryString.limit) || 10)),
   };
 };
 
-const getRoomById = async (roomId) => {
-  const room = await Room.findById(roomId).populate(populateFields);
+const getRoomById = async (id) => {
+  const room = await Room.findById(id);
+
   if (!room) {
     throw ApiError.notFound("Room not found");
   }
   return room;
 };
 
-const getRoomsByProperty = async (propertyId) => {
-  const rooms = await Room.find({ property: propertyId }).populate(populateFields);
-  return rooms;
-};
-
-const updateRoom = async (roomId, data) => {
-  const room = await Room.findByIdAndUpdate(roomId, data, {
+const updateRoom = async (id, updates) => {
+  const room = await Room.findByIdAndUpdate(id, updates, {
     new: true,
     runValidators: true,
-  }).populate(populateFields);
+  });
 
   if (!room) {
     throw ApiError.notFound("Room not found");
   }
-
   return room;
 };
 
-const deleteRoom = async (roomId) => {
-  const room = await Room.findByIdAndDelete(roomId);
+const deleteRoom = async (id) => {
+  const room = await Room.findByIdAndDelete(id);
+
   if (!room) {
     throw ApiError.notFound("Room not found");
   }
@@ -67,7 +64,6 @@ module.exports = {
   createRoom,
   getRooms,
   getRoomById,
-  getRoomsByProperty,
   updateRoom,
   deleteRoom,
 };
