@@ -2,7 +2,7 @@ const express = require("express");
 const controller = require("./room.controller");
 const validate = require("../../middlewares/validate");
 const protect = require("../../middlewares/protect");
-const allowTo = require("../../middlewares/allowTo");
+const allowTo = require("../../middlewares/restrictTo");
 const { createRoomValidation, updateRoomValidation, roomIdValidation, propertyIdValidation } = require("./room.validation");
 
 const router = express.Router();

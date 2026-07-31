@@ -1,37 +1,47 @@
 // authentication service
 
 // imports
-const Users = require("../users/users.model.js")
+const Users = require("../users/user.model");
 const { hashPassword, comparePassword } = require("../../utils/hash");
 const {
   generateAccessToken,
-  refreshAccessToken,
+  generateRefreshToken,
+  verifyRefreshToken,
 } = require("../../utils/token");
 const ApiError = require("../../utils/ApiError");
-const generateTokens = async (user) => {
-  const payload = { id: user._id, role: user.role };
-  const accessToken = generateAccessToken(payload);
-  const refreshToken = generateAccessToken(payload);
 
-  user.refreshToken = refreshToken;
-  await user.save();
+const generateTokens = async (user) => {
+  const payload = {
+    id: user._id,
+    role: user.role,
+  };
+
+  const accessToken = generateAccessToken(payload);
+  const refreshToken = generateRefreshToken(payload);
+
   return { accessToken, refreshToken };
 };
 
+// Register
 exports.register = async (data) => {
   const { name, email, password, role } = data;
+
   const existingUser = await Users.findOne({ email });
-  if (existingUser) throw ApiError.unauthorized("Invalid Email or Password");
+
+  if (existingUser) {
+    throw ApiError.conflict("Email already exists");
+  }
+
   const hashedPassword = await hashPassword(password);
 
   const user = await Users.create({
     name,
     email,
-    password: hashPassword,
+    password: hashedPassword,
     role,
   });
 
-  const { accessToken, refreshToken } = await generateAccessToken(user);
+  const { accessToken, refreshToken } = await generateTokens(user);
 
   return {
     user: {
@@ -45,20 +55,23 @@ exports.register = async (data) => {
   };
 };
 
-
+// Login
 exports.login = async (data) => {
-  const {  email, password } = data;
+  const { email, password } = data;
+
   const user = await Users.findOne({ email }).select("+password");
-  if (!user) throw ApiError.unauthorized("Invalid Email or Password");
 
-  // Check if account is active
-  if (!user.isActive) throw ApiError.forbidden("Account is deactivated");
-  const isMatch = await comparePassword(password,user.password);
-  if (!isMatch) throw ApiError.unauthorized("Invalid Email or Password");
+  if (!user) {
+    throw ApiError.unauthorized("Invalid Email or Password");
+  }
 
+  const isMatch = await comparePassword(password, user.password);
 
+  if (!isMatch) {
+    throw ApiError.unauthorized("Invalid Email or Password");
+  }
 
-  const { accessToken, refreshToken } = await generateAccessToken(user);
+  const { accessToken, refreshToken } = await generateTokens(user);
 
   return {
     user: {
@@ -71,32 +84,38 @@ exports.login = async (data) => {
     refreshToken,
   };
 };
-
 
 // Refresh access token
 exports.refresh = async (token) => {
-  if (!token) throw ApiError.unauthorized("No refresh token");
+  if (!token) {
+    throw ApiError.unauthorized("No refresh token");
+  }
 
-  // Find user with this refresh token
-  const user = await User.findOne({ refreshToken: token }).select("+refreshToken");
-  if (!user) throw ApiError.unauthorized("Invalid refresh token");
+  let decoded;
 
-  // Generate new access token only
-  const payload = { id: user._id, role: user.role };
+  try {
+    decoded = verifyRefreshToken(token);
+  } catch {
+    throw ApiError.unauthorized("Invalid refresh token");
+  }
+
+  const user = await Users.findById(decoded.id);
+
+  if (!user) {
+    throw ApiError.unauthorized("User not found");
+  }
+
+  const payload = {
+    id: user._id,
+    role: user.role,
+  };
+
   const accessToken = generateAccessToken(payload);
 
   return { accessToken };
 };
 
-// Logout user
-exports.logout = async (token) => {
-  if (!token) return;
-
-  // Clear refresh token from DB
-  await User.findOneAndUpdate(
-    { refreshToken: token },
-    { refreshToken: null }
-  );
+// Logout
+exports.logout = async () => {
+  return;
 };
-
-

@@ -1,6 +1,6 @@
 const Dispute = require("./disputes.model");
 const ApiError = require("../../utils/ApiError");
-const disputeStatus = require("../../constants/disputeStatus");
+const disputeStatus = require("../../constants/disputes");
 
 const populateFields = [
   { path: "booking" },

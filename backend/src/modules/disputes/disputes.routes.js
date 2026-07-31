@@ -2,7 +2,7 @@ const express = require("express");
 const controller = require("./disputes.controller");
 const validate = require("../../middlewares/validate");
 const protect = require("../../middlewares/protect");
-const allowTo = require("../../middlewares/allowTo");
+const allowTo = require("../../middlewares/restrictTo");
 const { createDisputeValidation, updateDisputeValidation, updateStatusValidation, disputeIdValidation } = require("./disputes.validation");
 
 const router = express.Router();

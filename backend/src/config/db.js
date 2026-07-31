@@ -7,7 +7,9 @@ const RETRY_INTERVAL_MS = 5000; // 5 seconds
 let retries = 0;
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(env.db.mongoUri);
+    const conn = await mongoose.connect(env.db.mongoUri,{
+      dbName: "Booking-Platform",
+    });
     console.log(` MongoDB connected: ${conn.connection.host}`);
     // retries = 0; // reset on success
   } catch (error) {
@@ -44,8 +46,6 @@ process.on("SIGINT", async () => {
   process.exit(0);
 });
 
-<<<<<<< HEAD
+
 module.exports = { connectDB };
-=======
-module.exports = connectDB;
->>>>>>> origin/booking-feature
+

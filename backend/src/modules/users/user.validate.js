@@ -11,6 +11,7 @@ const validateCreateUser = (req, res, next) => {
       success: false,
       errors,
     });
+    
   }
 
   next();

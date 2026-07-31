@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const disputeStatus = require("../../constants/disputeStatus");
+const disputeStatus = require("../../constants/disputes");
 
 const disputeSchema = new mongoose.Schema(
   {

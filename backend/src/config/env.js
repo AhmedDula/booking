@@ -4,7 +4,7 @@ const path = require("path");
 
 dotenv.config({path: "src/.env"});
 
-console.log("Mongo URI:", process.env.MONGO_URI);
+
 const envSchema = Joi.object({
   // App
   NODE_ENV: Joi.string()

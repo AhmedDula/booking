@@ -39,8 +39,6 @@ class ApiError extends Error {
   }
 }
 
-<<<<<<< HEAD
+
 module.exports = ApiError;
-=======
-module.exports = ApiError;
->>>>>>> origin/booking-feature
+

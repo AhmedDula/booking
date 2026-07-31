@@ -1,5 +1,5 @@
 const yup = require("yup");
-const disputeStatus = require("../../constants/disputeStatus");
+const disputeStatus = require("../../constants/disputes");
 
 const mongoId = /^[0-9a-fA-F]{24}$/;
 
