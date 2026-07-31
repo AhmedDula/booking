@@ -8,15 +8,9 @@ const morgan = require("morgan");
 const hpp = require("hpp");
 const compression = require("compression");
 
-
-const {errorMiddleware} = require("./middlewares/error.middleware");
-
-
-
+const { errorMiddleware } = require("./middlewares/error.middleware");
 
 const ApiError = require("./utils/ApiError");
-
-const bookingRoutes = require("./modules/bookings/booking.routes");
 
 const app = express();
 
@@ -71,19 +65,22 @@ app.get("/api/health", (req, res) => {
 
 // ── Routes ────────────────────────────────────────────
 
-const authRoutes = require( "./modules/auth/auth.routes.js");
+const authRoutes = require("./modules/auth/auth.routes.js");
 app.use("/api/v1/auth", authRoutes);
 
-app.use("/bookings", bookingRoutes);
-
-
+//Booking routes
+const bookingRoutes = require("./modules/bookings/booking.routes");
+app.use("/api/bookings", bookingRoutes);
 
 const roomRoutes = require("./modules/rooms/room.routes");
 app.use("/api/rooms", roomRoutes);
 
 const disputesRoutes = require("./modules/disputes/disputes.routes");
-app.use("/api/disputes", disputesRoutes)
+app.use("/api/disputes", disputesRoutes);
 
+//Properties Routes
+const propertyRoutes = require("./modules/properties/proprties.routes.js");
+app.use("/api/properties", propertyRoutes);
 
 // ── 404 Handler ───────────────────────────────────────
 app.use((req, res, next) => {
@@ -93,7 +90,4 @@ app.use((req, res, next) => {
 // ── Global Error Handler ──────────────────────────────Dula
 //app.use(errorMiddleware);
 
-
 module.exports = app;
-
-

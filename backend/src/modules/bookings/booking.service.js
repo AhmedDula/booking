@@ -1,14 +1,15 @@
 const Booking = require("./booking.model");
-//const property = require("../properties/property.model");
+const Property = require("../properties/properties.model");
 const calculatePrice = require("../../utils/priceCalculator");
 const BOOKING_STATUS = require("../../constants/bookingStatus");
 const ApiError = require("../../utils/ApiError");
 
 exports.createBooking = async (bookingData) => {
+  console.log(bookingData);
   const { user, property, checkIn, checkOut, guests, specialRequests } =
     bookingData;
-
-  const existingProperty = await property.findById(property);
+  console.log("Property ID:", property);
+  const existingProperty = await Property.findById(property);
   if (!existingProperty) {
     throw new Error("property not found");
   }
@@ -19,7 +20,16 @@ exports.createBooking = async (bookingData) => {
   if (new Date(checkIn) >= new Date(checkOut)) {
     throw new ApiError(400, "Check-out date must be after check-in date");
   }
-  const totalPrice = calculatePrice(existingProperty.price, checkIn, checkOut);
+  console.log("Property:", existingProperty);
+  console.log("Price per night:", existingProperty.pricePerNight);
+  console.log("Check in:", checkIn);
+  console.log("Check out:", checkOut);
+  const totalPrice = calculatePrice(
+    existingProperty.pricePerNight,
+    checkIn,
+    checkOut,
+  );
+  console.log("Calculated price:", totalPrice);
 
   const booking = await Booking.create({
     user,

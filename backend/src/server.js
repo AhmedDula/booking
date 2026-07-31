@@ -1,10 +1,8 @@
-
 const { env } = require("./config/env.js");
 const dns = require("dns");
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
 const app = require("./app.js");
 const { connectDB } = require("./config/db.js");
-
 
 // Handle unexpected errors before app starts
 process.on("uncaughtException", (err) => {

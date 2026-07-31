@@ -1,5 +1,5 @@
 const Property = require("./properties.model");
-const ApiFeature = require("../../utils/ApiFeatures");
+const ApiFeature = require("../../utils/ApiFeature");
 
 const create = async (data) => {
   return await Property.create(data);
@@ -29,14 +29,14 @@ const Update = async (id, data) => {
   return await Property.findOneAndUpdate(
     { _id: id, isDeleted: false },
     { ...data, updatedAt: new Date() },
-    { runValidators: true, returnDocument: "after" }
+    { runValidators: true, returnDocument: "after" },
   );
 };
 
 const softDelete = async (id) => {
   return await Property.findOneAndUpdate(
     { _id: id, isDeleted: false },
-    { isDeleted: true, updatedAt: new Date() }
+    { isDeleted: true, updatedAt: new Date() },
   );
 };
 

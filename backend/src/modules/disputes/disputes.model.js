@@ -52,9 +52,9 @@ const disputeSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-disputeSchema.index({ booking: 1 }, { unique: true });
+// disputeSchema.index({ booking: 1 }, { unique: true });
 
 module.exports = mongoose.model("Dispute", disputeSchema);
