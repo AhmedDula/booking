@@ -12,8 +12,7 @@ exports.createBooking = async (bookingData) => {
   if (!existingProperty) {
     throw new Error("property not found");
   }
-  // const { user, property, checkIn, checkOut, guests, specialRequests } =
-  //   bookingData;
+
 
   // Validate dates
   if (new Date(checkIn) >= new Date(checkOut)) {

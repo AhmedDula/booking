@@ -51,6 +51,7 @@ const disputeSchema = new mongoose.Schema(
     },
   },
   {
+    versionKey:false,
     timestamps: true,
   }
 );

@@ -1,12 +1,15 @@
 const Dispute = require("./dispute.model");
 const ApiError = require("../../utils/ApiError");
-
+const Booking = require("../bookings/booking.model")
 const ApiFeatures = require("../../utils/ApiFeature");
 const disputeStatus = require("../../constants/disputes");
 
 
 const createDispute = async (data) => {
-  const existing = await Dispute.findOne({ booking: data.booking });
+  const booking = await Booking.findById(data.booking)
+ if(!booking) throw ApiError.notFound(`booking not found has id: ${data.booking}` )
+  
+  const existing = await Dispute.findOne({ booking: booking._id });
 
   if (existing) {
     throw ApiError.conflict("A dispute already exists for this booking");

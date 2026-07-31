@@ -6,15 +6,15 @@ const allowTo = require("../../middlewares/restrictTo");
 const { createRoomValidation, updateRoomValidation, roomIdValidation, propertyIdValidation } = require("./room.validation");
 
 const router = express.Router();
-
+router.use(protect)
 router
   .route("/")
   .get(controller.getRooms)
   .post(protect, allowTo("admin"), validate(createRoomValidation), controller.createRoom);
 
-router
-  .route("/property/:propertyId")
-  .get(validate(propertyIdValidation, "params"), controller.getRoomsByProperty);
+// router
+//   .route("/property/:propertyId")
+//   .get(validate(propertyIdValidation, "params"), controller.getRoomsByProperty);
 
 router
   .route("/:id")

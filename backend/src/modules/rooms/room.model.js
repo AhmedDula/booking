@@ -49,7 +49,7 @@ const roomSchema = new mongoose.Schema(
       min: [1, "A room must have at least one bathroom"],
     },
 
-    size: {
+    roomSize: {
       type: Number,
       required: [true, "Room size is required"],
       min: [1, "Room size must be positive"],
@@ -57,12 +57,12 @@ const roomSchema = new mongoose.Schema(
 
     images: {
       type: [String],
-      default: [],
+      default: null,
     },
 
     amenities: {
       type: [String],
-      default: [],
+      default: null,
     },
 
     available: {
@@ -71,6 +71,7 @@ const roomSchema = new mongoose.Schema(
     },
   },
   {
+    versionKey:false,
     timestamps: true,
   }
 );

@@ -1,5 +1,5 @@
 const Property = require("./properties.model");
-const ApiFeature = require("../../utils/ApiFeatures");
+const ApiFeature = require("../../utils/ApiFeature");
 
 const create = async (data) => {
   return await Property.create(data);

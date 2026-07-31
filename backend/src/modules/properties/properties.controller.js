@@ -1,4 +1,4 @@
-const AppError = require("../../utils/AppError");
+const AppError = require("../../utils/ApiError");
 const catchAsync = require("../../utils/catchAsync");
 const propertyService = require("./properties.service");
 const addProperty = require("./properties.validation");

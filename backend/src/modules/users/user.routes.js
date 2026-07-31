@@ -15,8 +15,8 @@ router.get("/",allowTo("admin") ,userController.getAllUsers);
 
 router.get("/:id", userController.getUserById);
 
-router.put("/:id", validateUpdateUser, userController.updateUser);
+router.put("/:id",allowTo("admin"), validateUpdateUser, userController.updateUser);
 
-router.delete("/:id", userController.deleteUser);
+router.delete("/:id",allowTo("admin"), userController.deleteUser);
 
 module.exports = router;

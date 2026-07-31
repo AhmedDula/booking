@@ -7,16 +7,8 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const hpp = require("hpp");
 const compression = require("compression");
-
-
-const {errorMiddleware} = require("./middlewares/error.middleware");
-
-
-
-
+const { errorMiddleware } = require("./middlewares/error.middleware");
 const ApiError = require("./utils/ApiError");
-
-
 const app = express();
 
 // ── Security ──────────────────────────────────────────
@@ -69,22 +61,15 @@ app.get("/api/v1/health", (req, res) => {
 });
 
 // ── Routes ────────────────────────────────────────────
-
-
-app.use("/api/v1/auth", require( "./modules/auth/auth.routes.js"));
-
+app.use("/api/v1/auth", require("./modules/auth/auth.routes.js"));
 app.use("/api/v1/bookings", require("./modules/bookings/booking.routes"));
-
-app.use("/api/v1/users", require("./modules/users/user.routes"))
-
-
-app.use("/api/v1/rooms",  require("./modules/rooms/room.routes"));
-
-
-const disputesRoutes = require("./modules/disputes/dispute.routes.js");
-app.use("/api/v1/disputes", disputesRoutes)
-
-
+app.use(
+  "/api/v1/properties",
+  require("./modules/properties/properties.routes"),
+);
+app.use("/api/v1/users", require("./modules/users/user.routes"));
+app.use("/api/v1/rooms", require("./modules/rooms/room.routes"));
+app.use("/api/v1/disputes", require("./modules/disputes/dispute.routes.js"));
 
 // ── 404 Handler ───────────────────────────────────────
 app.use((req, res, next) => {
@@ -94,7 +79,4 @@ app.use((req, res, next) => {
 // ── Global Error Handler ──────────────────────────────Dula
 app.use(errorMiddleware);
 
-
 module.exports = app;
-
-

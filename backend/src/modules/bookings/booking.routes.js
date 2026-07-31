@@ -15,7 +15,7 @@ const {
 
 router
   .route("/")
-  .post(validate(createBookingSchema), createBooking)
+  .post( createBooking)
   .get(getallBookings); //get(authMiddleware, restrictTo("admin"), getallBookings);
 
 router.route("/my-bookings").get(getMyBookings);

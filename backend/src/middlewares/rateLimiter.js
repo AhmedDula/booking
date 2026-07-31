@@ -12,7 +12,7 @@ const apiLimiter = rateLimit({
 // Applied to auth routes specifically — tighter, to slow brute-force login attempts
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 20,
+  max: 5,
   standardHeaders: true,
   legacyHeaders: false,
   message: { success: false, message: 'Too many auth attempts, please try again later.' },

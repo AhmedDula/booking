@@ -1,5 +1,5 @@
-const AppError = require("../../utils/AppError");
-const catchAsync = require("../../utils/catchAsync");
+const AppError = require("../../utils/ApiError");
+const catchAsync = require("../../middlewares/asyncHandler");
 const reviewService = require("./review.service");
 const addReview = require("./review.validation");
 

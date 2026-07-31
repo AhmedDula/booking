@@ -4,7 +4,7 @@ const validate = require("../../middlewares/validate");
 const protect = require("../../middlewares/protect");
 
 const allowTo = require("../../middlewares/restrictTo");
-const { createDisputeValidation, updateDisputeValidation, updateStatusValidation, disputeIdValidation } = require("./dispute.validation");
+const {createDisputeSchema,updateDisputeSchema,updateStatusSchema}=require("./dispute.validation")
 
 
 
@@ -12,14 +12,14 @@ const router = express.Router();
 
 router.route("/")
   .get(protect, controller.getDisputes)
-  .post(protect, validate(createDisputeValidation), controller.createDispute);
+  .post(protect, validate(createDisputeSchema), controller.createDispute);
 
 router.route("/:id")
-  .get(protect, validate(disputeIdValidation), controller.getDispute)
-  .put(protect, validate(updateDisputeValidation), controller.updateDispute)
-  .delete(protect, allowTo("admin"), validate(disputeIdValidation), controller.deleteDispute);
+  .get(protect, controller.getDispute)
+  .put(protect, validate(updateDisputeSchema), controller.updateDispute)
+  .delete(protect, allowTo("admin"), controller.deleteDispute);
 
 router.route("/:id/status")
-  .patch(protect, allowTo("admin"), validate(updateStatusValidation), controller.updateStatus);
+  .patch(protect, allowTo("admin"), validate(updateStatusSchema), controller.updateStatus);
 
 module.exports = router;

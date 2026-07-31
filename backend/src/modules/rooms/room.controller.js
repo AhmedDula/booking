@@ -2,7 +2,14 @@ const roomService = require("./room.service");
 const asyncHandler = require("../../middlewares/asyncHandler");
 
 const createRoom = asyncHandler(async (req, res) => {
-  const room = await roomService.createRoom(req.body);
+
+
+const { property } = req.body;
+
+
+  const room = await roomService.createRoom(property,req.body);
+  console.log(room);
+  
   res.status(201).json({
     success: true,
     message: "Room created successfully",
@@ -31,14 +38,14 @@ const getRoom = asyncHandler(async (req, res) => {
 });
 
 //get all rooms in the same property
-const getRoomsByProperty = asyncHandler(async (req, res) => {
-  const rooms = await roomService.getRoomsByProperty(req.params.propertyId);
-  res.status(200).json({
-    success: true,
-    message: "Rooms retrieved successfully",
-    data: rooms,
-  });
-});
+// const getRoomsByProperty = asyncHandler(async (req, res) => {
+//   const rooms = await roomService.getRoomsByProperty(req.params.propertyId);
+//   res.status(200).json({
+//     success: true,
+//     message: "Rooms retrieved successfully",
+//     data: rooms,
+//   });
+// });
 
 const updateRoom = asyncHandler(async (req, res) => {
   const room = await roomService.updateRoom(req.params.id, req.body);
@@ -62,7 +69,6 @@ module.exports = {
   createRoom,
   getRooms,
   getRoom,
-  getRoomsByProperty,
   updateRoom,
   deleteRoom,
 };
