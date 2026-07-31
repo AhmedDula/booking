@@ -8,8 +8,15 @@ const morgan = require("morgan");
 const hpp = require("hpp");
 const compression = require("compression");
 
+
 const {errorMiddleware} = require("./middlewares/error.middleware");
+
+
+
+
 const ApiError = require("./utils/ApiError");
+
+const bookingRoutes = require("./modules/bookings/booking.routes");
 
 const app = express();
 
@@ -41,7 +48,7 @@ app.use(
   cors({
     origin: env.client.url,
     credentials: true, // Allow cookies to be sent
-  })
+  }),
 );
 
 // ── Body Parsing ──────────────────────────────────────
@@ -66,6 +73,7 @@ app.get("/api/health", (req, res) => {
 const authRoutes = require( "./modules/auth/auth.routes.js");
 app.use("/api/v1/auth", authRoutes);
 
+app.use("/bookings", bookingRoutes);
 
 // ── 404 Handler ───────────────────────────────────────
 app.use((req, res, next) => {
@@ -73,6 +81,8 @@ app.use((req, res, next) => {
 });
 
 // ── Global Error Handler ──────────────────────────────Dula
-app.use(errorMiddleware);
+//app.use(errorMiddleware);
+
 
 module.exports = app;
+
