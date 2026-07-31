@@ -80,8 +80,10 @@ app.use("/api/v1/bookings", require("./modules/bookings/booking.routes"));
 const roomRoutes = require("./modules/rooms/room.routes");
 app.use("/api/v1/rooms", roomRoutes);
 
-const disputesRoutes = require("./modules/disputes/disputes.routes");
+
+const disputesRoutes = require("./modules/disputes/dispute.routes.js");
 app.use("/api/v1/disputes", disputesRoutes)
+
 
 
 // ── 404 Handler ───────────────────────────────────────
