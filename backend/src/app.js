@@ -1,3 +1,5 @@
+const { env } = require("./config/env");
+const { apiLimiter } = require("./middlewares/rateLimiter");
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
@@ -6,8 +8,7 @@ const morgan = require("morgan");
 const hpp = require("hpp");
 const compression = require("compression");
 
-const { env } = require("./config/env");
-const errorMiddleware = require("./middlewares/error.middleware");
+const {errorMiddleware} = require("./middlewares/error.middleware");
 const ApiError = require("./utils/ApiError");
 
 const app = express();
@@ -31,6 +32,9 @@ app.use((req, res, next) => {
   next();
 }); // Prevent NoSQL injection
 app.use(hpp()); // Prevent HTTP parameter pollution
+
+// ── Rate Limiting ─────────────────────────────────────
+app.use("/api", apiLimiter); // Apply rate limiting to all /api routes
 
 // ── CORS ──────────────────────────────────────────────
 app.use(
@@ -59,8 +63,8 @@ app.get("/api/health", (req, res) => {
 });
 
 // ── Routes ────────────────────────────────────────────
-// const authRoutes = require( "./modules/auth/auth.routes.js");
-// app.use("/api/auth", authRoutes);
+const authRoutes = require( "./modules/auth/auth.routes.js");
+app.use("/api/v1/auth", authRoutes);
 
 
 // ── 404 Handler ───────────────────────────────────────
@@ -71,4 +75,4 @@ app.use((req, res, next) => {
 // ── Global Error Handler ──────────────────────────────Dula
 app.use(errorMiddleware);
 
-export default app;
+module.exports = app;

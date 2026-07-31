@@ -5,7 +5,6 @@ const MAX_RETRIES = 5;
 const RETRY_INTERVAL_MS = 5000; // 5 seconds
 
 let retries = 0;
-
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(env.db.mongoUri);
@@ -42,3 +41,5 @@ process.on("SIGINT", async () => {
   console.log(" MongoDB connection closed.");
   process.exit(0);
 });
+
+module.exports = { connectDB };

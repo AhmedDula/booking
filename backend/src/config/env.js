@@ -1,14 +1,14 @@
 const dotenv = require("dotenv");
 const Joi = require("joi");
 
-dotenv.config();
+dotenv.config({path: "src/config.env"});
 
 const envSchema = Joi.object({
   // App
   NODE_ENV: Joi.string()
     .valid("development", "production", "test")
     .default("development"),
-  PORT: Joi.number().default(3000),
+  PORT: Joi.number().default(5000),
 
   // Database
   MONGO_URI: Joi.string().required(),
@@ -67,3 +67,6 @@ const env = {
     url: value.CLIENT_URL,
   },
 };
+
+
+module.exports = { env };
