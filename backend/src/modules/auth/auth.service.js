@@ -1,7 +1,7 @@
 // authentication service
 
 // imports
-// const Users = require("../users/users.model.js")
+const Users = require("../users/users.model.js")
 const { hashPassword, comparePassword } = require("../../utils/hash");
 const {
   generateAccessToken,

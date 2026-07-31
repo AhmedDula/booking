@@ -70,10 +70,20 @@ app.get("/api/health", (req, res) => {
 });
 
 // ── Routes ────────────────────────────────────────────
+
 const authRoutes = require( "./modules/auth/auth.routes.js");
 app.use("/api/v1/auth", authRoutes);
 
 app.use("/bookings", bookingRoutes);
+
+
+
+const roomRoutes = require("./modules/rooms/room.routes");
+app.use("/api/rooms", roomRoutes);
+
+const disputesRoutes = require("./modules/disputes/disputes.routes");
+app.use("/api/disputes", disputesRoutes)
+
 
 // ── 404 Handler ───────────────────────────────────────
 app.use((req, res, next) => {
@@ -85,4 +95,5 @@ app.use((req, res, next) => {
 
 
 module.exports = app;
+
 
