@@ -1,17 +1,17 @@
 const User = require("./user.model");
 const ApiError = require("../../utils/ApiError");
 
-const createUser = async (userData) => {
-  const existingUser = await User.findOne({
-    email: userData.email,
-  });
+// const createUser = async (userData) => {
+//   const existingUser = await User.findOne({
+//     email: userData.email,
+//   });
 
-  if (existingUser) {
-    throw ApiError.badRequest("Email already exists");
-  }
+//   if (existingUser) {
+//     throw ApiError.badRequest("Email already exists");
+//   }
 
-  return await User.create(userData);
-};
+//   return await User.create(userData);
+// };
 
 const getAllUsers = async () => {
   return await User.find();
@@ -51,7 +51,7 @@ const deleteUser = async (id) => {
 };
 
 module.exports = {
-  createUser,
+
   getAllUsers,
   getUserById,
   updateUser,

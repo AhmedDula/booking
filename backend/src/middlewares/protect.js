@@ -1,36 +1,18 @@
-const asyncHandler = require('./asyncHandler');
-const ApiError = require('../utils/ApiError');
-const { verifyToken } = require('../utils/token');
-const User = require('../modules/users/user.model');
+const asyncHandler = require("./asyncHandler.js");
+const ApiError = require("../utils/ApiError.js");
+const { verifyAccessToken } = require("../utils/token.js");
 
-// Verifies a JWT from either the Authorization header or the httpOnly cookie,
-// then attaches the authenticated user to req.user for downstream handlers.
+// Protect routes — verify JWT access token from cookie
 const protect = asyncHandler(async (req, res, next) => {
-  let token;
-
-  if (req.headers.authorization?.startsWith('Bearer')) {
-    token = req.headers.authorization.split(' ')[1];
-  } else if (req.cookies?.token) {
-    token = req.cookies.token;
-  }
+  const token = req.cookies?.accessToken;
 
   if (!token) {
-    throw ApiError.unauthorized('Not authorized, no token provided');
+    return next(ApiError.unauthorized("Not authenticated"));
   }
 
-  let decoded;
-  try {
-    decoded = verifyToken(token);
-  } catch (err) {
-    throw ApiError.unauthorized('Not authorized, token invalid or expired');
-  }
+  const decoded = verifyAccessToken(token);
+  req.user = decoded;
 
-  const user = await User.findById(decoded.id).select('-password');
-  if (!user) {
-    throw ApiError.unauthorized('Not authorized, user no longer exists');
-  }
-
-  req.user = user;
   next();
 });
 

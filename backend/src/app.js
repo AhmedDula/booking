@@ -75,10 +75,10 @@ app.use("/api/v1/auth", require( "./modules/auth/auth.routes.js"));
 
 app.use("/api/v1/bookings", require("./modules/bookings/booking.routes"));
 
+app.use("/api/v1/users", require("./modules/users/user.routes"))
 
 
-const roomRoutes = require("./modules/rooms/room.routes");
-app.use("/api/v1/rooms", roomRoutes);
+app.use("/api/v1/rooms",  require("./modules/rooms/room.routes"));
 
 
 const disputesRoutes = require("./modules/disputes/dispute.routes.js");

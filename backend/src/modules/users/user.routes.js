@@ -4,12 +4,14 @@ const {
   validateCreateUser,
   validateUpdateUser,
 } = require("./user.validate");
-
+const protect = require("../../middlewares/protect")
+const allowTo = require("../../middlewares/restrictTo")
 const router = express.Router();
 
-router.post("/", validateCreateUser, userController.createUser);
+// router.post("/", validateCreateUser, userController.createUser);
+router.use(protect)
 
-router.get("/", userController.getAllUsers);
+router.get("/",allowTo("admin") ,userController.getAllUsers);
 
 router.get("/:id", userController.getUserById);
 
