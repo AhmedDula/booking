@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.*
+<<<<<<< HEAD:backend/.gitignore
+config.env
+=======
+backend/src/config.env
+>>>>>>> origin/feature/reviews:.gitignore
+
+# Build
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
