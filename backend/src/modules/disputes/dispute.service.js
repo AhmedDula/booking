@@ -1,7 +1,7 @@
 const Dispute = require("./dispute.model");
 const ApiError = require("../../utils/ApiError");
 const ApiFeatures = require("../../utils/ApiFeatures");
-const disputeStatus = require("../../constants/disputeStatus");
+const disputeStatus = require("../../constants/disputes");
 
 const createDispute = async (data) => {
   const existing = await Dispute.findOne({ booking: data.booking });
