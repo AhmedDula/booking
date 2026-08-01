@@ -8,7 +8,7 @@ exports.getAll = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    results: reviews.length,
+    
     reviewCount,
     limit,
     pages: Math.ceil(reviewCount / limit),
@@ -17,7 +17,7 @@ exports.getAll = catchAsync(async (req, res, next) => {
 });
 
 exports.getById = catchAsync(async (req, res, next) => {
-  const review = await reviewService.getById(Number(req.params.id));
+  const review = await reviewService.getById(req.params.id);
 
   if (!review) {
     return next(
@@ -32,30 +32,23 @@ exports.getById = catchAsync(async (req, res, next) => {
 });
 
 exports.create = catchAsync(async (req, res, next) => {
-  const { error, value } = addReview.validate(req.body, {
-    abortEarly: false,
-  });
+ const reviewData = req.body;
 
-  if (error) {
-    return next(
-      ApiError.badRequest(
-        error.details.map((err) => err.message).join(", ")
-      )
-    );
-  }
-
-  const review = await reviewService.create(value);
-
-  res.status(201).json({
-    success: true,
-    message: "review created successfully",
-    data: review,
-  });
+ 
+ const review = await reviewService.create(req.user.id, reviewData);
+ res.status(201).json({
+   success: true,
+   message: "review created successfully",
+   data: review,
+ });
 });
+
+
+
 
 exports.Update = catchAsync(async (req, res, next) => {
   const review = await reviewService.Update(
-    Number(req.params.id),
+    req.params.id,
     req.body
   );
 
@@ -73,8 +66,9 @@ exports.Update = catchAsync(async (req, res, next) => {
 });
 
 exports.softDelete = catchAsync(async (req, res, next) => {
+  console.log("Soft delete request received for review ID:", req.params.id);
   const review = await reviewService.softDelete(
-    Number(req.params.id)
+    req.params.id
   );
 
   if (!review) {
@@ -91,7 +85,7 @@ exports.softDelete = catchAsync(async (req, res, next) => {
 
 exports.Delete = catchAsync(async (req, res, next) => {
   const review = await reviewService.Delete(
-    Number(req.params.id)
+    req.params.id
   );
 
   if (!review) {
@@ -103,6 +97,5 @@ exports.Delete = catchAsync(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "review deleted successfully",
-    data: review,
   });
 });

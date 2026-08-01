@@ -9,7 +9,7 @@ exports.getAll = catchAsync(async (req, res) => {
 
   res.status(200).json({
     success: true,
-    results: properties.length,
+    
     propertyCount,
     limit,
     pages: Math.ceil(propertyCount / limit),
@@ -33,25 +33,15 @@ exports.getById = catchAsync(async (req, res, next) => {
 });
 
 exports.create = catchAsync(async (req, res, next) => {
-  const { error, value } = addProperty.validate(req.body, {
-    abortEarly: false,
-  });
-
-  if (error) {
-    return next(
-      ApiError.badRequest(
-        error.details.map((err) => err.message).join(", ")
-      )
-    );
-  }
-
-  const property = await propertyService.create(value);
-
-  res.status(201).json({
-    success: true,
-    message: "Property created successfully",
-    data: property,
-  });
+   const propertyData = req.body;
+  
+   
+   const property = await propertyService.create(req.user.id, propertyData);
+   res.status(201).json({
+     success: true,
+     message: "property created successfully",
+     data: property,
+   });
 });
 
 exports.update = catchAsync(async (req, res, next) => {
@@ -100,6 +90,6 @@ exports.remove = catchAsync(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "Property deleted successfully",
-    data: property,
+    
   });
 });

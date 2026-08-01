@@ -37,14 +37,17 @@ router
   );
 
 router
-  .route("/:id")
+  .route("/update/:id")
   .get(getById)
   .patch(
     protect,
     allowTo("admin"),
     validate(updateProperty),
     update
-  )
+  );
+
+router
+  .route("/remove/:id")
   .delete(
     protect,
     allowTo("admin"),

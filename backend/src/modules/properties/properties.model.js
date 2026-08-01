@@ -2,12 +2,9 @@ const mongoose = require("mongoose");
 
 const propertySchema = new mongoose.Schema(
   {
-    id: {
-      type: Number,
-      unique: true,
-    },
+   
 
-    title: {
+    name: {
       type: String,
       required: true,
       trim: true,
@@ -56,10 +53,6 @@ const propertySchema = new mongoose.Schema(
       default: [],
     },
 
-    available: {
-      type: Boolean,
-      default: true,
-    },
 
     rating: {
       type: Number,

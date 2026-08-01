@@ -10,7 +10,7 @@ const {
   cancelBooking,
 } = require("./booking.controller");
 
-const validate = require("../../middlewares/validateYup");
+const validate = require("../../middlewares/validate");
 const {
   createBookingSchema,
   updateBookingStatusSchema,

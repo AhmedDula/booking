@@ -17,11 +17,11 @@ const getDashboardStats = async () => {
     revenueAgg,
   ] = await Promise.all([
     User.countDocuments(),
-    Property.countDocuments({ isActive: true }),
+    Property.countDocuments({ isDeleted: false }),
     Booking.countDocuments(),
     Booking.countDocuments({ status: BOOKING_STATUS.PENDING }),
     Booking.countDocuments({ status: BOOKING_STATUS.CONFIRMED }),
-    Dispute.countDocuments({ status: DISPUTE_STATUS.OPEN }),
+    Dispute.countDocuments({ status: DISPUTE_STATUS.RESOLVED }),
     Booking.aggregate([
       { $match: { status: { $in: [BOOKING_STATUS.CONFIRMED, BOOKING_STATUS.COMPLETED] } } },
       { $group: { _id: null, total: { $sum: '$totalPrice' } } },

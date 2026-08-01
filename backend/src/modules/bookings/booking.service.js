@@ -8,15 +8,21 @@ const BOOKING_STATUS = require("../../constants/bookingStatus");
 const ApiError = require("../../utils/ApiError");
 
 exports.createBooking = async (bookingData) => {
-  
+ console.log("Booking data received:", bookingData); // Log the received booking data
   const { user, room, checkIn, checkOut, guests, specialRequests } =
-    bookingData.value;
-    
-    
+    bookingData;
+   
  
   const existingRoom = await Rooms.findOne({ _id: room , available: true });
   if (!existingRoom) {
     throw new Error("Room not found");
+  }
+
+  if (guests > existingRoom.maxGuests) {
+    throw new ApiError(
+      400,
+      `Number of guests exceeds room capacity of ${existingRoom.maxGuests}`
+    );
   }
 
 

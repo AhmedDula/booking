@@ -9,11 +9,24 @@ const addReview = Joi.object({
   comment: Joi.string()
     .required(),
 
-  user: Joi.string()
-    .pattern(/^[0-9a-fA-F]{24}$/),
 
   property: Joi.string()
-    .pattern(/^[0-9a-fA-F]{24}$/),
+    .pattern(/^[0-9a-fA-F]{24}$/).required(),
 });
 
-module.exports = addReview;
+const updateReview = Joi.object({
+  rating: Joi.number()
+    .min(1)
+    .max(5).required(),
+
+  comment: Joi.string()
+    .optional().required()
+  
+
+ 
+});
+
+module.exports = {
+  addReview,
+  updateReview
+};

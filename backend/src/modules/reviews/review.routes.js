@@ -13,7 +13,7 @@ const validate = require("../../middlewares/validate");
 const protect = require("../../middlewares/protect");
 const allowTo = require("../../middlewares/restrictTo");
 
-const addReview = require("./review.validation");
+const {addReview,updateReview} = require("./review.validation");
 
 router
   .route("/")
@@ -36,6 +36,7 @@ router
   .get(getById)
   .patch(
     protect,
+    validate(updateReview),
     Update
   )
   .delete(

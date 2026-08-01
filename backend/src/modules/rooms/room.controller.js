@@ -61,7 +61,7 @@ const deleteRoom = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     message: "Room deleted successfully",
-    data: null,
+   
   });
 });
 

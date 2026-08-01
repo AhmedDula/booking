@@ -18,8 +18,8 @@ router
 
 router
   .route("/:id")
-  .get(validate(roomIdValidation, "params"), controller.getRoom)
+  .get( controller.getRoom)
   .put(protect, allowTo("admin"), validate(updateRoomValidation), controller.updateRoom)
-  .delete(protect, allowTo("admin"), validate(roomIdValidation, "params"), controller.deleteRoom);
+  .delete(protect, allowTo("admin"), controller.deleteRoom);
 
 module.exports = router;

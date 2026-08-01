@@ -1,14 +1,15 @@
 const review = require("./review.model");
 const ApiFeatures = require("../../utils/ApiFeature");
 
-const create = async (data) => {
-  const lastReview = await review
-    .findOne({ id: { $exists: true } })
-    .sort({ id: -1 });
-
-  data.id = lastReview ? lastReview.id + 1 : 1;
-
-  return await review.create(data);
+const create = async (userId, data) => {
+const existingReview = await review.findOne({
+    user: userId,
+    property: data.property,
+  });
+  if (existingReview) {
+    throw new Error("You have already reviewed this property");
+  }
+  return await review.create({...data,user: userId});
 };
 
 const getAll = async (query) => {
@@ -36,7 +37,7 @@ const getAll = async (query) => {
 
 const getById = async (id) => {
   return await review.findOne({
-    id: Number(id),
+    _id: id,
     isDeleted: false,
   });
 };
@@ -44,7 +45,7 @@ const getById = async (id) => {
 const Update = async (id, data) => {
   return await review.findOneAndUpdate(
     {
-      id: Number(id),
+      _id: id,
       isDeleted: false,
     },
     {
@@ -61,7 +62,7 @@ const Update = async (id, data) => {
 const softDelete = async (id) => {
   return await review.findOneAndUpdate(
     {
-      id: Number(id),
+      _id: id,
       isDeleted: false,
     },
     {
@@ -73,8 +74,8 @@ const softDelete = async (id) => {
 
 const Delete = async (id) => {
   return await review.findOneAndDelete({
-    id: Number(id),
-    isDeleted: false,
+    _id: id,
+    isDeleted: true,
   });
 };
 

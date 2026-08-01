@@ -2,11 +2,7 @@ const mongoose = require("mongoose");
 
 const reviewSchema = new mongoose.Schema(
   {
-    id: {
-      type: Number,
-      unique: true,
-    },
-
+   
     rating: {
       type: Number,
       required: true,
@@ -21,12 +17,12 @@ const reviewSchema = new mongoose.Schema(
 
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",
     },
 
     property: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Property",
+      ref: "property",
     },
 
     isDeleted: {
@@ -35,8 +31,9 @@ const reviewSchema = new mongoose.Schema(
     },
   },
   {
+    versionKey: false,
     timestamps: true,
   }
 
 );
-module.exports = mongoose.model("Review", reviewSchema);
+module.exports = mongoose.model("review", reviewSchema);
