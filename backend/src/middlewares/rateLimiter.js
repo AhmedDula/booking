@@ -2,9 +2,9 @@ const rateLimit = require('express-rate-limit');
 
 // Applied broadly to /api — generous, mostly to blunt scraping/abuse
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 300,
-  standardHeaders: true,
+  windowMs: 10 * 60 * 1000, // 10 minutes
+  max: 2,
+  standardHeaders: "draft-8",
   legacyHeaders: false,
   message: { success: false, message: 'Too many requests, please try again later.' },
 });
@@ -13,7 +13,7 @@ const apiLimiter = rateLimit({
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 5,
-  standardHeaders: true,
+  standardHeaders: "draft-8",
   legacyHeaders: false,
   message: { success: false, message: 'Too many auth attempts, please try again later.' },
 });

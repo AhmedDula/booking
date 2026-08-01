@@ -21,6 +21,10 @@ const envSchema = Joi.object({
   JWT_ACCESS_EXPIRES: Joi.string().default("15m"),
   JWT_REFRESH_EXPIRES: Joi.string().default("7d"),
 
+  // Cookies
+  COOKIE_ACCESS_MAX_AGE: Joi.number().default(15 * 60 * 1000), // 15 minutes in ms
+  COOKIE_REFRESH_MAX_AGE: Joi.number().default(7 * 24 * 60 * 60 * 1000), // 7 days in ms
+
   // Security
   BCRYPT_SALT_ROUNDS: Joi.number().default(12),
   PEPPER: Joi.string().min(32).required(),
@@ -55,6 +59,10 @@ const env = {
     refreshSecret: value.JWT_REFRESH_SECRET,
     accessExpires: value.JWT_ACCESS_EXPIRES,
     refreshExpires: value.JWT_REFRESH_EXPIRES,
+  },
+  cookies: {
+    accessMaxAge: value.COOKIE_ACCESS_MAX_AGE,
+    refreshMaxAge: value.COOKIE_REFRESH_MAX_AGE,
   },
   security: {
     bcryptSaltRounds: value.BCRYPT_SALT_ROUNDS,
