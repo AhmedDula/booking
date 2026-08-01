@@ -8,8 +8,6 @@ const {
 
 const catchAsync = require("../../utils/catchAsync");
 exports.createBooking = catchAsync(async (req, res) => {
- 
-  
   const booking = await createBooking({
     user: req.user.id,
     ...req.body,
@@ -45,7 +43,7 @@ exports.cancelBooking = catchAsync(async (req, res) => {
 });
 
 exports.updateBooking = catchAsync(async (req, res) => {
-  const booking = await updateBooking(req.params.id, req.body.status);
+  const booking = await updateBooking(req.params.id, req.body.value.status);
   res.status(200).json({
     status: "success",
     data: {
