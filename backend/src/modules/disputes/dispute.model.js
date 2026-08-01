@@ -11,7 +11,7 @@ const disputeSchema = new mongoose.Schema(
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",
       required: [true, "User reference is required"],
       index: true,
     },
@@ -51,9 +51,12 @@ const disputeSchema = new mongoose.Schema(
     },
   },
   {
+    versionKey:false,
     timestamps: true,
-  }
+  },
 );
+
+
 
 
 

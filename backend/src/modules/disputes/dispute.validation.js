@@ -1,35 +1,104 @@
-const yup = require("yup");
+const Joi = require("joi");
 const disputeStatus = require("../../constants/disputes");
 
-const mongoId = /^[0-9a-fA-F]{24}$/;
+const MONGO_ID_PATTERN = /^[0-9a-fA-F]{24}$/;
 
-const createDisputeSchema = yup.object({
-  booking: yup.string().required("Booking id is required")
-    .matches(mongoId, "Booking id must be a valid Mongo id"),
+// Reusable Mongo ObjectId validator to avoid repeating pattern + messages everywhere
+const mongoIdField = (label) =>
+  Joi.string()
+    .trim()
+    .pattern(MONGO_ID_PATTERN)
+    .required()
+    .messages({
+      "string.empty": `${label} is required`,
+      "any.required": `${label} is required`,
+      "string.pattern.base": `${label} must be a valid Mongo id`,
+    });
 
-  user: yup.string().required("User id is required")
-    .matches(mongoId, "User id must be a valid Mongo id"),
-  reason: yup.string().required("Reason is required"),
-  description: yup.string().required("Description is required"),
-  evidence: yup.array().optional(),
-});
+// Evidence entries are typically URLs/file references — validate as non-empty strings/URIs
+const evidenceSchema = Joi.array()
+  .items(
+    Joi.string().trim().uri().messages({
+      "string.uri": "Each evidence item must be a valid URL",
+    })
+  )
+  .max(10)
+  .messages({
+    "array.max": "You can attach at most 10 evidence items",
+  });
 
-const updateDisputeSchema = yup.object({
-  reason: yup.string().optional(),
-  description: yup.string().optional(),
-  evidence: yup.array().optional(),
-  resolutionNotes: yup.string().optional(),
-});
+const createDisputeSchema = Joi.object({
+  booking: mongoIdField("Booking id"),
 
-const updateStatusSchema = yup.object({
-  status: yup.string()
-    .oneOf(Object.values(disputeStatus),"Status must be a valid dispute status")
-    .required("Status is required"),
-});
+  user: mongoIdField("User id"),
 
-const idParamSchema = yup.object({
-  id: yup.string().required("Id is required")
-    .matches(mongoId, "Invalid Mongo id"), 
+  reason: Joi.string()
+    .trim()
+    .min(3)
+    .max(150)
+    .required()
+    .messages({
+      "string.empty": "Reason is required",
+      "any.required": "Reason is required",
+      "string.min": "Reason must be at least {#limit} characters",
+      "string.max": "Reason must not exceed {#limit} characters",
+    }),
+
+  description: Joi.string()
+    .trim()
+    .min(10)
+    .max(2000)
+    .required()
+    .messages({
+      "string.empty": "Description is required",
+      "any.required": "Description is required",
+      "string.min": "Description must be at least {#limit} characters",
+      "string.max": "Description must not exceed {#limit} characters",
+    }),
+
+  evidence: evidenceSchema.optional(),
+}).options({ stripUnknown: true });
+
+const updateDisputeSchema = Joi.object({
+  reason: Joi.string().trim().min(3).max(150).optional().messages({
+    "string.min": "Reason must be at least {#limit} characters",
+    "string.max": "Reason must not exceed {#limit} characters",
+  }),
+
+  description: Joi.string().trim().min(10).max(2000).optional().messages({
+    "string.min": "Description must be at least {#limit} characters",
+    "string.max": "Description must not exceed {#limit} characters",
+  }),
+
+  evidence: evidenceSchema.optional(),
+
+  resolutionNotes: Joi.string().trim().max(2000).optional().messages({
+    "string.max": "Resolution notes must not exceed {#limit} characters",
+  }),
+})
+  .min(1) // prevent empty PATCH/PUT requests
+  .messages({
+    "object.min": "At least one field must be provided to update",
+  })
+  .options({ stripUnknown: true });
+
+const updateStatusSchema = Joi.object({
+  status: Joi.string()
+    .valid(...Object.values(disputeStatus))
+    .required()
+    .messages({
+      "any.only": `Status must be one of: ${Object.values(disputeStatus).join(", ")}`,
+      "string.empty": "Status is required",
+      "any.required": "Status is required",
+    }),
+
+  resolutionNotes: Joi.string().trim().max(2000).optional().messages({
+    "string.max": "Resolution notes must not exceed {#limit} characters",
+  }),
+}).options({ stripUnknown: true });
+
+const idParamSchema = Joi.object({
+  id: mongoIdField("Id"),
 });
 
 module.exports = {
@@ -37,4 +106,5 @@ module.exports = {
   updateDisputeSchema,
   updateStatusSchema,
   idParamSchema,
+  MONGO_ID_PATTERN,
 };

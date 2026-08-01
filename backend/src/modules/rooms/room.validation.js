@@ -10,7 +10,7 @@ const createRoomValidation = yup.object({
   maxGuests: yup.number().required("Maximum guests is required").min(1, "Maximum guests must be at least 1"),
   beds: yup.number().required("Beds are required").min(1, "Beds must be at least 1"),
   bathrooms: yup.number().required("Bathrooms are required").min(1, "Bathrooms must be at least 1"),
-  size: yup.number().required("Room size is required").positive("Room size must be positive"),
+  roomSize: yup.number().required("Room size is required").positive("Room size must be positive"),
   images: yup.array().of(yup.string()).optional(),
   amenities: yup.array().of(yup.string()).optional(),
   available: yup.boolean().optional(),

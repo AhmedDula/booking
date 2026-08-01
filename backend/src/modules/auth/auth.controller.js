@@ -1,11 +1,16 @@
-// imports 
+// imports
 const asyncHandler = require("../../middlewares/asyncHandler");
 const authService = require("./auth.service");
-const {accessTokenCookieOptions, refreshTokenCookieOptions} = require("../../config/cookie");
+const {
+  accessTokenCookieOptions,
+  refreshTokenCookieOptions,
+} = require("../../config/cookie");
 // POST /api/v1/auth/register
-exports.register = asyncHandler(async (req, res) => { 
-    const {user,accessToken,refreshToken} = await authService.register(req.body);
- res
+exports.register = asyncHandler(async (req, res) => {
+  const { user, accessToken, refreshToken } = await authService.register(
+    req.body,
+  );
+  res
     .cookie("accessToken", accessToken, accessTokenCookieOptions)
     .cookie("refreshToken", refreshToken, refreshTokenCookieOptions)
     .status(201)
@@ -14,8 +19,7 @@ exports.register = asyncHandler(async (req, res) => {
       message: "Registered successfully",
       data: { user },
     });
-
-})
+});
 
 // POST /api/v1/auth/login
 exports.login = asyncHandler(async (req, res) => {
@@ -33,7 +37,9 @@ exports.login = asyncHandler(async (req, res) => {
 
 // POST /api/v1/auth/logout
 exports.logout = asyncHandler(async (req, res) => {
+
   const token=req.cookies?.refreshToken;
+
   await authService.logout(token);
   res
     .clearCookie("accessToken", accessTokenCookieOptions)
@@ -43,7 +49,7 @@ exports.logout = asyncHandler(async (req, res) => {
       success: true,
       message: "Logged out successfully",
     });
-})
+});
 
 // POST /api/auth/refresh
 exports.refresh = asyncHandler(async (req, res) => {

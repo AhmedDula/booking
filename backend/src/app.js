@@ -9,14 +9,13 @@ const hpp = require("hpp");
 const compression = require("compression");
 
 const { errorMiddleware } = require("./middlewares/error.middleware");
-
 const ApiError = require("./utils/ApiError");
-
 
 const app = express();
 
 // ── Security ──────────────────────────────────────────
 app.use(helmet());
+
 app.use((req, res, next) => {
   const sanitize = (obj) => {
     if (obj && typeof obj === "object") {
@@ -29,10 +28,12 @@ app.use((req, res, next) => {
       });
     }
   };
+
   sanitize(req.body);
   sanitize(req.params);
   next();
 });
+
 app.use(hpp());
 
 // ── Rate Limiting ─────────────────────────────────────
@@ -61,28 +62,22 @@ if (env.app.nodeEnv === "development") {
 
 // ── Health Check ──────────────────────────────────────
 app.get("/api/v1/health", (req, res) => {
-  res.status(200).json({ success: true, message: "Server is running" });
+  res.status(200).json({
+    success: true,
+    message: "Server is running",
+    timestamp: new Date().toISOString(),
+  });
 });
 
 // ── Routes ────────────────────────────────────────────
-
 app.use("/api/v1/auth", require("./modules/auth/auth.routes"));
-
 app.use("/api/v1/bookings", require("./modules/bookings/booking.routes"));
-
-
-
-const roomRoutes = require("./modules/rooms/room.routes");
-app.use("/api/v1/rooms", roomRoutes);
-
-const disputesRoutes = require("./modules/disputes/dispute.routes")
-app.use("/api/v1/disputes", disputesRoutes);
-
-const propertiesRoutes = require("./modules/properties/properties.routes");
-app.use("/api/v1/properties", propertiesRoutes);
-
-const reviewsRoutes = require("./modules/reviews/review.routes");
-app.use("/api/v1/reviews", reviewsRoutes);
+app.use("/api/v1/properties", require("./modules/properties/properties.routes"));
+app.use("/api/v1/users", require("./modules/users/user.routes"));
+app.use("/api/v1/rooms", require("./modules/rooms/room.routes"));
+app.use("/api/v1/disputes", require("./modules/disputes/dispute.routes"));
+app.use("/api/v1/admin", require("./modules/admin/admin.routes"));
+app.use("/api/v1/reviews", require("./modules/reviews/review.routes"));
 
 // ── 404 Handler ───────────────────────────────────────
 app.use((req, res, next) => {
@@ -92,7 +87,4 @@ app.use((req, res, next) => {
 // ── Global Error Handler ──────────────────────────────
 app.use(errorMiddleware);
 
-
 module.exports = app;
-
-

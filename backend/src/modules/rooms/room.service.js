@@ -14,7 +14,7 @@ const createRoom = async (propertyId, data) => {
 
 const getRooms = async (queryString) => {
   const features = new ApiFeatures(
-    Room.find({ isActive: true }),
+    Room.find({ available: true }),
     queryString).filter().sort().limitFields().paginate();
 
   const rooms = await features.query;

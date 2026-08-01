@@ -4,16 +4,14 @@ const BOOKING_STATUS = require("../../constants/bookingStatus");
 const bookingShcema = new mongoose.Schema(
   {
     user: {
-      //   type: mongoose.Schema.Types.ObjectId,
-      //   ref: "user",
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
       required: true,
     },
 
-    property: {
-      //   type: mongoose.Schema.Types.ObjectId,
-      //   ref: "property",
-      type: String,
+    room: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Room",
       required: true,
     },
     checkIn: {
@@ -46,6 +44,7 @@ const bookingShcema = new mongoose.Schema(
     },
   },
   {
+    versionKey: false,
     timestamps: true,
   },
 );

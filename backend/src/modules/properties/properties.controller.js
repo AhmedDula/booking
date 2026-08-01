@@ -3,8 +3,7 @@ const catchAsync = require("../../utils/catchAsync");
 const propertyService = require("./properties.service");
 const { addProperty } = require("./properties.validation");
 
-
-exports.getAll = catchAsync(async (req, res, next) => {
+exports.getAll = catchAsync(async (req, res) => {
   const { properties, propertyCount, limit } =
     await propertyService.getAll(req.query);
 
@@ -18,15 +17,12 @@ exports.getAll = catchAsync(async (req, res, next) => {
   });
 });
 
-
 exports.getById = catchAsync(async (req, res, next) => {
   const property = await propertyService.getById(req.params.id);
 
   if (!property) {
     return next(
-      ApiError.notFound(
-        `Property not found with this id ${req.params.id}`
-      )
+      ApiError.notFound(`Property not found with id ${req.params.id}`)
     );
   }
 
@@ -35,7 +31,6 @@ exports.getById = catchAsync(async (req, res, next) => {
     data: property,
   });
 });
-
 
 exports.create = catchAsync(async (req, res, next) => {
   const { error, value } = addProperty.validate(req.body, {
@@ -50,85 +45,61 @@ exports.create = catchAsync(async (req, res, next) => {
     );
   }
 
-
   const property = await propertyService.create(value);
-
 
   res.status(201).json({
     success: true,
-    message: "property created successfully",
+    message: "Property created successfully",
     data: property,
   });
 });
 
-
-exports.Update = catchAsync(async (req, res, next) => {
-
-  const property = await propertyService.Update(
+exports.update = catchAsync(async (req, res, next) => {
+  const property = await propertyService.update(
     req.params.id,
     req.body
   );
 
-
   if (!property) {
     return next(
-      ApiError.notFound(
-        `Property not found with this id ${req.params.id}`
-      )
+      ApiError.notFound(`Property not found with id ${req.params.id}`)
     );
   }
 
-
   res.status(200).json({
     success: true,
-    message: "property updated successfully",
+    message: "Property updated successfully",
     data: property,
   });
 });
 
-
 exports.softDelete = catchAsync(async (req, res, next) => {
-
-  const property = await propertyService.softDelete(
-    req.params.id
-  );
-
+  const property = await propertyService.softDelete(req.params.id);
 
   if (!property) {
     return next(
-      ApiError.notFound(
-        `Property not found with this id ${req.params.id}`
-      )
+      ApiError.notFound(`Property not found with id ${req.params.id}`)
     );
   }
 
-
   res.status(200).json({
     success: true,
-    message: "property soft deleted successfully",
+    message: "Property soft deleted successfully",
   });
 });
 
-
-exports.Delete = catchAsync(async (req, res, next) => {
-
-  const property = await propertyService.Delete(
-    req.params.id
-  );
-
+exports.remove = catchAsync(async (req, res, next) => {
+  const property = await propertyService.remove(req.params.id);
 
   if (!property) {
     return next(
-      ApiError.notFound(
-        `Property not found with this id ${req.params.id}`
-      )
+      ApiError.notFound(`Property not found with id ${req.params.id}`)
     );
   }
 
-
   res.status(200).json({
     success: true,
-    message: "property deleted successfully",
+    message: "Property deleted successfully",
     data: property,
   });
 });

@@ -1,73 +1,58 @@
 const Joi = require("joi");
 
 const addProperty = Joi.object({
-  title: Joi.string()
-    .required()
-    .messages({
-      "any.required": "title is required",
-      "string.empty": "title is required",
-    }),
+  title: Joi.string().required().messages({
+    "any.required": "Title is required",
+    "string.empty": "Title is required",
+  }),
 
-  description: Joi.string()
-    .required()
-    .messages({
-      "any.required": "description is required",
-      "string.empty": "description is required",
-    }),
+  description: Joi.string().required().messages({
+    "any.required": "Description is required",
+    "string.empty": "Description is required",
+  }),
 
   propertyType: Joi.string()
     .valid("Apartment", "House", "Villa", "Cabin", "Studio")
     .required()
     .messages({
-      "any.required": "propertyType is required",
-      "any.only": "invalid property type",
+      "any.required": "Property type is required",
+      "any.only": "Invalid property type",
+    }),
+
+  pricePerNight: Joi.number()
+    .min(0)
+    .required()
+    .messages({
+      "any.required": "Price per night is required",
+      "number.base": "Price per night must be a number",
+      "number.min": "Price cannot be negative",
     }),
 
   location: Joi.object({
-    country: Joi.string()
-      .required()
-      .messages({
-        "any.required": "Country is required",
-        "string.empty": "Country is required",
-      }),
+    country: Joi.string().required(),
 
-    city: Joi.string()
-      .required()
-      .messages({
-        "any.required": "City is required",
-        "string.empty": "City is required",
-      }),
+    city: Joi.string().required(),
 
-    address: Joi.string()
-      .required()
-      .messages({
-        "any.required": "Address is required",
-        "string.empty": "Address is required",
-      }),
-  })
-    .required()
-    .messages({
-      "any.required": "location is required",
-    }),
+    address: Joi.string().required(),
+  }).required(),
 
-  amenities: Joi.array().items(Joi.string()),
+  amenities: Joi.array().items(Joi.string()).default([]),
 
-  images: Joi.array().items(Joi.string()),
+  images: Joi.array().items(Joi.string()).default([]),
 
-  available: Joi.boolean(),
+  available: Joi.boolean().default(true),
 });
-
 
 const updateProperty = addProperty.fork(
   [
     "title",
     "description",
     "propertyType",
+    "pricePerNight",
     "location",
   ],
   (schema) => schema.optional()
 );
-
 
 module.exports = {
   addProperty,

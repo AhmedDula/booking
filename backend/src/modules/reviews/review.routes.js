@@ -10,25 +10,38 @@ const {
 } = require("./review.controller");
 
 const validate = require("../../middlewares/validate");
-const addReview = require("./review.validation");
+const protect = require("../../middlewares/protect");
+const allowTo = require("../../middlewares/restrictTo");
 
+const addReview = require("./review.validation");
 
 router
   .route("/")
-  .post(validate(addReview), create)
+  .post(
+    protect,
+    validate(addReview),
+    create
+  )
   .get(getAll);
-
 
 router
   .route("/soft-delete/:id")
-  .patch(softDelete);
-
+  .patch(
+    protect,
+    softDelete
+  );
 
 router
   .route("/:id")
   .get(getById)
-  .patch(Update)
-  .delete(Delete);
-
+  .patch(
+    protect,
+    Update
+  )
+  .delete(
+    protect,
+    allowTo("admin"),
+    Delete
+  );
 
 module.exports = router;

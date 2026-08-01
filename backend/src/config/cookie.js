@@ -2,6 +2,7 @@ const { env } = require("../config/env.js");
 
 const isProduction = env.app.nodeEnv === "production";
 
+
 exports.accessTokenCookieOptions = {
   httpOnly: true,       // Not accessible via JavaScript
   secure: isProduction, // HTTPS only in production

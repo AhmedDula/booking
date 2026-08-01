@@ -3,12 +3,15 @@ const asyncHandler = require("../../middlewares/asyncHandler");
 
 
 const createDispute = asyncHandler(async (req, res, next) => {
+ 
+  
   const dispute = await disputeService.createDispute({
     ...req.body,
     user: req.user.id,
   });
   res.status(201).json({
     success: true,
+    
     message: "Dispute created successfully",
     data: dispute,
   });

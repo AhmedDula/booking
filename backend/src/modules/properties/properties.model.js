@@ -10,17 +10,25 @@ const propertySchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
+      trim: true,
     },
 
     description: {
       type: String,
       required: true,
+      trim: true,
     },
 
     propertyType: {
       type: String,
       required: true,
       enum: ["Apartment", "House", "Villa", "Cabin", "Studio"],
+    },
+
+    pricePerNight: {
+      type: Number,
+      required: true,
+      min: 0,
     },
 
     location: {
@@ -38,9 +46,15 @@ const propertySchema = new mongoose.Schema(
       },
     },
 
-    amenities: [String],
+    amenities: {
+      type: [String],
+      default: [],
+    },
 
-    images: [String],
+    images: {
+      type: [String],
+      default: [],
+    },
 
     available: {
       type: Boolean,
