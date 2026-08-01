@@ -15,7 +15,7 @@ const connectDB = async () => {
   } catch (error) {
     retries++;
     console.error(
-      ` MongoDB connection failed (attempt ${retries}/${MAX_RETRIES}): ${error}`,
+      ` MongoDB connection failed (attempt ${retries}/${MAX_RETRIES}): ${error.message}`,
     );
 
     if (retries >= MAX_RETRIES) {

@@ -13,7 +13,8 @@ const sanitizeMiddleware = require("./middlewares/sanitize.middleware");
 const app = express();
 
 // ── Security ──────────────────────────────────────────
-
+// ── Proxy Trusting ──────────────────────────────────────────
+app.set("trust proxy", 1); // Trust first proxy 
 // Set security HTTP headers
 app.use(helmet());
 
