@@ -1,6 +1,6 @@
 const dotenv = require("dotenv");
 const Joi = require("joi");
-const path = require("path");
+
 
 dotenv.config();
 
