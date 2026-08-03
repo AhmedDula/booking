@@ -6,4 +6,4 @@ import { Component } from '@angular/core';
   templateUrl: './property-card.html',
   styleUrl: './property-card.css',
 })
-export class PropertyCard {}
+export class PropertyCard { }

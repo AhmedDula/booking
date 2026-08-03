@@ -1,9 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+
+@import 'tailwindcss';
+
 :root {
   /* Colors */
   --primary-color: #C8A45D;
-  --primary-hover: #C49A28 #F8F6F2;
+  --primary-hover: #caa233 ;
   --background-color: #F8F6F2;
   --charcoal: #171717;
   --black: #111111;
@@ -29,6 +33,6 @@
   --transition: 0.3s ease;
 
 }
-@import 'tailwindcss';
 
 
+@import "@fortawesome/fontawesome-free/css/all.min.css";

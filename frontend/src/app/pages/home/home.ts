@@ -1,7 +1,7 @@
 
 import { Component } from '@angular/core';
-import { Navbar } from '../../layout/navbar/navbar';
-import { Footer } from '../../layout/footer/footer';
+import { Navbar } from '../../shared/navbar/navbar';
+import { Footer } from '../../shared/footer/footer';
 import { Hero } from '../../features/hero/hero';
 import { FeaturedProperties } from '../../features/featured-properties/featured-properties';
 import { WhyAurelio } from '../../features/why-aurelio/why-aurelio';
