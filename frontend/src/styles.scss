@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  // Design tokens — extend as brand colors/spacing/typography are finalized
+  --color-primary: #0f172a;
+  --color-accent: #c9a961;
+  --color-bg: #ffffff;
+  --color-text: #0f172a;
+  --font-family-base: 'Inter', system-ui, sans-serif;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: var(--font-family-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
