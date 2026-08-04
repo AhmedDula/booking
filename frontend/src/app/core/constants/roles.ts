@@ -1,3 +1,5 @@
 export const ROLES = {
-  // TODO: define ROLES
+  ADMIN:<string> 'admin',
+  USER: <string> 'guest'
+  
 } as const;
