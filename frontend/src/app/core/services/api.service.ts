@@ -7,7 +7,7 @@ import { QueryParams } from '../models/query-params.model';
 @Service()
 export class ApiService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = environment.apiUrlDev;
+  private readonly baseUrl = environment.apiUrl;
 
   private buildParams(query?: QueryParams): HttpParams {
     let params = new HttpParams();

@@ -24,7 +24,8 @@ app.use(helmet());
 app.use(hpp());
 
 // ── Rate Limiting ─────────────────────────────────────
-// app.use(apiLimiter);
+app.use(apiLimiter);
+
 
 // ── CORS ──────────────────────────────────────────────
 app.use(
