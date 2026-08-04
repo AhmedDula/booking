@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-property-card',
+  standalone: true,
   imports: [],
-  templateUrl: './property-card.html',
-  styleUrl: './property-card.css',
+  templateUrl: './property-card.html'
 })
-export class PropertyCard { }
+export class PropertyCard {
+ // @Input({ required: true }) property: any;
+}

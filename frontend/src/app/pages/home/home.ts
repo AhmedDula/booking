@@ -4,6 +4,7 @@ import { Navbar } from '../../shared/navbar/navbar';
 import { Footer } from '../../shared/footer/footer';
 import { Hero } from '../../features/hero/hero';
 import { FeaturedProperties } from '../../features/featured-properties/featured-properties';
+import{ PropertyCard } from'../../shared/components/property-card/property-card';
 import { WhyAurelio } from '../../features/why-aurelio/why-aurelio';
 import { Testimonials } from '../../features/testimonials/testimonials';
 import { Cta } from '../../features/cta/cta';
@@ -23,8 +24,9 @@ import { Cta } from '../../features/cta/cta';
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
-export class HomeComponent {}
+export class HomeComponent {
 
 
 
+}
 
