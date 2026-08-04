@@ -10,11 +10,13 @@ const compression = require("compression");
 const { errorMiddleware } = require("./middlewares/error.middleware");
 const ApiError = require("./utils/ApiError");
 const sanitizeMiddleware = require("./middlewares/sanitize.middleware");
+const protect = require("./middlewares/protect");
+const restrictTo = require("./middlewares/restrictTo");
 const app = express();
 
 // ── Security ──────────────────────────────────────────
 // ── Proxy Trusting ──────────────────────────────────────────
-app.set("trust proxy", 1); // Trust first proxy 
+app.set("trust proxy", 1); // Trust first proxy
 // Set security HTTP headers
 app.use(helmet());
 
@@ -23,6 +25,7 @@ app.use(hpp());
 
 // ── Rate Limiting ─────────────────────────────────────
 app.use(apiLimiter);
+
 
 // ── CORS ──────────────────────────────────────────────
 app.use(
@@ -48,7 +51,7 @@ if (env.app.nodeEnv === "development") {
 }
 
 // ── Health Check ──────────────────────────────────────
-app.get("/api/v1/health", (req, res) => {
+app.get("/api/v1/health",protect,restrictTo('admin') ,(req, res) => {
   res.status(200).json({
     success: true,
     message: "Server is running",

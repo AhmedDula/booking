@@ -5,9 +5,11 @@ const validate = require("../../middlewares/validate");
 const { registerSchema, loginSchema } = require("./auth.validation");
 const { authLimiter } = require("../../middlewares/rateLimiter");
 
+
+
 // Apply rate limiter to all auth routes
 router.use(authLimiter);
-
+router.get("/me", authController.getCurrentUser);
 router.post("/register", validate(registerSchema), authController.register);
 router.post("/login", validate(loginSchema), authController.login);
 router.post("/refresh", authController.refresh);

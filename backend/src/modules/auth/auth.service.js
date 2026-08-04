@@ -6,6 +6,8 @@ const { hashPassword, comparePassword } = require("../../utils/hash");
 const {
   generateAccessToken,
   generateRefreshToken,
+  verifyAccessToken,
+  verifyRefreshToken,
 } = require("../../utils/token");
 const ApiError = require("../../utils/ApiError");
 
@@ -102,15 +104,46 @@ exports.login = async (data) => {
   };
 };
 
+// authenticate user from access token
+exports.getCurrentUser = async (token) => {
+  if (!token) {
+    throw ApiError.unauthorized("No access token");
+  }
+
+  const payload = verifyAccessToken(token);
+
+  if (!payload) {
+    throw ApiError.unauthorized("Invalid access token");
+  }
+
+  // Find user by ID from the token payload
+  const user = await Users.findById(payload.id);
+
+  if (!user) {
+    throw ApiError.notFound("User not found");
+  }
+
+  return {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  };
+};
+
 // Refresh access token
 exports.refresh = async (token) => {
   if (!token) {
     throw ApiError.unauthorized("No refresh token");
   }
 
+  const refreshToken = verifyRefreshToken(token);
+  if (!refreshToken) {
+    throw ApiError.unauthorized("Invalid refresh token");
+  }
   // Find user with this refresh token
   const user = await Users.findOne({ refreshToken: token }).select(
-    "+refreshToken"
+    "+refreshToken",
   );
 
   if (!user) {
@@ -127,7 +160,6 @@ exports.refresh = async (token) => {
   return { accessToken };
 };
 
-
 // Logout user
 exports.logout = async (token) => {
   if (!token) return;
@@ -137,7 +169,6 @@ exports.logout = async (token) => {
     { refreshToken: token },
     {
       refreshToken: null,
-    }
+    },
   );
 };
-

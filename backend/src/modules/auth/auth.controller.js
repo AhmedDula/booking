@@ -51,6 +51,17 @@ exports.logout = asyncHandler(async (req, res) => {
     });
 });
 
+// GET /api/v1/auth/me
+exports.getCurrentUser = asyncHandler(async (req, res) => {
+  
+  
+  const user = await authService.getCurrentUser(req.cookies?.accessToken);
+  res.status(200).json({
+    success: true,
+    data: { user },
+  });
+});
+
 // POST /api/auth/refresh
 exports.refresh = asyncHandler(async (req, res) => {
   const token = req.cookies?.refreshToken;
