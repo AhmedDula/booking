@@ -5,7 +5,7 @@ import {
   submit,
   required,
   email,
-  minLength
+  minLength,
 } from '@angular/forms/signals';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { AuthService } from './auth.service';
@@ -21,7 +21,7 @@ interface LoginModel {
   selector: 'app-login',
   standalone: true,
   imports: [FormField, RouterLink],
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
 })
 export class LoginComponent {
   private readonly authService = inject(AuthService);
@@ -29,20 +29,26 @@ export class LoginComponent {
   private readonly route = inject(ActivatedRoute);
 
   readonly errorMessage = signal<string | null>(null);
+  readonly showPassword = signal(false);
 
   readonly loginModel = signal<LoginModel>({ email: '', password: '' });
 
   readonly loginForm = form(this.loginModel, (schema) => {
     required(schema.email, { message: 'Email is required' });
     email(schema.email, { message: 'Please enter a valid email address' });
+
     required(schema.password, { message: 'Password is required' });
     minLength(schema.password, 6, {
-      message: 'Password must be at least 6 characters'
+      message: 'Password must be at least 6 characters',
     });
   });
 
   get loading() {
     return this.loginForm().submitting;
+  }
+
+  togglePassword(): void {
+    this.showPassword.update((v) => !v);
   }
 
   async onSubmit(event: Event): Promise<void> {
