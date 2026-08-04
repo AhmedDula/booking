@@ -1,0 +1,50 @@
+<div class="flex justify-center items-center py-10">
+
+  @for(step of steps; track step.number){
+
+    <div class="flex items-center">
+
+      <div class="flex flex-col items-center">
+
+        <div
+          class="w-10 h-10 flex items-center justify-center text-sm font-semibold transition-all duration-300"
+
+          [class.bg-[#C7A04C]]="step.number <= currentStep"
+          [class.bg-[#ECE8E2]]="step.number > currentStep"
+
+          [class.text-black]="step.number <= currentStep"
+          [class.text-gray-500]="step.number > currentStep"
+        >
+
+          @if(step.number < currentStep){
+            ✓
+          }@else{
+            {{step.number}}
+          }
+
+        </div>
+
+        <span
+          class="mt-2 text-sm"
+          [class.font-semibold]="step.number === currentStep"
+          [class.text-black]="step.number === currentStep"
+          [class.text-gray-500]="step.number !== currentStep"
+        >
+          {{step.title}}
+        </span>
+
+      </div>
+
+      @if(step.number < 4){
+        <div
+          class="w-24 h-px mx-4"
+          [class.bg-[#C7A04C]]="step.number < currentStep"
+          [class.bg-gray-300]="step.number >= currentStep"
+        ></div>
+      }
+
+    </div>
+
+  }
+
+</div>

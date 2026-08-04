@@ -1,0 +1,103 @@
+<div class="p-8">
+
+  <h2 class="text-2xl font-semibold mb-6">
+    Select your dates
+  </h2>
+
+  <div class="flex gap-6">
+
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-medium">
+        Check in
+      </label>
+
+      <input
+          type="date"
+          [(ngModel)]="booking.checkIn"
+          (input)="validateCheckIn()"
+          class="border border-gray-300 rounded-lg px-4 py-3"
+        >
+
+
+        @if(submitted && errors.checkIn){
+
+          <p class="text-red-500 text-sm">
+            {{errors.checkIn}}
+          </p>
+
+        }
+    </div>
+
+
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-medium">
+        Check out
+      </label>
+
+      <input
+            type="date"
+            [(ngModel)]="booking.checkOut"
+            (input)="validateCheckOut()"
+            class="border border-gray-300 rounded-lg px-4 py-3"
+          >
+
+
+          @if(submitted && errors.checkOut){
+
+            <p class="text-red-500 text-sm">
+              {{errors.checkOut}}
+            </p>
+
+          }
+    </div>
+
+  </div>
+
+
+  <div class="mt-10">
+
+    <h2 class="text-2xl font-semibold mb-4">
+      Guests
+    </h2>
+
+
+    <div class="flex items-center justify-between w-80 border border-gray-300 rounded-xl p-4">
+
+      <span class="text-gray-700">
+         Guests
+      </span>
+
+
+      <div class="flex items-center gap-4">
+
+        <button
+           (click)="decreaseGuests()"
+          class="w-8 h-8 rounded-full border border-gray-400 hover:bg-gray-100">
+          -
+        </button>
+
+
+        <span>
+          {{ booking.guests }}
+        </span>
+
+
+        <button
+          (click)="increaseGuests()"
+            class="w-8 h-8 rounded-full border border-gray-400 hover:bg-gray-100">
+            +
+        </button>
+
+      </div>
+
+    </div>
+        @if(submitted && errors.guests){
+
+          <p class="text-red-500 text-sm mt-2">
+            {{errors.guests}}
+          </p>
+
+        }
+  </div>
+
+</div>

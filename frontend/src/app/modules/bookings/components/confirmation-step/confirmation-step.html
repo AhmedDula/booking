@@ -1,0 +1,82 @@
+<<div class="space-y-8">
+
+  <h2 class="text-3xl font-semibold">
+    Confirm Your Booking
+  </h2>
+
+  <div class="rounded-2xl border border-gray-200">
+
+    <div class="flex justify-between p-5 border-b">
+      <span class="text-gray-500">Room</span>
+      <span class="font-medium">
+        {{ booking.room.name }}
+      </span>
+    </div>
+
+    <div class="flex justify-between p-5 border-b">
+      <span class="text-gray-500">Check In</span>
+      <span>
+        {{ booking.checkIn }}
+      </span>
+    </div>
+
+    <div class="flex justify-between p-5 border-b">
+      <span class="text-gray-500">Check Out</span>
+      <span>
+        {{ booking.checkOut }}
+      </span>
+    </div>
+
+    <div class="flex justify-between p-5 border-b">
+      <span class="text-gray-500">Guests</span>
+      <span>
+        {{ booking.guests }}
+      </span>
+    </div>
+
+    <div class="flex justify-between p-5 border-b">
+      <span class="text-gray-500">Guest Name</span>
+      <span>
+        {{ booking.guestName }}
+      </span>
+    </div>
+
+    <div class="flex justify-between p-5 border-b">
+      <span class="text-gray-500">Email</span>
+      <span>
+        {{ booking.guestEmail }}
+      </span>
+    </div>
+
+    <div class="flex justify-between p-5 border-b">
+      <span class="text-gray-500">Phone</span>
+      <span>
+        {{ booking.guestPhone }}
+      </span>
+    </div>
+
+    <div class="flex justify-between p-5 border-b">
+      <span class="text-gray-500">
+        Special Requests
+      </span>
+
+      <span>
+        {{ booking.specialRequests || 'None' }}
+      </span>
+    </div>
+
+    <div class="flex justify-between p-6">
+
+      <span class="text-xl font-semibold">
+        Total
+      </span>
+
+      <span class="text-2xl font-bold">
+        ${{ booking.totalPrice }}
+      </span>
+
+    </div>
+
+  </div>
+
+</div>

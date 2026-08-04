@@ -1,0 +1,30 @@
+<div class="room-card">
+
+    <img
+    [src]="booking.room.images[0]"
+    alt="room image"
+    class="w-full h-64 object-cover "
+    >
+
+    <h2>
+        {{ booking.room.name }}
+    </h2>
+
+
+    <p>
+        {{ booking.room.description }}
+    </p>
+
+
+    <div>
+        Price:
+        ${{booking.room.price}} / night
+    </div>
+
+
+    <div>
+        Max Guests:
+        {{booking.room.maxGuests}}
+    </div>
+
+</div>

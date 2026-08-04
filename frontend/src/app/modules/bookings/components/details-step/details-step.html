@@ -1,0 +1,93 @@
+<div class="p-8">
+
+  <h2 class="text-2xl font-semibold mb-6">
+    Your Details
+  </h2>
+
+
+  <div class="flex flex-col gap-5">
+
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-medium">
+        Full Name
+      </label>
+
+      <input
+        type="text"
+        (input)="validateName()"
+        [(ngModel)]="booking.guestName"
+        placeholder="Enter your full name"
+        class="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+      >
+      @if(submitted && errors.name) {
+        <p class="text-red-500 text-sm">
+          {{errors.name}}
+          </p>
+          }
+
+    </div>
+
+
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-medium">
+        Email
+      </label>
+
+      <input
+        [(ngModel)]="booking.guestEmail"
+        (input)="validateEmail()"
+        type="email"
+        placeholder="Enter your email"
+        class="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+      >
+      @if(submitted && errors.email){
+
+        <p class="text-red-500 text-sm">
+          {{ errors.email }}
+        </p>
+
+      }
+    </div>
+
+
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-medium">
+        Phone Number
+      </label>
+
+      <input
+        [(ngModel)]="booking.guestPhone"
+        (input)="validatePhone()"
+        type="tel"
+        placeholder="Enter your phone number"
+        class="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+      >
+      @if(submitted && errors.phone){
+
+          <p class="text-red-500 text-sm">
+            {{ errors.phone }}
+          </p>
+
+        }
+    </div>
+
+
+    <div class="flex flex-col gap-2">
+
+      <label class="text-sm font-medium">
+        Special Requests (optional)
+      </label>
+
+      <textarea
+        [(ngModel)]="booking.specialRequests"
+        placeholder="Any special requests..."
+        rows="4"
+        class="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black">
+      </textarea>
+
+    </div>
+
+
+  </div>
+
+</div>

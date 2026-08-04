@@ -1,0 +1,107 @@
+<div class="min-h-screen bg-[#F7F5F1] p-10">
+
+  <app-booking-stepper
+    [currentStep]="currentStep">
+  </app-booking-stepper>
+
+
+  <div class="grid grid-cols-3 gap-10 mt-10">
+
+
+    <!-- Booking Steps Area -->
+    <div class="col-span-2">
+
+
+      <!-- محتوى الخطوة الحالية -->
+      <div class="bg-white rounded-2xl p-8 shadow">
+
+
+        @if(currentStep === 1){
+
+          <app-room-step
+            [booking]="booking">
+          </app-room-step>
+
+        }
+
+
+        @if(currentStep === 2){
+
+          <app-dates-guests-step
+            [booking]="booking">
+          </app-dates-guests-step>
+
+        }
+
+
+        @if(currentStep === 3){
+
+          <app-details-step
+            [booking]="booking">
+          </app-details-step>
+
+        }
+
+
+        @if(currentStep === 4){
+
+          <app-confirmation-step
+            [booking]="booking">
+          </app-confirmation-step>
+
+        }
+
+
+      </div>
+
+
+      <!-- Navigation Buttons -->
+      <div class="flex justify-between mt-6">
+
+
+        @if(currentStep > 1){
+
+          <button
+            (click)="previousStep()"
+            class="px-6 py-3 border rounded-lg">
+            Back
+          </button>
+
+        }
+
+
+        @if(currentStep < 4){
+
+          <button
+            (click)="nextStep()"
+              class="px-6 py-3 bg-black text-white rounded-lg disabled:opacity-50">
+              Next
+          </button>
+
+        }
+        @if(currentStep === 4){
+
+          <button
+            (click)="confirmBooking()"
+            class="px-6 py-3 bg-black text-white rounded-lg">
+            Confirm Booking
+          </button>
+
+        }
+
+      </div>
+
+
+    </div>
+
+
+    <!-- Booking Summary -->
+    <app-booking-summary
+      [booking]="booking">
+    </app-booking-summary>
+
+
+  </div>
+
+
+</div>
