@@ -10,6 +10,7 @@ exports.accessTokenCookieOptions = {
   maxAge: env.cookies.accessMaxAge,
 };
 
+
 exports.refreshTokenCookieOptions = {
   httpOnly: true,
   secure: isProduction,

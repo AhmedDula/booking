@@ -1,5 +1,5 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { Observable, tap, catchError, of } from 'rxjs';
+import { Injectable, Service, inject, signal } from '@angular/core';
+import { Observable, tap, catchError, map, of } from 'rxjs';
 import { ApiService } from '../../core/services/api.service';
 import { Auth } from './auth.model';
 
@@ -18,9 +18,7 @@ export interface AuthResponse {
   user: Auth;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class AuthService {
   private readonly api = inject(ApiService);
 
@@ -29,7 +27,7 @@ export class AuthService {
   login(payload: LoginPayload): Observable<AuthResponse> {
     return this.api
       .post<AuthResponse>('auth/login', payload)
-      
+      .pipe(tap((res) => this.currentUser.set(res.user)));
   }
 
   register(payload: RegisterPayload): Observable<AuthResponse> {
@@ -42,16 +40,29 @@ export class AuthService {
     return this.api.post<void>('auth/logout', {}).pipe(tap(() => this.clearSession()));
   }
 
- 
-  
+  checkSession(): Observable<Auth | null> {
+    return this.api.get<Auth>('auth/me').pipe(
+      tap((user) => this.currentUser.set(user)),
+      catchError(() => {
+        this.currentUser.set(null);
+        return of(null);
+      })
+    );
+    
+  }
+
+  refresh(): Observable<Auth> {
+    return this.api.post<AuthResponse>('auth/refresh', {}).pipe(
+      map((res) => res.user),
+      tap((user) => this.currentUser.set(user))
+    );
+  }
 
   clearSession(): void {
     this.currentUser.set(null);
   }
 
-  isAuthenticated(): boolean {
-    return this.currentUser() !== null;
-  }
+
 
   hasRole(role: string): boolean {
     return this.currentUser()?.role === role;

@@ -12,6 +12,9 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])),
-   
+    provideAppInitializer(() => {
+      const authService = inject(AuthService);
+      return firstValueFrom(authService.checkSession());
+    })
   ]
 };

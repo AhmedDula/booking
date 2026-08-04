@@ -1,15 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import {  Service, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { QueryParams } from '../models/query-params.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class ApiService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = environment.apiUrl;
+  private readonly baseUrl = environment.apiUrlDev;
 
   private buildParams(query?: QueryParams): HttpParams {
     let params = new HttpParams();

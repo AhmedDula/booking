@@ -1,19 +1,26 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
-import { AuthService } from '../../modules/auth/auth.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
-  const router = inject(Router);
-  const authService = inject(AuthService);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401 && !req.url.includes('/auth/')) {
-        authService.clearSession();
-        router.navigate(['/login']);
+      switch (error.status) {
+        case 400:
+          console.error(error.error?.message ?? 'Invalid request.');
+          break;
+        case 403:
+          console.error('You don\'t have permission to do that.');
+          break;
+        case 404:
+          console.error('The requested resource was not found.');
+          break;
+        case 500:
+          console.error('Something went wrong on our end. Please try again.');
+          break;
       }
+
       return throwError(() => error);
     })
   );
