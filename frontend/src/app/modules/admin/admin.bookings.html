@@ -1,0 +1,83 @@
+<!-- Topbar -->
+<header class="bg-white border-b border-stone-200 px-8 py-5 flex items-center justify-between">
+  <div>
+    <h1 class="font-serif text-2xl text-slate-900">Bookings</h1>
+    <p class="text-sm text-stone-500 mt-0.5">{{ today() }}</p>
+  </div>
+  <div class="flex items-center gap-6">
+    <div class="relative">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400">
+        <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
+      <input
+        type="text"
+        placeholder="Search..."
+        [value]="search()"
+        (input)="search.set($any($event.target).value)"
+        class="pl-9 pr-3 py-2 text-sm border border-stone-200 rounded-md w-56 focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent"
+      />
+    </div>
+    <div class="flex items-center gap-3">
+      <img [src]="adminAvatar()" alt="" class="w-9 h-9 rounded-full object-cover" />
+      <div class="text-sm">
+        <div class="font-medium text-slate-900">{{ adminName() }}</div>
+        <div class="text-stone-500">{{ adminRole() }}</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="flex-1 overflow-y-auto p-8">
+  <h2 class="font-serif text-xl text-slate-900 mb-5">All Bookings</h2>
+
+  <div class="bg-white rounded-lg border border-stone-200 overflow-hidden">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="text-left text-xs tracking-widest text-stone-400 border-b border-stone-100">
+          <th class="px-6 py-3 font-medium">Booking ID</th>
+          <th class="px-6 py-3 font-medium">Property</th>
+          <th class="px-6 py-3 font-medium">Room</th>
+          <th class="px-6 py-3 font-medium">Check-in</th>
+          <th class="px-6 py-3 font-medium">Check-out</th>
+          <th class="px-6 py-3 font-medium">Nights</th>
+          <th class="px-6 py-3 font-medium">Total</th>
+          <th class="px-6 py-3 font-medium">Status</th>
+          <th class="px-6 py-3 font-medium">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (booking of bookings(); track booking.id) {
+          <tr class="border-b border-stone-50 last:border-0">
+            <td class="px-6 py-4 text-stone-400">{{ booking.id }}</td>
+            <td class="px-6 py-4 text-slate-900 font-medium">{{ booking.property }}</td>
+            <td class="px-6 py-4 text-stone-600">{{ booking.room }}</td>
+            <td class="px-6 py-4 text-stone-600">{{ booking.checkIn }}</td>
+            <td class="px-6 py-4 text-stone-600">{{ booking.checkOut }}</td>
+            <td class="px-6 py-4 text-stone-600">{{ booking.nights }}</td>
+            <td class="px-6 py-4 text-slate-900 font-medium">${{ booking.total | number }}</td>
+            <td class="px-6 py-4">
+              <span
+                class="text-xs font-medium"
+                [class.text-emerald-700]="booking.status === 'Confirmed'"
+                [class.text-slate-500]="booking.status === 'Completed'"
+                [class.text-red-600]="booking.status === 'Cancelled'"
+              >
+                {{ booking.status }}
+              </span>
+            </td>
+            <td class="px-6 py-4">
+              <div class="flex items-center gap-3 text-stone-400">
+                <button type="button" (click)="confirmBooking(booking.id)" class="hover:text-emerald-600" aria-label="Confirm">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="8 12 11 15 16 9" /></svg>
+                </button>
+                <button type="button" (click)="cancelBooking(booking.id)" class="hover:text-red-600" aria-label="Cancel">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" /></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</main>

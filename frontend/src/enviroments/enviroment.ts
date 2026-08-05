@@ -1,4 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api' 
+  apiUrl: 'https://aurelio.up.railway.app/api/v1',
+  apiUrlDev:'http://localhost:5000/api/v1'
 };
