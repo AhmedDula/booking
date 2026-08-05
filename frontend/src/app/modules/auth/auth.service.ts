@@ -27,7 +27,7 @@ export class AuthService {
   login(payload: LoginPayload): Observable<AuthResponse> {
     return this.api
       .post<AuthResponse>('auth/login', payload)
-      .pipe(tap((res) => console.log(res.user))
+      .pipe(tap((res) => this.currentUser.set(res.user))
       );
       
   }
