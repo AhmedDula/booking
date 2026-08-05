@@ -1,3 +1,15 @@
 export interface Review {
-  id: string;
+  _id?: string;
+  rating: number;
+  comment: string;
+  user?: string;
+  property: string;
+  isDeleted?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface APIResponse<T> {
+  data: T;
+  success: boolean;
 }
