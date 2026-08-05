@@ -17,17 +17,23 @@ const createDispute = asyncHandler(async (req, res, next) => {
   });
 });
 
-const getDisputes = asyncHandler(async (req, res, next) => {
-  const result = await disputeService.getDisputes({
-    ...req.query,
-    userId: req.user?.id,
-    role: req.user?.role,
-  });
+const getDisputes = asyncHandler(async (req, res) => {
+  const result = await disputeService.getDisputes(
+    req.query,
+    req.user.id,
+    req.user.role
+  );
+
   res.status(200).json({
     success: true,
     message: "Disputes retrieved successfully",
     data: result.disputes,
-    pagination: result.pagination,
+    pagination: {
+      total: result.total,
+      page: result.page,
+      limit: result.limit,
+      pages: result.pages,
+    },
   });
 });
 

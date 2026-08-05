@@ -18,15 +18,22 @@ const createDispute = async (data) => {
 };
 
 const getDisputes = async (queryString, userId, role) => {
-  let query = {};
+  const query = {};
 
+  // Guest view only his disputes
+  // Admin views all disputes
   if (role !== "admin") {
     query.user = userId;
   }
 
   const features = new ApiFeatures(
     Dispute.find(query),
-    queryString).filter().sort().limitFields().paginate();
+    queryString
+  )
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
 
   const disputes = await features.query;
   const total = await Dispute.countDocuments(query);
