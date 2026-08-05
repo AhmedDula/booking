@@ -3,7 +3,7 @@ export interface Review {
   rating: number;
   comment: string;
   user?: string;
-  property: string;
+  property?: string;
   isDeleted?: boolean;
   createdAt?: string;
   updatedAt?: string;
