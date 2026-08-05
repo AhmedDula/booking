@@ -1,4 +1,157 @@
-<!-- AdminDashboard component template -->
-<div class="admin-dashboard">
-  AdminDashboard
+<div class="min-h-screen bg-[#F8F5EF] flex">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-[#1C1C1C] min-h-screen p-6 text-white">
+    <h1 class="text-2xl font-semibold text-[#B8944E] mb-10">Aurelio Admin</h1>
+
+    <nav class="space-y-3">
+      <button
+        (click)="changePage('overview')"
+        [class.bg-[#B8944E]]="activePage === 'overview'"
+        [class.text-white]="activePage === 'overview'"
+        class="w-full text-left px-4 py-3 rounded-xl hover:bg-[#B8944E]/20 transition"
+      >
+        Dashboard
+      </button>
+
+      <button
+        (click)="changePage('bookings')"
+        [class.bg-[#B8944E]]="activePage === 'bookings'"
+        [class.text-white]="activePage === 'bookings'"
+        class="w-full text-left px-4 py-3 rounded-xl hover:bg-[#B8944E]/20 transition"
+      >
+        Bookings
+      </button>
+
+      <button
+        (click)="changePage('properties')"
+        [class.bg-[#B8944E]]="activePage === 'properties'"
+        [class.text-white]="activePage === 'properties'"
+        class="w-full text-left px-4 py-3 rounded-xl hover:bg-[#B8944E]/20 transition"
+      >
+        Properties
+      </button>
+
+      <button
+        (click)="changePage('users')"
+        [class.bg-[#B8944E]]="activePage === 'users'"
+        [class.text-white]="activePage === 'users'"
+        class="w-full text-left px-4 py-3 rounded-xl hover:bg-[#B8944E]/20 transition"
+      >
+        Users
+      </button>
+    </nav>
+  </aside>
+
+  <!-- Content -->
+  <main class="flex-1 p-8">
+    @if (activePage === 'overview') {
+      <div class="bg-white rounded-3xl p-8">
+        <h2 class="text-2xl font-semibold">Welcome Admin</h2>
+
+        <p class="text-gray-500 mt-2">here will be stats data</p>
+      </div>
+    }
+
+    @if (activePage === 'bookings') {
+      <div class="bg-white rounded-3xl border border-[#E8E2D7] p-6">
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-2xl font-semibold text-[#1C1C1C]">Bookings</h2>
+
+          <span class="text-[#6B6B6B]"> Total: {{ bookings.length }} </span>
+        </div>
+
+        <div class="space-y-4">
+          @for (booking of bookings; track booking._id) {
+            <div
+              class="grid grid-cols-7 gap-4 items-center p-5 rounded-xl border border-[#E8E2D7] hover:bg-[#F8F5EF] transition"
+            >
+              <!-- User -->
+              <div>
+                <p class="text-xs text-[#6B6B6B] mb-1">User</p>
+
+                <p class="font-medium text-[#1C1C1C]">
+                  {{ booking.user?.name || 'Unknown' }}
+                </p>
+              </div>
+
+              <!-- Check In -->
+              <div>
+                <p class="text-xs text-[#6B6B6B] mb-1">Check In</p>
+
+                <p>
+                  {{ booking.checkIn | date: 'MMM d, y' }}
+                </p>
+              </div>
+
+              <!-- Check Out -->
+              <div>
+                <p class="text-xs text-[#6B6B6B] mb-1">Check Out</p>
+
+                <p>
+                  {{ booking.checkOut | date: 'MMM d, y' }}
+                </p>
+              </div>
+
+              <!-- Guests -->
+              <div>
+                <p class="text-xs text-[#6B6B6B] mb-1">Guests</p>
+
+                <p>
+                  {{ booking.guests }}
+                </p>
+              </div>
+
+              <!-- Price -->
+              <div>
+                <p class="text-xs text-[#6B6B6B] mb-1">Total Price</p>
+
+                <p class="font-semibold text-[#B8944E]">
+                  {{ booking.totalPrice }}
+                </p>
+              </div>
+
+              <!-- Status -->
+              <div>
+                <p class="text-xs text-[#6B6B6B] mb-1">Status</p>
+
+                @if (booking.status === 'pending') {
+                  <span class="px-3 py-1 rounded-full text-sm bg-yellow-100 text-yellow-700">
+                    Pending
+                  </span>
+                }
+
+                @if (booking.status === 'confirmed') {
+                  <span class="px-3 py-1 rounded-full text-sm bg-green-100 text-green-700">
+                    Confirmed
+                  </span>
+                }
+
+                @if (booking.status === 'cancelled') {
+                  <span class="px-3 py-1 rounded-full text-sm bg-red-100 text-red-700">
+                    Cancelled
+                  </span>
+                }
+              </div>
+
+              <!-- Action -->
+              <div>
+                <p class="text-xs text-[#6B6B6B] mb-1">Action</p>
+
+                @if (booking.status === 'pending') {
+                  <button
+                    class="px-4 py-2 rounded-lg bg-[#B8944E] text-white text-sm hover:bg-[#a58140] transition"
+                    (click)="updateStatus(booking._id, 'confirmed')"
+                  >
+                    Confirm
+                  </button>
+                } @else {
+                  <span class="text-sm text-gray-400"> No action </span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </main>
 </div>

@@ -1,4 +1,83 @@
-<!-- MyBookings component template -->
-<div class="my-bookings">
-  MyBookings
-</div>
+<section class="bg-[#F8F6F2] min-h-screen py-16">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="mb-12">
+      <p class="uppercase tracking-[3px] text-xs text-gray-500 mb-2">Your Reservations</p>
+
+      <h1 class="text-4xl font-serif text-gray-900">My Bookings</h1>
+
+      <p class="text-gray-500 mt-2">View and manage your reservations.</p>
+    </div>
+
+    @if (bookings().length > 0) {
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+        @for (booking of bookings(); track booking._id) {
+          <div
+            class="bg-white border border-gray-200 shadow-sm hover:shadow-md transition duration-300 overflow-hidden"
+          >
+            <img
+              [src]="
+                booking.room.images?.length
+                  ? booking.room.images[0]
+                  : 'https://media.architecturaldigest.com/photos/659d9cb42446c7171718ecf0/master/w_1600%2Cc_limit/atr.royalmansion-bedroom2-mr.jpg'
+              "
+              class="w-full h-64 object-cover"
+            />
+
+            <div class="p-6">
+              <div class="flex justify-between items-start mb-5">
+                <div>
+                  <p class="uppercase text-[10px] tracking-[2px] text-gray-400">Room</p>
+
+                  <h2 class="text-2xl font-serif text-gray-900 mt-1">
+                    {{ booking.room.name }}
+                  </h2>
+                </div>
+
+                <span
+                  class="border border-gray-300 px-3 py-1 text-xs uppercase tracking-wider text-gray-600"
+                >
+                  {{ booking.status }}
+                </span>
+              </div>
+
+              <div class="space-y-3 text-sm text-gray-600">
+                <div class="flex justify-between">
+                  <span>Check In</span>
+                  <span>{{ booking.checkIn | date: 'mediumDate' }}</span>
+                </div>
+
+                <div class="flex justify-between">
+                  <span>Check Out</span>
+                  <span>{{ booking.checkOut | date: 'mediumDate' }}</span>
+                </div>
+
+                <div class="flex justify-between">
+                  <span>Guests</span>
+                  <span>{{ booking.guests }}</span>
+                </div>
+
+                <div class="flex justify-between border-t pt-3 mt-4 text-black font-medium">
+                  <span>Total Price</span>
+                  <span>${{ booking.totalPrice }}</span>
+                </div>
+              </div>
+
+              <button
+                (click)="cancelBooking(booking._id)"
+                class="mt-8 w-full border border-red-600 text-red-600 py-3 uppercase tracking-widest text-sm hover:bg-red-600 hover:text-white transition duration-300"
+              >
+                Cancel Booking
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="bg-white border border-gray-200 py-24 text-center">
+        <h2 class="text-3xl font-serif mb-3">No Bookings Yet</h2>
+
+        <p class="text-gray-500">Once you reserve a room, your bookings will appear here.</p>
+      </div>
+    }
+  </div>
+</section>
