@@ -26,6 +26,17 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./modules/properties/listing-detail.component').then((m) => m.ListingDetailComponent),
   },
+
+  // Add this route
+  {
+    path: 'reviews',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./modules/reviews/review-form.component').then(
+        (m) => m.ReviewFormComponent
+      )
+  },
+
   {
     path: 'bookings/new/:propertyId',
     canActivate: [authGuard],
@@ -109,14 +120,16 @@ export const routes: Routes = [
   //           (m) => m.AdminUsersComponent
   //         )
   //     },
-
+      
   //   ]
   // },
   {
-    path: 'admin',
-    canActivate: [adminGuard],
-    loadChildren: () => import('./modules/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
-  },
+        
+
+          path: 'admin',
+          canActivate: [adminGuard],
+          loadChildren: () => import('./modules/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
+      },
   {
     path: '**',
     redirectTo: '',

@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { BookingRequest } from './booking.model';
@@ -12,7 +12,7 @@ import { AuthService } from '../auth/auth.service';
   templateUrl: './booking-confirmation.component.html',
   styleUrl: './booking-confirmation.component.scss',
 })
-export class BookingConfirmationComponent {
+export class BookingConfirmationComponent implements OnInit {
   router = inject(Router);
   roomService = inject(RoomService);
   bookingService = inject(BookingService);
@@ -25,6 +25,7 @@ export class BookingConfirmationComponent {
   loading = signal(false);
 
   ngOnInit(): void {
+    console.log('Booking:', this.booking());
     if (!this.booking()) {
       this.router.navigate(['/']);
       return;
@@ -33,6 +34,7 @@ export class BookingConfirmationComponent {
     this.roomService.getRoomById(this.booking().room).subscribe({
       next: (res) => {
         this.room.set(res.data);
+        console.log('Room:', this.room());
       },
     });
   }
@@ -55,6 +57,7 @@ export class BookingConfirmationComponent {
   });
 
   goBack() {
+    console.log(this.booking());
     this.router.navigate(['/bookings/new', this.booking().room], {
       state: {
         booking: this.booking(),
@@ -75,7 +78,7 @@ export class BookingConfirmationComponent {
 
       const res = await this.bookingService.createBooking(bookingData);
 
-      console.log(res);
+      
 
       alert('Booking created successfully.');
 
