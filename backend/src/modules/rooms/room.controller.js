@@ -38,14 +38,14 @@ const getRoom = asyncHandler(async (req, res) => {
 });
 
 //get all rooms in the same property
-// const getRoomsByProperty = asyncHandler(async (req, res) => {
-//   const rooms = await roomService.getRoomsByProperty(req.params.propertyId);
-//   res.status(200).json({
-//     success: true,
-//     message: "Rooms retrieved successfully",
-//     data: rooms,
-//   });
-// });
+const getRoomsByProperty = asyncHandler(async (req, res) => {
+  const rooms = await roomService.getRoomsByProperty(req.params.id);
+  res.status(200).json({
+    success: true,
+    message: "Rooms retrieved successfully",
+    data: rooms,
+  });
+});
 
 const updateRoom = asyncHandler(async (req, res) => {
   const room = await roomService.updateRoom(req.params.id, req.body);
@@ -68,6 +68,7 @@ const deleteRoom = asyncHandler(async (req, res) => {
 module.exports = {
   createRoom,
   getRooms,
+  getRoomsByProperty,
   getRoom,
   updateRoom,
   deleteRoom,

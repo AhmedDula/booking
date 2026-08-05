@@ -31,6 +31,12 @@ export const routes: Routes = [
       )
   },
   {
+    path: 'rooms',
+    loadComponent: () =>
+      import('./modules/rooms/components/room-card/room-card.component').then(
+        (m) => m.RoomCardComponent)
+  },
+  {
     path: 'bookings/new/:propertyId',
     canActivate: [authGuard],
     loadComponent: () =>

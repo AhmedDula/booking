@@ -1,36 +1,37 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { Service, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { ApiService } from '../../core/services/api.service';
 import { Dispute } from './dispute.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class DisputeService {
-  private readonly http = inject(HttpClient);
-  private readonly baseUrl = `${environment.apiUrl}/disputes`;
+  private api = inject(ApiService);
+  private endpoint = 'disputes';
 
-  getDisputeById(id: string){
-    return this.http.get(`${this.baseUrl}/${id}`);
+  getDisputes(): Promise<Dispute[]> {
+    return firstValueFrom(this.api.get<Dispute[]>(this.endpoint));
   }
 
-  getDisputes() {
-    return this.http.get(`${this.baseUrl}`);
+  getDisputeById(id: string): Promise<Dispute> {
+    return firstValueFrom(this.api.get<Dispute>(`${this.endpoint}/${id}`));
+  }
+  
+  createDispute(dispute: Omit<Dispute, '_id' | 'createdAt' | 'updatedAt'>): Promise<Dispute> {
+    return firstValueFrom(this.api.post<Dispute>(this.endpoint, dispute));
   }
 
-  createDispute(dispute: Dispute) {
-    return this.http.post(`${this.baseUrl}`, dispute);
+  updateDispute(id: string, dispute: Dispute): Promise<Dispute> {
+    return firstValueFrom(this.api.put<Dispute>(`${this.endpoint}/${id}`, dispute));
+  }
+  updateDisputeStatus(id: string, status: Dispute['status'], resolutionNotes?: string): Promise<Dispute> {
+    const body: Partial<Dispute> = { status };
+    if (resolutionNotes) {
+      body.resolutionNotes = resolutionNotes;
+    }
+    return firstValueFrom(this.api.put<Dispute>(`${this.endpoint}/${id}`, body));
   }
 
-  updateDispute(id: string, dispute: Dispute) {
-    return this.http.put(`${this.baseUrl}/${id}`, dispute);
-  }
-
-  deleteDispute(id: string) {
-    return this.http.delete(`${this.baseUrl}/${id}`);
-  }
-
-  updateDisputeStatus(id: string, status: Dispute["status"]) {
-    return this.http.patch(`${this.baseUrl}/${id}/status`, { status });
+  deleteDispute(id: string): Promise<void> {
+    return firstValueFrom(this.api.delete<void>(`${this.endpoint}/${id}`));
   }
 }
