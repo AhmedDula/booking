@@ -27,11 +27,14 @@ export class AuthService {
   login(payload: LoginPayload): Observable<AuthResponse> {
     return this.api
       .post<AuthResponse>('auth/login', payload)
-      .pipe(tap((res) =>{console.log('Login response:', res), this.currentUser.set(res.user)})
+
+
+      .pipe(tap((res) => this.currentUser.set(res.user))
+
       );
-      
+
   }
-  
+
 
   register(payload: RegisterPayload): Observable<AuthResponse> {
     return this.api
@@ -51,7 +54,7 @@ export class AuthService {
         return of(null);
       })
     );
-    
+
   }
 
   refresh(): Observable<Auth> {
@@ -69,5 +72,6 @@ export class AuthService {
 
   hasRole(role: string): boolean {
     return this.currentUser()?.data.user.role === role;
+    
   }
 }

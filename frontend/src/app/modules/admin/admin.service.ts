@@ -7,6 +7,9 @@ import { ApiService } from '../../core/services/api.service';
 export class AdminService {
   private api = inject(ApiService);
 
+  getUsers() {
+    return this.api.get('/users');
+  }
   getDashboardStats() {
     return this.api.get('admin/stats');
   }

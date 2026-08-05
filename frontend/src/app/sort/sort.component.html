@@ -1,0 +1,60 @@
+<div class="shadow rounded-2 p-2 pb-4 d-flex flex-column gap-3">
+  <h4 class="text-center text-primary mb-4">Sort Products</h4>
+  <div class="form-check">
+  <input
+    class="form-check-input"
+    type="radio"
+    name="sort"
+    id="name"
+    value="name"
+     [ngModel]="productService.sort()"
+     (ngModelChange)="productService.sort.set($event)"
+  />
+  <label class="form-check-label" for="name">
+    name A - Z
+  </label>
+</div>
+  <div class="form-check">
+  <input
+    class="form-check-input"
+    type="radio"
+    name="sort"
+    id="-name"
+    value="-name"
+     [ngModel]="productService.sort()"
+     (ngModelChange)="productService.sort.set($event)"
+  />
+  <label class="form-check-label" for="-name">
+    name  Z - A
+  </label>
+</div>
+  <div class="form-check">
+  <input
+    class="form-check-input"
+    type="radio"
+    name="sort"
+    id="price"
+    value="price"
+     [ngModel]="productService.sort()"
+     (ngModelChange)="productService.sort.set($event)"
+  />
+  <label class="form-check-label" for="price">
+    price low to high
+  </label>
+</div>
+  <div class="form-check">
+  <input
+    class="form-check-input"
+    type="radio"
+    name="sort"
+    id="-price"
+    value="-price"
+     [ngModel]="productService.sort()"
+     (ngModelChange)="productService.sort.set($event)"
+  />
+  <label class="form-check-label" for="-price">
+    price high to low
+  </label>
+</div>
+</div>
+

@@ -1,9 +1,24 @@
+
+
 import { Routes } from '@angular/router';
+import { HomeComponent } from './pages/home/home'; // صفحة الهوم المعرفة عندك
+import { RegisterComponent } from '../app/modules/auth/register.component';
+import { LoginComponent } from '../app/modules/auth/login.component';
+
+
+
+
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
+
+
+    { path: '', component: HomeComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },
   {
+
     path: '',
     loadComponent: () => import('./features/home/home.component').then((m) => m.HomeComponent),
   },
@@ -38,7 +53,7 @@ export const routes: Routes = [
   },
 
   {
-    path: 'bookings/new/:propertyId',
+    path: 'bookings/new/:roomId',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./modules/bookings/booking-form.component').then((m) => m.BookingFormComponent),
@@ -120,11 +135,11 @@ export const routes: Routes = [
   //           (m) => m.AdminUsersComponent
   //         )
   //     },
-      
+
   //   ]
   // },
   {
-        
+
 
           path: 'admin',
           canActivate: [adminGuard],

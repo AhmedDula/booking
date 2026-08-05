@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { RouterLink } from '@angular/router';
 import { UserService } from './user.service';
 import { User } from './user.model';
 import { AuthService } from '../auth/auth.service';
@@ -38,7 +38,7 @@ export class ProfileComponent implements OnInit {
     this.isLoading.set(true);
     this.errorMessage.set('');
     console.log(currentUser);
-    
+
     this.userService.getUserById(currentUser.data.user.id).subscribe({
       next: (res) => {
         this.user.set(res.data);

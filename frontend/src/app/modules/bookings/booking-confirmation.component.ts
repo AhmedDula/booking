@@ -25,7 +25,7 @@ export class BookingConfirmationComponent implements OnInit {
   loading = signal(false);
 
   ngOnInit(): void {
-    console.log('Booking:', this.booking());
+   
     if (!this.booking()) {
       this.router.navigate(['/']);
       return;
@@ -57,7 +57,7 @@ export class BookingConfirmationComponent implements OnInit {
   });
 
   goBack() {
-    console.log(this.booking());
+    
     this.router.navigate(['/bookings/new', this.booking().room], {
       state: {
         booking: this.booking(),
