@@ -6,7 +6,7 @@
   }"
 >
 
-<div class="max-w-7xl mx-auto px-8 py-5 flex justify-between items-center">
+<div class="max-w-7xl mx-auto px-8 py-3.5 flex justify-between items-center">
 
     <!-- Logo -->
 
@@ -48,7 +48,7 @@
 
     <!-- Buttons -->
 
-    <div class="flex items-center gap-4">
+    <!-- <div class="flex items-center gap-4">
 
         <button
         class="text-white uppercase text-sm hover:text-[var(--primary-hover)]">
@@ -70,11 +70,32 @@
 
             My Account
 
-        </button>
+        </button> -->
 
-    </div>
+
+        <div class="flex items-center gap-4">
+
+  @if (!isLoggedIn()) {
+
+    <a class="text-white uppercase text-sm hover:text-[var(--primary-hover)]">
+      Sign In
+    </a>
+
+
+    <a routerLink="/register" class="bg-[var(--primary-color)] px-6 py-3 uppercase tracking-wider text-black font-semibold hover:bg-[var(--primary-hover)] transition">
+      Join Aurelio
+  </a>
+  } @else {
+
+    <a class="border border-gray-600 text-white px-5 py-3 uppercase">
+      My Account
+    </a>
+  }
 
 </div>
+    </div>
+
+
 
 </nav>
 

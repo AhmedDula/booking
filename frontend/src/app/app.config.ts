@@ -1,12 +1,13 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, provideZonelessChangeDetection, provideAppInitializer, inject } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
+   // provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient()
   ]

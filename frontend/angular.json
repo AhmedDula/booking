@@ -7,9 +7,36 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "frontend": {
+    "luxury-booking-frontend": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss",
+          "type": "component",
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "type": "service",
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "type": "directive",
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "type": "pipe",
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": true
+        },
+        "@schematics/angular:class": {
+          "skipTests": true
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -19,6 +46,7 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
@@ -26,7 +54,7 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ]
           },
           "configurations": {
@@ -55,12 +83,15 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options":{
+            "port": 3000
+          },
           "configurations": {
             "production": {
-              "buildTarget": "frontend:build:production"
+              "buildTarget": "luxury-booking-frontend:build:production"
             },
             "development": {
-              "buildTarget": "frontend:build:development"
+              "buildTarget": "luxury-booking-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"

@@ -1,1 +1,102 @@
 
+<section class="relative min-h-screen w-full hero-bg-img font-sans-clean flex flex-col justify-between pt-12 pb-8 px-4 md:px-12">
+
+  <!-- Top Title / Header Sub-tag -->
+  <div class="text-center pt-8">
+    <span class="text-[11px] md:text-[13px] tracking-[0.25em] text-[#D8C292] font-semibold uppercase">
+      The World's Finest Private Residences
+    </span>
+  </div>
+
+  <!-- Main Hero Headline & Paragraph -->
+  <div class="max-w-4xl mx-auto text-center my-auto px-2">
+    <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif text-white leading-tight mb-6 tracking-wide">
+      Stay Where the <br />
+      <span class="text-[#D8C292] font-normal">Extraordinary</span> Lives
+    </h1>
+
+    <p class="text-gray-200 text-sm md:text-base lg:text-lg max-w-2xl mx-auto font-sans-serif leading-relaxed mb-12 opacity-90">
+      Handpicked villas, estates, and residences for the most discerning travellers.
+      Each property is personally verified. Each stay, unforgettable.
+    </p>
+
+    <!-- Search Bar Filter Container -->
+    <div class="max-w-4xl mx-auto bg-white rounded-sm shadow-2xl grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-gray-200 text-left">
+
+      <!-- Type Filter -->
+      <div class="p-4 flex items-center gap-3">
+        <svg class="w-5 h-5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0h4m-4 0V11m0 0h4M9 7h1m-1 4h1m-1 4h1m8-8h1m-1 4h1m-1 4h1" />
+        </svg>
+        <div class="w-full">
+          <label class="block text-[10px] tracking-widest text-gray-400 font-bold uppercase mb-0.5">TYPE</label>
+          <select [(ngModel)]="selectedType" class="w-full bg-transparent text-gray-800 text-sm font-medium focus:outline-none cursor-pointer">
+            <option *ngFor="let t of types" [value]="t">{{ t }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Country Filter -->
+      <div class="p-4 flex items-center gap-3">
+        <svg class="w-5 h-5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h1.5a2.5 2.5 0 002.5-2.5V11a2 2 0 00-2-2h-1c-1.09 0-2-.91-2-2V4.82a8.001 8.001 0 00-8.945-.885z" />
+        </svg>
+        <div class="w-full">
+          <label class="block text-[10px] tracking-widest text-gray-400 font-bold uppercase mb-0.5">COUNTRY</label>
+          <select [(ngModel)]="selectedCountry" class="w-full bg-transparent text-gray-800 text-sm font-medium focus:outline-none cursor-pointer">
+            <option *ngFor="let c of countries" [value]="c">{{ c }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- City Filter -->
+      <div class="p-4 flex items-center gap-3">
+        <svg class="w-5 h-5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <div class="w-full">
+          <label class="block text-[10px] tracking-widest text-gray-400 font-bold uppercase mb-0.5">CITY</label>
+          <select [(ngModel)]="selectedCity" class="w-full bg-transparent text-gray-800 text-sm font-medium focus:outline-none cursor-pointer">
+            <option *ngFor="let ci of cities" [value]="ci">{{ ci }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Search Button -->
+      <button (click)="onSearch()"
+              class="bg-[var(--primary-color)] hover:bg-[#caa233] text-gray-900 font-semibold tracking-widest text-xs uppercase transition-colors duration-200 flex items-center justify-center gap-2 p-4 min-h-[64px]">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <span>SEARCH</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Bottom Statistics Counter Bar -->
+  <div class="flex flex-col items-center gap-2">
+    <div class="flex flex-wrap items-center justify-center gap-8 md:gap-16 text-center text-white">
+      <div>
+        <div class="text-2xl md:text-3xl font-serif-italic text-[#D8C292]">150+</div>
+        <div class="text-[10px] tracking-widest text-gray-300 uppercase font-medium">PROPERTIES</div>
+      </div>
+      <div>
+        <div class="text-2xl md:text-3xl font-serif-italic text-[#D8C292]">42</div>
+        <div class="text-[10px] tracking-widest text-gray-300 uppercase font-medium">COUNTRIES</div>
+      </div>
+      <div>
+        <div class="text-2xl md:text-3xl font-serif-italic text-[#D8C292]">5,000+</div>
+        <div class="text-[10px] tracking-widest text-gray-300 uppercase font-medium">HAPPY GUESTS</div>
+      </div>
+    </div>
+
+    <!-- Discover Arrow Down -->
+    <div class="mt-4 flex flex-col items-center gap-1 opacity-80 cursor-pointer hover:opacity-100 transition-opacity">
+      <span class="text-[9px] tracking-[0.25em] text-white uppercase">DISCOVER</span>
+      <div class="w-[1px] h-6 bg-[#D8C292]"></div>
+    </div>
+  </div>
+
+</section>

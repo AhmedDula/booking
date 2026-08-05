@@ -1,18 +1,23 @@
-<!-- @for (property of properties; track $index) {
 
+ @for(property of properties; track
+ property.id){
 
+<div  class="overflow-hidden rounded-2xl bg-white shadow-md transition hover:shadow-xl" >
 
-<div class="overflow-hidden rounded-2xl bg-white shadow-md transition hover:shadow-xl">
-
-  <img
-    [src]="property.image"
+  <!-- <img
+    [src]="property.images[0]"
     [alt]="property.title"
-    class="h-72 w-full object-cover">
+    class="h-72 w-full object-cover"> -->
+<img
+  [src]="property.image"
+
+  class="h-72 w-full object-cover">
+
 
   <div class="p-5">
 
     <p class="text-sm text-gray-500">
-      {{property.location }}
+      {{property.location ?.city}},{{property.location?.country}}
     </p>
 
     <h3 class="mt-2 text-xl font-semibold">
@@ -30,7 +35,12 @@
     </div>
 
   </div>
+</div>
 
-</div>
-</div>
-} -->
+}
+<!-- <div class="grid grid-cols-3 gap-4 p-4">
+  <div *ngFor="let property of properties" class="overflow-hidden rounded-2xl bg-white shadow-md border border-gray-200 p-4">
+    <p class="text-black font-bold" >{{ property.title }}</p>
+    <p class="text-gray-500"> {{ property.location }}</p>
+  </div>
+</div> -->
