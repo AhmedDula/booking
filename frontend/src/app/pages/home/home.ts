@@ -22,7 +22,7 @@ import { Cta } from '../../features/cta/cta';
     WhyAurelio,
     Testimonials,
     Cta,
-    Footer,PropertyCard,Hero
+    Footer,PropertyCard
   ],
   templateUrl: './home.html',
   styleUrl: './home.css'

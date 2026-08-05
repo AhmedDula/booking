@@ -14,7 +14,7 @@ import { RouterLink } from '@angular/router';
 export class Navbar {
 authService=inject(AuthService);
 isLoggedIn():boolean{
-  return !! this.authService.currentUser();
+  return ! this.authService.currentUser();
 }
   isScrolled = false;
 

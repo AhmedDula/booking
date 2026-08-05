@@ -27,8 +27,8 @@
 
     <ul class="flex gap-10 text-white uppercase text-sm tracking-widest">
 
-        <li class="cursor-pointer hover:text-[var(--primary-hover)] duration-300" >
-           Properties
+        <li >
+           <a routerLink= "/properties"  class="cursor-pointer hover:text-[var(--primary-hover)] duration-300" >Properties</a>
         </li>
 
         <li class="cursor-pointer hover:text-[var(--primary-hover)] duration-300">
@@ -46,31 +46,7 @@
     </ul>
 
 
-    <!-- Buttons -->
 
-    <!-- <div class="flex items-center gap-4">
-
-        <button
-        class="text-white uppercase text-sm hover:text-[var(--primary-hover)]">
-
-            Sign In
-
-        </button>
-
-
-        <button
-        class="bg-[var(--primary-color)] px-6 py-3 uppercase tracking-wider text-black font-semibold hover:bg-[var(--primary-hover)] transition">
-
-            Join Aurelio
-
-        </button>
-
-        <button
-        class="border border-gray-600 text-white px-5 py-3 uppercase">
-
-            My Account
-
-        </button> -->
 
 
         <div class="flex items-center gap-4">
@@ -87,7 +63,7 @@
   </a>
   } @else {
 
-    <a class="border border-gray-600 text-white px-5 py-3 uppercase">
+    <a routerLink="/profile" class="border border-gray-600 text-white px-5 py-3 uppercase">
       My Account
     </a>
   }

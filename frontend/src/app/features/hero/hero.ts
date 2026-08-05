@@ -16,8 +16,8 @@ export class Hero {
   selectedCountry: string = 'All Countries';
   selectedCity: string = 'All Cities';
 
-  types: string[] = ['All Types', 'Villa', 'Estate', 'Residence'];
-  countries: string[] = ['All Countries', 'France', 'Italy', 'Spain', 'Greece'];
+  types: string[] = ['All Types', 'Villa', 'Cabin', 'House'];
+  countries: string[] = ['All Countries', 'Paris', 'Italy', 'Spain', 'Greece'];
   cities: string[] = ['All Cities', 'Nice', 'Florence', 'Marbella', 'Mykonos'];
 
   onSearch(): void {
