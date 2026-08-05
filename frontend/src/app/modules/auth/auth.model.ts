@@ -1,9 +1,14 @@
 import { ROLES } from '../../core/constants/roles';
 
-export interface Auth {
-  id: string;
-  name: string;
-  email: string;
-  role: typeof ROLES[keyof typeof ROLES];
-  createdAt: string;
+ export interface Auth {
+  success: boolean;
+  message: string;
+  data: {
+    user: {
+      email: string;
+      id: string;
+      name: string;
+      role: typeof ROLES[keyof typeof ROLES];
+    };
+  };
 }
