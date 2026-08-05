@@ -22,7 +22,7 @@ export class ReviewFormComponent implements OnInit {
   private reviewService = inject(reviewService);
   private route = inject(ActivatedRoute);
 
-  propertyId = '';
+
   rating = 5;
   comment = '';
 
@@ -33,10 +33,7 @@ export class ReviewFormComponent implements OnInit {
 
   addReview(): void {
 
-    if (!this.propertyId) {
-      alert('Property ID is missing');
-      return;
-    }
+  
 
     if (!this.comment.trim()) {
       alert('Please write a comment');
@@ -46,7 +43,7 @@ export class ReviewFormComponent implements OnInit {
     const review = {
       rating: this.rating,
       comment: this.comment,
-      property: this.propertyId
+    
     };
 
     this.reviewService.create(review)
