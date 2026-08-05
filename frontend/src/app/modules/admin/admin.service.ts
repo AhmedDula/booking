@@ -1,11 +1,17 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { ApiService } from '../../core/services/api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdminService {
-  private readonly http = inject(HttpClient);
-  private readonly baseUrl = `${environment.apiUrl}/admins`;
+  private api = inject(ApiService);
+
+  getDashboardStats() {
+    return this.api.get('admin/stats');
+  }
+
+  getRecentActivity() {
+    return this.api.get('admin/activity');
+  }
 }

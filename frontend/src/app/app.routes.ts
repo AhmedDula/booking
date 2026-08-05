@@ -70,40 +70,52 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/dashboard/user-dashboard.component').then((m) => m.UserDashboardComponent),
   },
+  // {
+  //   path: 'admin',
+  //   canActivate: [authGuard, adminGuard],
+  //   children: [
+  //     {
+  //       path: '',
+  //       loadComponent: () =>
+  //         import('./modules/admin/admin-dashboard.component').then(
+  //           (m) => m.AdminDashboardComponent
+  //         )
+  //     },
+  //     {
+  //       path: 'properties',
+  //       loadComponent: () =>
+  //         import('./modules/admin/admin-properties.component').then(
+  //           (m) => m.AdminPropertiesComponent
+  //         )
+  //     },
+  //     {
+  //       path: 'bookings',
+  //       loadComponent: () =>
+  //         import('./modules/admin/admin-bookings.component').then(
+  //           (m) => m.AdminBookingsComponent
+  //         )
+  //     },
+  //     {
+  //       path: 'disputes',
+  //       loadComponent: () =>
+  //         import('./modules/admin/admin-disputes.component').then(
+  //           (m) => m.AdminDisputesComponent
+  //         )
+  //     },
+  //     {
+  //       path: 'users',
+  //       loadComponent: () =>
+  //         import('./modules/admin/admin-users.component').then(
+  //           (m) => m.AdminUsersComponent
+  //         )
+  //     },
+
+  //   ]
+  // },
   {
     path: 'admin',
-    canActivate: [authGuard, adminGuard],
-    children: [
-      {
-        path: '',
-        loadComponent: () =>
-          import('./modules/admin/admin-dashboard.component').then(
-            (m) => m.AdminDashboardComponent,
-          ),
-      },
-      {
-        path: 'properties',
-        loadComponent: () =>
-          import('./modules/admin/admin-properties.component').then(
-            (m) => m.AdminPropertiesComponent,
-          ),
-      },
-      {
-        path: 'bookings',
-        loadComponent: () =>
-          import('./modules/admin/admin-bookings.component').then((m) => m.AdminBookingsComponent),
-      },
-      {
-        path: 'disputes',
-        loadComponent: () =>
-          import('./modules/admin/admin-disputes.component').then((m) => m.AdminDisputesComponent),
-      },
-      {
-        path: 'users',
-        loadComponent: () =>
-          import('./modules/admin/admin-users.component').then((m) => m.AdminUsersComponent),
-      },
-    ],
+    canActivate: [adminGuard],
+    loadChildren: () => import('./modules/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
   },
   {
     path: '**',

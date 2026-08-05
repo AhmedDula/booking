@@ -1,0 +1,330 @@
+<!-- Topbar -->
+<header class="bg-white border-b border-stone-200 px-8 py-5 flex items-center justify-between">
+  <div>
+    <h1 class="font-serif text-2xl text-slate-900">Dashboard Overview</h1>
+    <p class="text-sm text-stone-500 mt-0.5">{{ today() }}</p>
+  </div>
+
+  <div class="flex items-center gap-3">
+    <img [src]="adminAvatar()" alt="" class="w-9 h-9 rounded-full object-cover" />
+
+    <div class="text-sm">
+      <div class="font-medium text-slate-900">{{ adminName() }}</div>
+      <div class="text-stone-500">{{ adminRole() }}</div>
+    </div>
+  </div>
+</header>
+
+<main class="flex-1 overflow-y-auto p-8 space-y-6">
+  <!-- Stat cards -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    @for (stat of stats(); track stat.label) {
+      <div class="bg-white rounded-lg border border-stone-200 p-5">
+        <div class="flex items-start justify-between mb-4">
+          <div
+            class="w-9 h-9 rounded-lg flex items-center justify-center"
+            [class.bg-amber-50]="stat.tone === 'cream'"
+            [class.text-amber-700]="stat.tone === 'cream'"
+            [class.bg-stone-100]="stat.tone === 'stone'"
+            [class.text-stone-600]="stat.tone === 'stone'"
+            [class.bg-red-50]="stat.tone === 'red'"
+            [class.text-red-600]="stat.tone === 'red'"
+          >
+            @switch (stat.icon) {
+              @case ('building') {
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <rect x="4" y="2" width="16" height="20" rx="1" />
+                  <path d="M9 22v-4h6v4M9 6h.01M9 10h.01M15 6h.01M15 10h.01" />
+                </svg>
+              }
+
+              @case ('bed') {
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8V6a2 2 0 0 1 2-2h3" />
+                </svg>
+              }
+
+              @case ('users') {
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                </svg>
+              }
+
+              @case ('book') {
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5z" />
+                </svg>
+              }
+
+              @case ('trend') {
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                  <polyline points="16 7 22 7 22 13" />
+                </svg>
+              }
+
+              @case ('chart') {
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <line x1="12" y1="20" x2="12" y2="10" />
+                  <line x1="18" y1="20" x2="18" y2="4" />
+                  <line x1="6" y1="20" x2="6" y2="16" />
+                </svg>
+              }
+
+              @case ('star') {
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+              }
+
+              @case ('alert') {
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+              }
+            }
+          </div>
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="none"
+            stroke="#15803d"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+            <polyline points="16 7 22 7 22 13" />
+          </svg>
+        </div>
+
+        <div class="text-2xl font-semibold text-slate-900">
+          {{ stat.value }}
+        </div>
+
+        <div class="text-sm text-stone-500 mt-1">
+          {{ stat.label }}
+        </div>
+
+        @if (stat.trend) {
+          <div class="text-xs text-green-700 mt-1">
+            {{ stat.trend }}
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Charts -->
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 bg-white rounded-lg border border-stone-200 p-6">
+      <h2 class="font-serif text-lg text-slate-900 mb-6">Monthly Bookings</h2>
+
+      <div class="flex items-end gap-4 h-56 border-b border-stone-100">
+        @for (month of months; track month; let i = $index) {
+          <div class="flex-1 flex flex-col items-center justify-end h-full">
+            <div
+              class="w-full max-w-10 bg-amber-400 rounded-t-sm"
+              [style.height.%]="(monthlyBookings[i] / maxMonthlyBookings) * 100"
+            ></div>
+          </div>
+        }
+      </div>
+
+      <div class="flex gap-4 mt-2">
+        @for (month of months; track month) {
+          <div class="flex-1 text-center text-xs text-stone-500">
+            {{ month }}
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg border border-stone-200 p-6">
+      <h2 class="font-serif text-lg text-slate-900 mb-6">Properties by Type</h2>
+
+      <div class="flex items-center justify-center mb-6">
+        <svg viewBox="0 0 42 42" class="w-36 h-36 -rotate-90">
+          @for (slice of propertyTypes; track slice.label; let i = $index) {
+            <circle
+              cx="21"
+              cy="21"
+              r="15.9"
+              fill="transparent"
+              [attr.stroke]="slice.color"
+              stroke-width="6"
+              [attr.stroke-dasharray]="slice.percent + ' ' + (100 - slice.percent)"
+              [attr.stroke-dashoffset]="-donutOffset(i)"
+            />
+          }
+        </svg>
+      </div>
+
+      <ul class="space-y-2">
+        @for (slice of propertyTypes; track slice.label) {
+          <li class="flex items-center justify-between text-sm">
+            <span class="flex items-center gap-2 text-stone-600">
+              <span class="w-2.5 h-2.5 rounded-sm" [style.background]="slice.color"> </span>
+
+              {{ slice.label }}
+            </span>
+
+            <span class="font-medium text-slate-900"> {{ slice.percent }}% </span>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="bg-white rounded-lg border border-stone-200">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-stone-100">
+      <h2 class="font-serif text-lg text-slate-900">Recent Activity</h2>
+    </div>
+
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="text-left text-xs tracking-widest text-stone-400 border-b border-stone-100">
+          <th class="px-6 py-3 font-medium">Type</th>
+          <th class="px-6 py-3 font-medium">Title</th>
+          <th class="px-6 py-3 font-medium">User</th>
+          <th class="px-6 py-3 font-medium">Date</th>
+          <th class="px-6 py-3 font-medium">Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (activity of activities(); track activity.id) {
+          <tr class="border-b border-stone-50 last:border-0">
+            <td class="px-6 py-4">
+              @if (activity.type === 'booking') {
+                <span
+                  class="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700"
+                >
+                  Booking
+                </span>
+              } @else {
+                <span
+                  class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-1 text-xs font-medium text-red-600"
+                >
+                  Dispute
+                </span>
+              }
+            </td>
+
+            <td class="px-6 py-4 font-medium text-slate-900">
+              {{ activity.title }}
+            </td>
+
+            <td class="px-6 py-4 text-stone-600">
+              {{ activity.subtitle }}
+            </td>
+
+            <td class="px-6 py-4 text-stone-600">
+              {{ activity.date }}
+            </td>
+
+            <td class="px-6 py-4">
+              <span
+                class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium"
+                [class.bg-yellow-100]="activity.status === 'pending'"
+                [class.text-yellow-700]="activity.status === 'pending'"
+                [class.bg-emerald-100]="
+                  activity.status === 'confirmed' || activity.status === 'resolved'
+                "
+                [class.text-emerald-700]="
+                  activity.status === 'confirmed' || activity.status === 'resolved'
+                "
+                [class.bg-red-100]="
+                  activity.status === 'cancelled' || activity.status === 'rejected'
+                "
+                [class.text-red-600]="
+                  activity.status === 'cancelled' || activity.status === 'rejected'
+                "
+                [class.bg-stone-100]="activity.status === 'completed'"
+                [class.text-stone-700]="activity.status === 'completed'"
+              >
+                {{ activity.status }}
+              </span>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="py-12 text-center text-stone-400">No recent activity found.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</main>
