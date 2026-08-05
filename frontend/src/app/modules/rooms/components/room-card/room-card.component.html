@@ -4,7 +4,7 @@
     <!-- IMAGE -->
     <div class="relative">
       <img 
-        [src]="room().images" 
+        [src]="room().images?.[0] || 'assets/villa1.jpg'" 
         class="w-full h-[300px] object-cover"
       />
 

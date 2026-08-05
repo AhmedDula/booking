@@ -49,7 +49,6 @@ export class ListingDetailComponent {
       if (propertyId) {
         const property = await this.propertyService.getPropertyById(propertyId);
         this.property.set(property);
-        console.log('propertyId:', propertyId);
         const rooms = await this.propertyService.getRoomsByPropertyId(propertyId);
         this.rooms.set(rooms); 
       }

@@ -1,15 +1,26 @@
 <div *ngIf="!loading(); else loadingTpl" class="bg-[#f8f5f2] min-h-screen">
 
   <!-- HERO IMAGES -->
-  <div class="grid grid-cols-4 grid-rows-2 gap-2 h-[400px]">
-    <img 
-      [src]="property()?.images?.[0]" 
-      class="col-span-2 row-span-2 w-full h-full object-cover"
-    />
+  <div class="max-w-6xl mx-auto px-6 mt-6">
+    <div class="grid grid-cols-4 gap-3 h-[420px]">
 
-    <img *ngFor="let img of property()?.images?.slice(1,5)"
-         [src]="img"
-         class="w-full h-full object-cover" />
+      <!-- BIG IMAGE -->
+      <div class="col-span-2 row-span-2">
+        <img
+          [src]="property()?.images?.[0]"
+          class="w-full h-full object-cover rounded-md"
+        />
+      </div>
+
+      <!-- SMALL IMAGES -->
+      <div *ngFor="let img of property()?.images?.slice(1,5)" class="h-[200px]">
+        <img
+          [src]="img"
+          class="w-full h-full object-cover rounded-md"
+        />
+      </div>
+
+    </div>
   </div>
 
   <!-- CONTENT -->

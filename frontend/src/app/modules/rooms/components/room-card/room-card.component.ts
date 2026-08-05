@@ -17,6 +17,6 @@ export class RoomCardComponent {
     const room = this.room();
     if (!room?._id) return;
 
-    this.router.navigateByUrl(`/booking/${room._id}`);
+    this.router.navigateByUrl(`/bookings/new/${room._id}`);
   }
 }

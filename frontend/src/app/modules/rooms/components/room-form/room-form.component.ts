@@ -21,8 +21,9 @@ export class RoomFormComponent {
   route = inject(ActivatedRoute)
   messageService = inject(MessageService)
 
+  property: string = "";
+
   roomModel = signal({
-    property:"",
     name: "",
     description: "",
     price: 0,
@@ -36,9 +37,6 @@ export class RoomFormComponent {
   })
 
   addRoom = form(this.roomModel,(schema) => {
-    required(schema.property,{message:"property id is required"})
-    minLength(schema.property,3,{message:"min char is 3"})
-    
     required(schema.name,{message:"name is required"})
     minLength(schema.name,3,{message:"min char is 3"})
 
@@ -67,25 +65,50 @@ export class RoomFormComponent {
     min(schema.roomSize,1,{message:"roomSize must be positive"})
   })
 
-async onSubmit (e:Event) {
-  e.preventDefault()
-  await submit(this.addRoom,async (val) => {
-    console.log(val().value());
-    const data = val().value()
-    const payload: Omit<Room, "_id"> = {
-      ...data,
-      images: data.images.split(",").map(i => i.trim()),
-      amenities: data.amenities.split(",").map(a => a.trim()),
-    }
-    try{
-    const res = await this.roomsService.createRoom(payload)
-    console.log(res);
-    this.messageService.add({ severity: 'success', summary: 'Saved successfully', detail: 'Your changes have been saved.' });
-    this.router.navigate(['/admin/rooms']);}
-    catch(error){
-      console.error("Error creating room:", error);
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to create room.' });
-    }})
-}
+ngOnInit() {
+  const segments = this.route.snapshot.url;
 
+    if (segments.length >= 4) {
+      this.property = segments[3].path; 
+    }
+
+    console.log("Property ID:", this.property);
+  }
+
+  async onSubmit(e: Event) {
+    e.preventDefault();
+
+    await submit(this.addRoom, async (val) => {
+      const data = val().value();
+
+      const payload: Omit<Room, "_id"> = {
+        ...data,
+        property: this.property, 
+        images: data.images.split(",").map(i => i.trim()),
+        amenities: data.amenities.split(",").map(a => a.trim()),
+      };
+
+      try {
+        const res = await this.roomsService.createRoom(payload);
+        console.log(res);
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Saved successfully',
+          detail: 'Room created successfully.'
+        });
+
+        this.router.navigate(['/admin/rooms']);
+
+      } catch (error) {
+        console.error("Error creating room:", error);
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to create room.'
+        });
+      }
+    });
+  }
 }

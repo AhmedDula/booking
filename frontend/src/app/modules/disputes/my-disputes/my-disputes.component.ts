@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
-import { DisputeService } from './dispute.service';
+import { AuthService } from '../../auth/auth.service';
+import { DisputeService } from '../dispute.service';
 
 @Component({
   selector: 'app-my-disputes',
@@ -25,5 +25,5 @@ export class MyDisputesComponent implements OnInit {
     }
   }
   
-
 }
+

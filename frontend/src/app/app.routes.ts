@@ -31,13 +31,7 @@ export const routes: Routes = [
       )
   },
   {
-    path: 'rooms',
-    loadComponent: () =>
-      import('./modules/rooms/components/room-card/room-card.component').then(
-        (m) => m.RoomCardComponent)
-  },
-  {
-    path: 'bookings/new/:propertyId',
+    path: 'bookings/new/:roomId',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./modules/bookings/booking-form.component').then(
@@ -61,7 +55,7 @@ export const routes: Routes = [
       )
   },
    {
-    path: 'admin/rooms/new/:propertyId',
+    path: 'admin/rooms/new/:property',
     canActivate: [authGuard, adminGuard],
     loadComponent: () =>
       import('./modules/rooms/components/room-form/room-form.component').then(
