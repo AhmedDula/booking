@@ -11,6 +11,11 @@ export interface Room{
     images: string[];
     amenities: string[];
     available: boolean;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+export interface APIResponse<T> {
+    data: T;
+    message: string;
+    
 }

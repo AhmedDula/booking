@@ -1,3 +1,4 @@
+import { DisputeStatus } from "../../core/constants/dispute-status";
 export interface Dispute {
   _id: string;
   booking: string;
@@ -5,10 +6,15 @@ export interface Dispute {
   reason: string;
   description: string;
   evidence: string[];
-  status: "pending" | "resolved" | "rejected";
+  status: DisputeStatus["PENDING"] | DisputeStatus["RESOLVED"] | DisputeStatus["REJECTED"];
   resolutionNotes: string;
   resolvedBy?: string;
   resolvedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface APIResponse<T> {
+  data: T;
+  message: string;
 }

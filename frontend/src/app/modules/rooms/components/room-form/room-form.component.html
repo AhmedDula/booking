@@ -1,0 +1,111 @@
+<form (submit)="onSubmit($event)" class="max-w-5xl mx-auto p-6 space-y-8">
+
+  <!-- Title -->
+  <div>
+    <h1 class="text-3xl font-bold text-gray-800">Add New Room</h1>
+    <p class="text-gray-500">Fill in the details to create a new room</p>
+  </div>
+
+  <!-- Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <!-- Name -->
+    <div>
+      <label class="block text-sm font-medium">Room Name</label>
+      <input class="input" type="text" [FormField]="addRoom.name" />
+      @if (addRoom.name().errors()?.length) {
+        <p class="error">{{ addRoom.name().errors()[0].message }}</p>
+      }
+    </div>
+
+    <!-- Property -->
+    <div>
+      <label class="block text-sm font-medium">Property ID</label>
+      <input class="input" type="text" [FormField]="addRoom.property" />
+    </div>
+
+    <!-- Price -->
+    <div>
+      <label class="block text-sm font-medium">Price</label>
+      <input class="input" type="number" [FormField]="addRoom.price" />
+      @if (addRoom.price().errors()?.length) {
+        <p class="error">{{ addRoom.price().errors()[0].message }}</p>
+      }
+    </div>
+
+    <!-- Max Guests -->
+    <div>
+      <label class="block text-sm font-medium">Max Guests</label>
+      <input class="input" type="number" [FormField]="addRoom.maxGuests" />
+    </div>
+
+    <!-- Beds -->
+    <div>
+      <label class="block text-sm font-medium">Beds</label>
+      <input class="input" type="number" [FormField]="addRoom.beds" />
+    </div>
+
+    <!-- Bathrooms -->
+    <div>
+      <label class="block text-sm font-medium">Bathrooms</label>
+      <input class="input" type="number" [FormField]="addRoom.bathrooms" />
+    </div>
+
+    <!-- Room Size -->
+    <div>
+      <label class="block text-sm font-medium">Room Size</label>
+      <input class="input" type="number" [FormField]="addRoom.roomSize" />
+    </div>
+
+    <!-- Availability -->
+    <div class="flex items-center gap-3 mt-6">
+      <input type="checkbox" [FormField]="addRoom.available" />
+      <label>Available</label>
+    </div>
+
+  </div>
+
+  <!-- Description -->
+  <div>
+    <label class="block text-sm font-medium">Description</label>
+    <textarea class="input" rows="4" [FormField]="addRoom.description"></textarea>
+    @if (addRoom.description().errors()?.length) {
+      <p class="error">{{ addRoom.description().errors()[0].message }}</p>
+    }
+  </div>
+
+  <!-- Amenities -->
+  <div>
+    <label class="block text-sm font-medium mb-2">Amenities (comma separated)</label>
+    <input
+      class="input"
+      type="text"
+      placeholder="WiFi, AC, TV..."
+      (blur)="addRoom.amenities().set(($any($event.target).value || '').split(',').map((a: string) => a.trim()))"
+    />
+  </div>
+
+  <!-- Images -->
+  <div>
+    <label class="block text-sm font-medium mb-2">Image URLs (comma separated)</label>
+    <input
+      class="input"
+      type="text"
+      placeholder="https://img1.jpg, https://img2.jpg"
+      (blur)="addRoom.images().set(($any($event.target).value || '').split(',').map((i: string) => i.trim()))"
+    />
+  </div>
+
+  <!-- Submit -->
+  <div class="flex justify-end">
+    <button
+      type="submit"
+      class="bg-black text-white px-6 py-3 rounded-xl hover:opacity-90 transition"
+    >
+      Save Room
+    </button>
+  </div>
+
+</form>
+
+<p-toast></p-toast>
