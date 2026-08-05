@@ -1,8 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../../environments/environment';
+import { ApiService } from '../../core/services/api.service';
 import { User } from './user.model';
 
 export interface ApiResponse<T> {
@@ -15,23 +14,21 @@ export interface ApiResponse<T> {
   providedIn: 'root',
 })
 export class UserService {
-  private readonly http = inject(HttpClient);
-
-  private readonly baseUrl = `${environment.apiUrl}/users`;
+  private readonly api = inject(ApiService);
 
   getAllUsers(): Observable<ApiResponse<User[]>> {
-    return this.http.get<ApiResponse<User[]>>(this.baseUrl);
+    return this.api.get<ApiResponse<User[]>>('users');
   }
 
   getUserById(id: string): Observable<ApiResponse<User>> {
-    return this.http.get<ApiResponse<User>>(`${this.baseUrl}/${id}`);
+    return this.api.get<ApiResponse<User>>(`users/${id}`);
   }
 
   updateUser(id: string, user: Partial<User>): Observable<ApiResponse<User>> {
-    return this.http.put<ApiResponse<User>>(`${this.baseUrl}/${id}`, user);
+    return this.api.put<ApiResponse<User>>(`users/${id}`, user);
   }
 
   deleteUser(id: string): Observable<ApiResponse<null>> {
-    return this.http.delete<ApiResponse<null>>(`${this.baseUrl}/${id}`);
+    return this.api.delete<ApiResponse<null>>(`users/${id}`);
   }
 }

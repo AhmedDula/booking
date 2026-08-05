@@ -9,6 +9,7 @@ const validateCreate = (data) => {
     errors.push("Email is required.");
   }
 
+  
   if (!data.password || data.password.length < 8) {
     errors.push("Password must be at least 8 characters.");
   }
