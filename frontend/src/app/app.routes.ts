@@ -92,11 +92,11 @@ export const routes: Routes = [
         (m) => m.UserDashboardComponent
       )
   },
-  // {
-  //   path: 'admin',
-  //   canActivate: [authGuard, adminGuard],
-  //   children: [
-  //     {
+  {
+    path: 'admin',
+    canActivate: [authGuard, adminGuard],
+      children: [
+      // {
   //       path: '',
   //       loadComponent: () =>
   //         import('./modules/admin/admin-dashboard.component').then(
@@ -117,13 +117,13 @@ export const routes: Routes = [
   //           (m) => m.AdminBookingsComponent
   //         )
   //     },
-  //     {
-  //       path: 'disputes',
-  //       loadComponent: () =>
-  //         import('./modules/admin/admin-disputes.component').then(
-  //           (m) => m.AdminDisputesComponent
-  //         )
-  //     },
+      {
+        path: 'disputes',
+        loadComponent: () =>
+          import('./modules/admin/admin.disputes').then(
+            (m) => m.AdminDisputesComponent
+          )
+      },
   //     {
   //       path: 'users',
   //       loadComponent: () =>
@@ -132,8 +132,8 @@ export const routes: Routes = [
   //         )
   //     },
       
-  //   ]
-  // },
+    ]
+  },
   {
         
 
