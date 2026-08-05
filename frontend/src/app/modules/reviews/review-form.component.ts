@@ -17,27 +17,19 @@ import { NavbarComponent } from '../../shared/components/navbar/navbar.component
   templateUrl: './review-form.component.html',
   styleUrl: './review-form.component.scss'
 })
-export class ReviewFormComponent implements OnInit {
+export class ReviewFormComponent  {
 
   private reviewService = inject(reviewService);
   private route = inject(ActivatedRoute);
 
-  propertyId = '';
+
   rating = 5;
   comment = '';
 
-  ngOnInit(): void {
-    this.propertyId = this.route.snapshot.paramMap.get('id') ?? '';
-    console.log('Property ID:', this.propertyId);
-  }
 
   addReview(): void {
 
-    if (!this.propertyId) {
-      alert('Property ID is missing');
-      return;
-    }
-
+   
     if (!this.comment.trim()) {
       alert('Please write a comment');
       return;
@@ -46,7 +38,7 @@ export class ReviewFormComponent implements OnInit {
     const review = {
       rating: this.rating,
       comment: this.comment,
-      property: this.propertyId
+     
     };
 
     this.reviewService.create(review)

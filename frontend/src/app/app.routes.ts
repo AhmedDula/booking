@@ -34,6 +34,7 @@ export const routes: Routes = [
   // Add this route
   {
     path: 'reviews',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./modules/reviews/review-form.component').then(
         (m) => m.ReviewFormComponent

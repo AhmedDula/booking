@@ -10,8 +10,7 @@ const addReview = Joi.object({
     .required(),
 
 
-  property: Joi.string()
-    .pattern(/^[0-9a-fA-F]{24}$/).required(),
+  
 });
 
 const updateReview = Joi.object({
