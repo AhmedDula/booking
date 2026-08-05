@@ -1,9 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { UserService } from './user.service';
 import { User } from './user.model';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -14,61 +15,80 @@ import { User } from './user.model';
 })
 export class ProfileComponent implements OnInit {
   private readonly userService = inject(UserService);
+  private readonly authService = inject(AuthService);
 
-  // TODO: لازم تتجاب من الـ AuthService بعد ما تلاقيه في الريبو
-  // مؤقتًا حاطة id ثابت عشان نقدر نجرب
-  private readonly currentUserId = 'PUT_A_REAL_USER_ID_HERE';
-
-  user: User | null = null;
-  isEditing = false;
-  isLoading = false;
-  isSaving = false;
-  errorMessage = '';
+  readonly user = signal<User | null>(null);
+  readonly isEditing = signal(false);
+  readonly isLoading = signal(false);
+  readonly isSaving = signal(false);
+  readonly errorMessage = signal('');
 
   ngOnInit(): void {
     this.loadUser();
   }
 
   loadUser(): void {
-    this.isLoading = true;
-    this.errorMessage = '';
+    const currentUser = this.authService.currentUser();
 
-    this.userService.getUserById(this.currentUserId).subscribe({
+    if (!currentUser) {
+      this.errorMessage.set('لازم تسجلي دخول الأول');
+      return;
+    }
+
+    this.isLoading.set(true);
+    this.errorMessage.set('');
+
+    this.userService.getUserById(currentUser.id).subscribe({
       next: (res) => {
-        this.user = res.data;
-        this.isLoading = false;
+        this.user.set(res.data);
+        this.isLoading.set(false);
       },
       error: (err) => {
-        this.errorMessage = 'فشل تحميل بيانات البروفايل';
-        this.isLoading = false;
+        this.errorMessage.set('فشل تحميل بيانات البروفايل');
+        this.isLoading.set(false);
         console.error(err);
       },
     });
   }
 
+  startEditing(): void {
+    this.isEditing.set(true);
+  }
+
+  updateName(value: string): void {
+    const current = this.user();
+    if (current) this.user.set({ ...current, name: value });
+  }
+
+  updatePhone(value: string): void {
+    const current = this.user();
+    if (current) this.user.set({ ...current, phone: value });
+  }
+
   saveChanges(): void {
-    if (!this.user) return;
+    const currentUser = this.user();
+    if (!currentUser) return;
 
-    this.isSaving = true;
+    this.isSaving.set(true);
 
-    const { name, phone } = this.user;
+    const { name, phone } = currentUser;
 
-    this.userService.updateUser(this.user._id, { name, phone }).subscribe({
+    this.userService.updateUser(currentUser._id, { name, phone }).subscribe({
       next: (res) => {
-        this.user = res.data;
-        this.isEditing = false;
-        this.isSaving = false;
+        this.user.set(res.data);
+        this.isEditing.set(false);
+        this.isSaving.set(false);
       },
       error: (err) => {
-        this.errorMessage = 'فشل حفظ التعديلات';
-        this.isSaving = false;
+        this.errorMessage.set('فشل حفظ التعديلات');
+        this.isSaving.set(false);
         console.error(err);
       },
     });
   }
 
   cancelEdit(): void {
-    this.isEditing = false;
-    this.loadUser(); // نرجع نجيب النسخة الأصلية عشان نلغي أي تعديل مش متحفوظ
+    this.isEditing.set(false);
+    this.loadUser();
   }
 }
