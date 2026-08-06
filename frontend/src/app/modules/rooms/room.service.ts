@@ -19,7 +19,7 @@ export class RoomService {
 
   //for booking
   getRoomById(id: string): Observable<any> {
-    return this.api.get<APIResponse<Room>>(this.endpoint)
+    return this.api.get<APIResponse<Room>>(`${this.endpoint}/${id}`)
     
   }
   createRoom(room: Omit<Room, '_id' | 'createdAt' | 'updatedAt'>): Promise<Room> {

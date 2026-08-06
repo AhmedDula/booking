@@ -1,7 +1,7 @@
 
 
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home'; // صفحة الهوم المعرفة عندك
+import { HomeComponent } from './pages/home/home';
 import { RegisterComponent } from '../app/modules/auth/register.component';
 import { LoginComponent } from '../app/modules/auth/login.component';
 

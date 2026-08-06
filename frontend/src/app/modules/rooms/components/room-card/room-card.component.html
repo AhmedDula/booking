@@ -33,22 +33,106 @@
       </p>
 
       <!-- ROOM INFO -->
-      <div class="flex flex-wrap gap-4 text-gray-600 text-sm mb-4">
-        <span>👤 {{ room().maxGuests }} guests</span>
 
-        <span>🛏 {{ room().beds }} beds</span>
+      <div class="flex flex-wrap gap-6 text-gray-600 text-sm mb-4">
+        <!-- GUESTS -->
+        <div class="flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 20h5V18a4 4 0 00-5-3.87M9 20H4V18a4 4 0 015-3.87m8-6a4 4 0 11-8 0 4 4 0 018 0zM5 10a4 4 0 118 0 4 4 0 01-8 0z"
+            />
+          </svg>
+          <span>{{ room().maxGuests }} guests</span>
+        </div>
 
-        <span>🛁 {{ room().bathrooms }} bathrooms</span>
+        <!-- BEDS -->
+        <div class="flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 7h18M3 12h18M5 12v5m14-5v5M5 7v5m14-5v5"
+            />
+          </svg>
+          <span>{{ room().beds }} beds</span>
+        </div>
 
-        <span>📐 {{ room().roomSize }} m²</span>
+        <!-- BATHROOMS -->
+        <div class="flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 6h8M8 10h8M6 14h12M6 18h12"
+            />
+          </svg>
+          <span>{{ room().bathrooms }} bathrooms</span>
+        </div>
+
+        <!-- SIZE -->
+        <div class="flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 3h6M3 3v6M21 3h-6M21 3v6M3 21h6M3 21v-6M21 21h-6M21 21v-6"
+            />
+          </svg>
+          <span>{{ room().roomSize }} m²</span>
+        </div>
       </div>
 
       <!-- AMENITIES -->
       <div class="flex flex-wrap gap-2 mb-6">
         <span
           *ngFor="let amenity of room().amenities"
-          class="bg-gray-100 text-gray-700 px-3 py-1 text-sm rounded"
+          class="bg-gray-100 text-gray-700 px-3 py-1 text-sm rounded flex items-center gap-1"
         >
+          <!-- small check icon -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            class="w-4 h-4 text-[#c89b3c]"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
           {{ amenity }}
         </span>
       </div>

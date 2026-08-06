@@ -28,52 +28,62 @@
 
     <!-- Breadcrumb -->
     <p class="text-sm text-gray-500 mb-2">
-      Home / Properties / 
+      Home / Properties /
       <span class="text-gray-700 font-medium">{{ p.title }}</span>
     </p>
 
     <!-- Type + Rating -->
     <div class="flex items-center gap-4 mb-3">
+
       <span class="bg-[#1f3d2b] text-white text-xs px-3 py-1 uppercase tracking-wide">
         {{ p.propertyType }}
       </span>
 
-      <span class="text-yellow-600 font-semibold">
-        ★ {{ p.rating }}
-      </span>
+      <!-- STAR ICON -->
+      <div class="flex items-center gap-1 text-yellow-600 font-semibold">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             viewBox="0 0 20 20"
+             fill="currentColor"
+             class="w-5 h-5">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.176 0l-3.37 2.448c-.784.57-1.838-.197-1.539-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.073 9.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.276-3.957z"/>
+        </svg>
+        {{ p.rating }}
+      </div>
 
       <span class="text-gray-500 text-sm">
         ({{ p.reviewsCount }} reviews)
       </span>
     </div>
 
-    <!-- Title -->
+    <!-- TITLE -->
     <h1 class="text-4xl font-serif mb-2">
       {{ p.title }}
     </h1>
 
-    <!-- Location -->
-    <p class="text-gray-600 mb-6">
-      📍 {{ p.location?.address }}, {{ p.location?.city }}
-    </p>
+    <!-- LOCATION -->
+    <div class="flex items-center gap-2 text-gray-600 mb-6">
+      <svg xmlns="http://www.w3.org/2000/svg"
+           fill="none"
+           viewBox="0 0 24 24"
+           stroke="currentColor"
+           class="w-5 h-5 text-gray-500">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243A8 8 0 1117.657 16.657z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+      </svg>
 
-    <!-- TABS -->
-    <div class="flex gap-8 border-b mb-6 text-sm tracking-wider uppercase">
-      <button class="pb-3 border-b-2 border-[#c89b3c] text-black">
+      <span>{{ p.location?.address }}, {{ p.location?.city }}</span>
+    </div>
+
+    <div class="border-b mb-6 text-sm tracking-wider uppercase">
+      <span class="inline-block pb-3 border-b-2 border-[#c89b3c] text-black">
         Overview
-      </button>
-
-      <button class="pb-3 text-gray-400">
-        Rooms ({{ rooms().length }})
-      </button>
-
-      <button class="pb-3 text-gray-400">
-        Reviews ({{ p.reviewsCount }})
-      </button>
+      </span>
     </div>
 
     <!-- OVERVIEW -->
-    <div class="mb-10">
+    <div id="overview" class="mb-10">
       <p class="text-gray-700 leading-7">
         {{ p.description }}
       </p>
@@ -88,17 +98,26 @@
           *ngFor="let amenity of p.amenities"
           class="flex items-center gap-3 bg-white p-4 border rounded-md"
         >
-          <span class="text-[#c89b3c]">✔</span>
+          <svg xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 24 24"
+               fill="none"
+               stroke="currentColor"
+               class="w-5 h-5 text-[#c89b3c]">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7" />
+          </svg>
+
           <span class="text-gray-700">{{ amenity }}</span>
         </div>
       </div>
     </div>
 
-    <!-- ROOMS SECTION -->
-    <div>
+    <!-- ROOMS -->
+    <div id="roomsSection">
       <h2 class="text-2xl font-serif mb-6">Available Rooms</h2>
 
-      <!-- EMPTY STATE -->
       <div *ngIf="rooms().length === 0" class="text-gray-500 mb-6">
         No rooms available.
       </div>

@@ -61,6 +61,7 @@ export class BookingFormComponent {
 
     await submit(this.bookingForm, async (val) => {
       const booking = val().value();
+      console.log('Booking Data:', booking);
       if (booking.guests > this.room().maxGuests) {
         alert(`Maximum guests allowed is ${this.room().maxGuests}`);
         return;

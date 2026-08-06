@@ -14,11 +14,8 @@ import { RoomCardComponent } from '../rooms/components/room-card/room-card.compo
   templateUrl: './listing-detail.component.html',
   styleUrl: './listing-detail.component.scss'
 })
-export class ListingDetailComponent {
+export class ListingDetailComponent implements OnInit {
 
-  // move() {
-  //   this.router.navigateByUrl(`/properties`);
-  // }
   route = inject(ActivatedRoute)
   router = inject(Router)
   loading = signal<boolean>(true)
@@ -28,6 +25,8 @@ export class ListingDetailComponent {
 
 
   private propertyService = inject(PropertyService)
+  
+
 
   ngOnInit() {
       this.route.paramMap.subscribe(params => {
@@ -51,6 +50,7 @@ export class ListingDetailComponent {
         this.property.set(property);
         const rooms = await this.propertyService.getRoomsByPropertyId(propertyId);
         this.rooms.set(rooms); 
+      
       }
     } catch (error) {
       console.error('Error fetching property:', error);
