@@ -37,7 +37,6 @@ export class ProfileComponent implements OnInit {
 
     this.isLoading.set(true);
     this.errorMessage.set('');
-    console.log(currentUser);
 
     this.userService.getUserById(currentUser.id).subscribe({
       next: (res) => {

@@ -1,4 +1,4 @@
-<div class="max-w-5xl mx-auto p-8">
+<div class="max-w-5xl mx-auto p-8 font-sans">
 
   <div *ngIf="isLoading()" class="text-center py-16 text-gray-400">
     Loading profile...
@@ -10,20 +10,20 @@
 
   <div *ngIf="user() && !isLoading()">
 
-    <div class="flex items-center gap-5 mb-10">
+    <div class="bg-slate-900 rounded-2xl px-8 py-10 flex items-center gap-5 mb-10">
       <img
         [src]="user()!.avatar || 'https://i.pravatar.cc/150?u=' + user()!._id"
         alt="Profile"
         class="w-20 h-20 rounded-full object-cover border-2 border-amber-500">
 
       <div>
-        <p class="text-xs tracking-widest text-amber-600 font-medium uppercase">
+        <p class="text-xs tracking-widest text-amber-500 font-medium uppercase">
           Member since {{ (user()!.createdAt || '') | date: 'yyyy' }}
         </p>
-        <h1 class="text-3xl font-serif text-gray-900">
+        <h1 class="text-3xl font-serif text-white">
           {{ user()!.name }}
         </h1>
-        <p class="text-gray-500 text-sm mt-1">
+        <p class="text-gray-400 text-sm mt-1">
           {{ user()!.email }}
         </p>
       </div>
@@ -32,12 +32,12 @@
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8">
 
       <div class="flex items-center justify-between mb-8">
-        <h2 class="text-2xl font-serif text-gray-900">My Profile</h2>
+        <h2 class="text-2xl font-serif text-slate-900">My Profile</h2>
 
         <button
           *ngIf="!isEditing()"
           (click)="startEditing()"
-          class="flex items-center gap-2 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50">
+          class="flex items-center gap-2 border border-amber-500 text-amber-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-amber-500 hover:text-white transition-colors">
           Edit profile
         </button>
       </div>
@@ -49,7 +49,7 @@
             [src]="user()!.avatar || 'https://i.pravatar.cc/150?u=' + user()!._id"
             alt="Profile"
             class="w-28 h-28 rounded-full object-cover mb-4">
-          <p class="font-medium text-gray-900">{{ user()!.name }}</p>
+          <p class="font-medium text-slate-900">{{ user()!.name }}</p>
           <span class="mt-2 inline-block px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs uppercase tracking-wide">
             {{ user()!.role }}
           </span>
@@ -58,59 +58,51 @@
         <div class="grid grid-cols-2 gap-x-8 gap-y-6 flex-1">
           <div>
             <label class="text-xs uppercase tracking-wide text-gray-400">Name</label>
-            <p class="text-base text-gray-900 mt-1">{{ user()!.name }}</p>
+            <p class="text-base text-slate-900 mt-1">{{ user()!.name }}</p>
           </div>
-
           <div>
             <label class="text-xs uppercase tracking-wide text-gray-400">Email</label>
-            <p class="text-base text-gray-900 mt-1">{{ user()!.email }}</p>
+            <p class="text-base text-slate-900 mt-1">{{ user()!.email }}</p>
           </div>
-
           <div>
             <label class="text-xs uppercase tracking-wide text-gray-400">Phone</label>
-            <p class="text-base text-gray-900 mt-1">{{ user()!.phone || '—' }}</p>
+            <p class="text-base text-slate-900 mt-1">{{ user()!.phone || '—' }}</p>
           </div>
-
           <div>
             <label class="text-xs uppercase tracking-wide text-gray-400">Member since</label>
-            <p class="text-base text-gray-900 mt-1">{{ (user()!.createdAt || '') | date: 'MMMM yyyy' }}</p>
+            <p class="text-base text-slate-900 mt-1">{{ (user()!.createdAt || '') | date: 'MMMM yyyy' }}</p>
           </div>
-
           <div>
             <label class="text-xs uppercase tracking-wide text-gray-400">Verified</label>
-            <p class="text-base text-gray-900 mt-1">{{ user()!.isVerified ? 'Yes' : 'No' }}</p>
+            <p class="text-base text-slate-900 mt-1">{{ user()!.isVerified ? 'Yes' : 'No' }}</p>
           </div>
-
           <div>
             <label class="text-xs uppercase tracking-wide text-gray-400">Status</label>
-            <p class="text-base text-gray-900 mt-1">{{ user()!.isActive ? 'Active' : 'Inactive' }}</p>
+            <p class="text-base text-slate-900 mt-1">{{ user()!.isActive ? 'Active' : 'Inactive' }}</p>
           </div>
         </div>
-
       </div>
 
       <div *ngIf="isEditing()" class="max-w-lg">
         <div class="space-y-5">
           <div>
-            <label class="block mb-2 text-sm font-medium text-gray-700">Name</label>
+            <label class="block mb-2 text-sm font-medium text-slate-900">Name</label>
             <input
               [ngModel]="user()!.name"
               (ngModelChange)="updateName($event)"
               type="text"
               class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-500">
           </div>
-
           <div>
-            <label class="block mb-2 text-sm font-medium text-gray-700">Email</label>
+            <label class="block mb-2 text-sm font-medium text-slate-900">Email</label>
             <input
               [value]="user()!.email"
               readonly
               type="email"
               class="w-full border border-gray-200 rounded-lg px-4 py-2.5 bg-gray-50 text-gray-500">
           </div>
-
           <div>
-            <label class="block mb-2 text-sm font-medium text-gray-700">Phone</label>
+            <label class="block mb-2 text-sm font-medium text-slate-900">Phone</label>
             <input
               [ngModel]="user()!.phone"
               (ngModelChange)="updatePhone($event)"
@@ -123,10 +115,9 @@
           <button
             (click)="saveChanges()"
             [disabled]="isSaving()"
-            class="bg-amber-500 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-amber-600 disabled:opacity-50">
+            class="bg-amber-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-amber-700 disabled:opacity-50">
             {{ isSaving() ? 'Saving...' : 'Save changes' }}
           </button>
-
           <button
             (click)="cancelEdit()"
             class="border border-gray-300 px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-50">
