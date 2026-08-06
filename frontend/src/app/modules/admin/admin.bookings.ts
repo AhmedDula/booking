@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject, OnInit, computed } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-
+import { BookingService } from '../bookings/booking.service';
+import { AuthService } from '../auth/auth.service';
 interface Booking {
   id: string;
   property: string;
@@ -9,7 +10,7 @@ interface Booking {
   checkOut: string;
   nights: number;
   total: number;
-  status: 'Confirmed' | 'Completed' | 'Cancelled';
+  status: 'confirmed' | 'completed' | 'cancelled' | 'pending';
 }
 
 @Component({
@@ -18,39 +19,90 @@ interface Booking {
   imports: [DecimalPipe],
   templateUrl: './admin.bookings.html',
 })
-export class AdminBookingsComponent {
-  readonly adminName = signal('Marcus Chen');
-  readonly adminRole = signal('Administrator');
+export class AdminBookingsComponent implements OnInit {
+  private authService = inject(AuthService);
+  private bookingService = inject(BookingService);
+  readonly adminName = computed(() => {
+    const user = this.authService.currentUser() as any;
+    return user?.data?.user?.name ?? '';
+  });
+
+  readonly adminRole = computed(() => {
+    const user = this.authService.currentUser() as any;
+    return user?.data?.user?.role ?? '';
+  });
   readonly adminAvatar = signal(
-    'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80'
+    'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80',
   );
+
   readonly today = signal(
     new Date().toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-    })
+    }),
   );
 
   readonly search = signal('');
 
-  readonly bookings = signal<Booking[]>([
-    { id: 'book-001', property: 'Villa Sereno', room: 'The Jungle Master Suite', checkIn: 'Sep 14, 2026', checkOut: 'Sep 21, 2026', nights: 7, total: 12950, status: 'Confirmed' },
-    { id: 'book-002', property: 'Azure Heights', room: 'Aegean Sea Suite', checkIn: 'Oct 1, 2026', checkOut: 'Oct 6, 2026', nights: 5, total: 15500, status: 'Confirmed' },
-    { id: 'book-003', property: 'Cedar Peak Lodge', room: 'Summit Master Suite', checkIn: 'Feb 14, 2026', checkOut: 'Feb 20, 2026', nights: 6, total: 5880, status: 'Completed' },
-    { id: 'book-004', property: 'La Dolce Vista', room: 'Il Palazzo Suite', checkIn: 'Aug 1, 2025', checkOut: 'Aug 9, 2025', nights: 8, total: 16800, status: 'Completed' },
-  ]);
+  readonly bookings = signal<Booking[]>([]);
+
+  ngOnInit(): void {
+    this.loadBookings();
+  }
+
+  loadBookings(): void {
+    this.bookingService.getAllBookings().subscribe({
+      next: (res) => {
+        console.log(res.data.bookings);
+        const data = res.data.bookings.map((booking: any) => ({
+          id: booking._id,
+          property: '-',
+          room: booking.room?.name ?? '-',
+          checkIn: new Date(booking.checkIn).toLocaleDateString(),
+          checkOut: new Date(booking.checkOut).toLocaleDateString(),
+          nights: Math.ceil(
+            (new Date(booking.checkOut).getTime() - new Date(booking.checkIn).getTime()) /
+              (1000 * 60 * 60 * 24),
+          ),
+          total: booking.totalPrice,
+          status: booking.status,
+        }));
+
+        this.bookings.set(data);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
 
   confirmBooking(id: string): void {
-    this.bookings.update((list) =>
-      list.map((b) => (b.id === id ? { ...b, status: 'Confirmed' } : b))
-    );
+    this.bookingService.updateBookingStatus(id, 'confirmed').subscribe({
+      next: () => this.loadBookings(),
+      error: (err) => console.error(err),
+    });
   }
 
   cancelBooking(id: string): void {
-    this.bookings.update((list) =>
-      list.map((b) => (b.id === id ? { ...b, status: 'Cancelled' } : b))
-    );
+    this.bookingService.updateBookingStatus(id, 'cancelled').subscribe({
+      next: () => this.loadBookings(),
+      error: (err) => console.error(err),
+    });
   }
+  readonly filteredBookings = computed(() => {
+    const term = this.search().toLowerCase().trim();
+
+    if (!term) {
+      return this.bookings();
+    }
+
+    return this.bookings().filter(
+      (booking) =>
+        booking.id.toLowerCase().includes(term) ||
+        booking.room.toLowerCase().includes(term) ||
+        booking.status.toLowerCase().includes(term),
+    );
+  });
 }

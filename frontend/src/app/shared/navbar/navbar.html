@@ -1,0 +1,77 @@
+<nav
+  class="fixed top-0 left-0 w-full z-50 transition-all duration-500"
+  [ngClass]="{
+    'bg-[var(--charcoal)]': isScrolled,
+    'bg-transparent': !isScrolled
+  }"
+>
+
+<div class="max-w-7xl mx-auto px-8 py-3.5 flex justify-between items-center">
+
+    <!-- Logo -->
+
+    <div class="text-[#C6A46B]">
+
+        <h1 class="text-3xl tracking-[8px] font-serif">
+            AURELIO
+        </h1>
+
+        <p class="text-xs tracking-[5px]">
+            EXCLUSIVE STAYS
+        </p>
+
+    </div>
+
+
+    <!-- Links -->
+
+    <ul class="flex gap-10 text-white uppercase text-sm tracking-widest">
+
+        <li >
+           <a routerLink= "/properties"  class="cursor-pointer hover:text-[var(--primary-hover)] duration-300" >Properties</a>
+        </li>
+
+        <li class="cursor-pointer hover:text-[var(--primary-hover)] duration-300">
+            Villas
+        </li>
+
+        <li class="cursor-pointer hover:text-[var(--primary-hover)] duration-300">
+            Cabins
+        </li>
+
+        <li class="cursor-pointer hover:text-[var(--primary-hover)] duration-300">
+            Journal
+        </li>
+
+    </ul>
+
+
+
+
+
+        <div class="flex items-center gap-4">
+
+  @if (!isLoggedIn()) {
+
+    <a  routerLink="/login"   class="text-white uppercase text-sm hover:text-[var(--primary-hover)]">
+      Sign In
+    </a>
+
+
+    <a routerLink="/register" class="bg-[var(--primary-color)] px-6 py-3 uppercase tracking-wider text-black font-semibold hover:bg-[var(--primary-hover)] transition">
+      Join Aurelio
+  </a>
+  } @else {
+
+    <a routerLink="/profile" class="border border-gray-600 text-white px-5 py-3 uppercase">
+      My Account
+    </a>
+  }
+
+</div>
+    </div>
+
+
+
+</nav>
+

@@ -1,4 +1,5 @@
-import { Injectable, Service, inject } from '@angular/core';
+
+import { Service, inject } from '@angular/core';
 
 import { ApiService } from '../../core/services/api.service';
 
@@ -29,5 +30,6 @@ export class DisputeService {
 
   deleteDispute(id: string): Observable<DisputeResponse> {
     return this.api.delete<DisputeResponse>(`/disputes/${id}`);
+
   }
 }

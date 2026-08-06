@@ -1,20 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+// @import "@fortawesome/fontawesome-free/css/all.min.css";
 :root {
   // Design tokens — extend as brand colors/spacing/typography are finalized
-  --color-primary: #0f172a;
-  --color-accent: #c9a961;
-  --color-bg: #ffffff;
-  --color-text: #0f172a;
-  --font-family-base: 'Inter', system-ui, sans-serif;
-}
+--primary-color: #be9544;
+  --primary-hover: #caa233;
+  --background-color:  #efe7d8;
+  --charcoal: #171717;
+  //--font-family-base: 'Inter', system-ui, sans-serif;
+--black: #111111;
+  --white: #FFFFFF;
 
-html, body {
-  height: 100%;
-  margin: 0;
-  font-family: var(--font-family-base);
-  color: var(--color-text);
-  background: var(--color-bg);
+
+  --heading-font: "Playfair Display", serif;
+  --body-font: "Inter", sans-serif;
+
+  // height: 100%;
+  // margin: 0;
+
+  // color: var(--color-text);
+  // background: var(--color-bg);
+}
+.hero-bg-img {
+  background-image:linear-gradient(to bottom,rgba(0,0,0,0.5),rgba(0,0,0,0.6)),url('/assets/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.9;
 }

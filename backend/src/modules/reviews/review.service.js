@@ -4,7 +4,7 @@ const ApiFeatures = require("../../utils/ApiFeature");
 const create = async (userId, data) => {
 const existingReview = await review.findOne({
     user: userId,
-    property: data.property,
+    
   });
   if (existingReview) {
     throw new Error("You have already reviewed this property");

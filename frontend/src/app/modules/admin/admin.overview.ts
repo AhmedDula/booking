@@ -1,4 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { AdminService } from './admin.service';
+import { AuthService } from '../auth/auth.service';
 
 interface StatCard {
   label: string;
@@ -14,39 +16,53 @@ interface PropertyTypeSlice {
   color: string;
 }
 
+interface Activity {
+  id: string;
+  type: 'booking' | 'dispute';
+  title: string;
+  subtitle: string;
+  date: string;
+  status: string;
+}
+
 @Component({
   selector: 'app-admin-overview',
   standalone: true,
   templateUrl: './admin.overview.html',
 })
-export class AdminOverviewComponent {
-  readonly adminName = signal('Marcus Chen');
-  readonly adminRole = signal('Administrator');
+export class AdminOverviewComponent implements OnInit {
+  private adminService = inject(AdminService);
+  private authService = inject(AuthService);
+  readonly adminName = computed(() => {
+    const user = this.authService.currentUser() as any;
+    return user?.data?.user?.name ?? '';
+  });
+
+  readonly adminRole = computed(() => {
+    const user = this.authService.currentUser() as any;
+    return user?.data?.user?.role ?? '';
+  });
   readonly adminAvatar = signal(
-    'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80'
+    'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80',
   );
+
   readonly today = signal(
     new Date().toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-    })
+    }),
   );
 
-  readonly stats: StatCard[] = [
-    { label: 'Properties', value: '8', trend: '↑ 2 this month', icon: 'building', tone: 'cream' },
-    { label: 'Rooms', value: '18', trend: '↑ 4 new rooms', icon: 'bed', tone: 'stone' },
-    { label: 'Total Guests', value: '247', trend: '↑ 12% growth', icon: 'users', tone: 'stone' },
-    { label: 'Bookings', value: '1,284', trend: '↑ 8% growth', icon: 'book', tone: 'cream' },
-    { label: 'Revenue YTD', value: '$3.8M', trend: '↑ 22% vs last year', icon: 'trend', tone: 'cream' },
-    { label: 'Avg. Nightly Rate', value: '$1420', trend: '↑ $120 increase', icon: 'chart', tone: 'stone' },
-    { label: 'Occupancy Rate', value: '78%', trend: '↑ 6% improvement', icon: 'star', tone: 'stone' },
-    { label: 'Open Disputes', value: '1', trend: '', icon: 'alert', tone: 'red' },
-  ];
+  readonly stats = signal<StatCard[]>([]);
+
+  readonly activities = signal<Activity[]>([]);
 
   readonly months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'];
+
   readonly monthlyBookings = [148, 112, 160, 172, 184, 196, 232, 64];
+
   readonly maxMonthlyBookings = 240;
 
   readonly propertyTypes: PropertyTypeSlice[] = [
@@ -57,32 +73,104 @@ export class AdminOverviewComponent {
     { label: 'Penthouse', percent: 4, color: '#a8a29e' },
   ];
 
-  readonly recentBookings = [
-    {
-      id: 'book-001',
-      guest: 'Eleanor Sinclair',
-      property: 'Villa Sereno',
-      room: 'The Jungle Master Suite',
-      checkIn: 'Sep 14',
-      checkOut: 'Sep 21, 2026',
-      total: '$12,950',
-      status: 'Confirmed',
-    },
-    {
-      id: 'book-002',
-      guest: 'Eleanor Sinclair',
-      property: 'Azure Heights',
-      room: 'Aegean Sea Suite',
-      checkIn: 'Oct 1',
-      checkOut: 'Oct 6, 2026',
-      total: '$15,500',
-      status: 'Confirmed',
-    },
-  ];
+  ngOnInit(): void {
+    this.loadStats();
+    this.loadActivity();
+  }
+
+  loadStats(): void {
+    this.adminService.getDashboardStats().subscribe({
+      next: (res: any) => {
+        const data = res.data;
+        console.log(data);
+        this.stats.set([
+          {
+            label: 'Properties',
+            value: data.totalProperties.toString(),
+            trend: '',
+            icon: 'building',
+            tone: 'cream',
+          },
+          {
+            label: 'Users',
+            value: data.totalUsers.toString(),
+            trend: '',
+            icon: 'users',
+            tone: 'stone',
+          },
+          {
+            label: 'Bookings',
+            value: data.totalBookings.toString(),
+            trend: '',
+            icon: 'book',
+            tone: 'cream',
+          },
+          {
+            label: 'Pending',
+            value: data.pendingBookings.toString(),
+            trend: '',
+            icon: 'chart',
+            tone: 'stone',
+          },
+          {
+            label: 'Confirmed',
+            value: data.confirmedBookings.toString(),
+            trend: '',
+            icon: 'star',
+            tone: 'stone',
+          },
+          {
+            label: 'Revenue',
+            value: `$${data.totalRevenue}`,
+            trend: '',
+            icon: 'trend',
+            tone: 'cream',
+          },
+          {
+            label: 'Disputes',
+            value: data.openDisputes.toString(),
+            trend: '',
+            icon: 'alert',
+            tone: 'red',
+          },
+        ]);
+      },
+      error: (err) => console.error(err),
+    });
+  }
+
+  loadActivity(): void {
+    this.adminService.getRecentActivity().subscribe({
+      next: (res: any) => {
+        const bookings = res.data.recentBookings.map((b: any) => ({
+          id: b._id,
+          type: 'booking' as const,
+          title: b.room?.name ?? 'Room',
+          subtitle: b.user?.name ?? 'Unknown User',
+          date: new Date(b.createdAt).toLocaleDateString(),
+          status: b.status,
+        }));
+
+        const disputes = res.data.recentDisputes.map((d: any) => ({
+          id: d._id,
+          type: 'dispute' as const,
+          title: d.reason,
+          subtitle: d.user?.name ?? 'Unknown User',
+          date: new Date(d.createdAt).toLocaleDateString(),
+          status: d.status,
+        }));
+
+        this.activities.set(
+          [...bookings, ...disputes].sort(
+            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+          ),
+        );
+      },
+      error: (err) => console.error(err),
+    });
+  }
 
   donutOffset(index: number): number {
-    return this.propertyTypes
-      .slice(0, index)
-      .reduce((sum, slice) => sum + slice.percent, 0);
+    return this.propertyTypes.slice(0, index).reduce((sum, slice) => sum + slice.percent, 0);
   }
 }

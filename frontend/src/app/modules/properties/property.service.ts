@@ -1,5 +1,5 @@
 import { Service, inject } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom , Observable} from 'rxjs';
 import { Property,APIResponse } from './property.model';
 import { ApiService } from '../../core/services/api.service';
 import { Room } from '../rooms/room.model';
@@ -9,8 +9,13 @@ export class PropertyService {
   private api = inject(ApiService);
     private endpoint = 'properties';
 
-  getProperties(): Promise<Property[]> {
-    return firstValueFrom(this.api.get<APIResponse<Property[]>>(this.endpoint))
+  // getProperties(): Observable<any> {
+  //   return this.api.get<APIResponse<Property[]>>(this.endpoint)
+
+  // }
+
+  getProperties():Promise<Property[]>{
+    return firstValueFrom(this.api.get<APIResponse<Property[]>>(`${this.endpoint}`))
     .then(res => res.data);
   }
   getPropertyById(id: string): Promise<Property> {
