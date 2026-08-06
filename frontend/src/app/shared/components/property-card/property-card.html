@@ -15,7 +15,7 @@
         Selected by our team for their extraordinary design, setting, and service.
       </p>
 
-      <!-- ✅ SORT DROPDOWN -->
+      <!-- SORT DROPDOWN -->
       <div class="absolute right-0 top-0">
         <select
           [(ngModel)]="selectedSort"
@@ -41,7 +41,7 @@
 
       @for (property of properties; track property._id) {
 
-        <!-- ✅ CARD -->
+        <!-- CARD -->
         <div
           class="group overflow-hidden rounded-2xl bg-white shadow-md transition hover:shadow-xl cursor-pointer"
           (click)="goToDetails(property._id)"
@@ -65,7 +65,14 @@
               (click)="$event.stopPropagation()"
               class="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-lg bg-black/30 text-white hover:bg-black/50"
             >
-              ❤️
+              <svg xmlns="http://www.w3.org/2000/svg" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor" 
+                  class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4.318 6.318C5.56 5.076 7.61 5.076 8.852 6.318L12 9.466l3.148-3.148c1.242-1.242 3.292-1.242 4.534 0 1.242 1.242 1.242 3.292 0 4.534L12 21.466 4.318 10.852c-1.242-1.242-1.242-3.292 0-4.534z"/>
+              </svg>
             </button>
           </div>
 
@@ -82,10 +89,9 @@
             <p class="mt-2 text-sm text-gray-700 font-medium">
               {{ property.pricePerNight ? ('$' + property.pricePerNight + ' / night') : 'Price not available' }}
             </p>
-
-            <p class="text-xs text-gray-500 mt-1">
-              ⭐ {{ property.rating }} ({{ property.reviewsCount }} reviews)
-            </p>
+            <span class="text-yellow-600 font-semibold">
+                ★ {{ property.rating }} ({{ property.reviewsCount }} reviews)
+              </span>
           </div>
 
         </div>

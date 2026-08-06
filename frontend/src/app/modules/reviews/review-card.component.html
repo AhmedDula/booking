@@ -1,0 +1,68 @@
+<section class="bg-[#F8F6F2] py-24 px-4 sm:px-8" style="font-family: 'Inter', sans-serif;">
+  <div class="mx-auto max-w-5xl text-center mb-16">
+    <p class="text-xs font-semibold tracking-[0.25em] text-[#C8A45D] uppercase mb-3">
+      Guest Stories
+    </p>
+    <h2
+      class="text-4xl sm:text-5xl text-[#171717]"
+      style="font-family: 'Playfair Display', serif;"
+    >
+      What Our Guests Say
+    </h2>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+    <div
+      *ngFor="let review of reviews()"
+      class="bg-white p-10"
+    >
+      <!-- Stars -->
+      <div class="flex items-center gap-0.5 text-[#C8A45D] text-sm mb-4">
+        <ng-container *ngFor="let s of [].constructor(review.rating)">
+          <span>★</span>
+        </ng-container>
+      </div>
+
+      <!-- Quote mark -->
+      <div class="text-[#C8A45D] text-2xl leading-none mb-3 font-serif">
+        "
+      </div>
+
+      <!-- Review -->
+      <p class="text-[#171717]/60 text-[15px] leading-7 mb-8">
+        {{ review.comment }}
+      </p>
+
+      <!-- Divider -->
+      <div class="border-t border-gray-200 pt-5 flex items-center gap-3">
+
+        <!-- Avatar -->
+        <img
+          *ngIf="review.avatarUrl; else initials"
+          [src]="review.avatarUrl"
+          [alt]="review.userName"
+          class="w-11 h-11 rounded-full object-cover"
+        />
+        <ng-template #initials>
+          <div
+            class="w-11 h-11 rounded-full bg-[#C8A45D] text-white flex items-center justify-center text-sm font-semibold"
+          >
+            {{ review.userName.charAt(0) }}
+          </div>
+        </ng-template>
+
+        <!-- User -->
+        <div class="text-left">
+          <h4 class="text-[15px] font-semibold text-[#171717]">
+            {{ review.userName }}
+          </h4>
+          <p class="text-[13px] text-[#A28B63]">
+            {{ review.location }}
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
