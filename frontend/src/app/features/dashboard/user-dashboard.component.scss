@@ -1,1 +1,177 @@
-// Styles for UserDashboard
+$bg-dark: #0f141c;
+$bg-body: #f7f6f2; // لون الخلفية التي تظهر تحت الهيدر في Figma
+$gold: #c5a880;
+$gold-muted: rgba(197, 168, 128, 0.25);
+$text-light: #f8fafc;
+$text-muted: #94a3b8;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.dashboard-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background-color: $bg-body;
+}
+
+// Full Width Hero Banner
+.hero-banner {
+  width: 100%;
+  background-color: $bg-dark;
+  color: $text-light;
+  padding-top: 36px;
+}
+
+// Shared Inner Container for Central Alignment
+.inner-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.profile-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 32px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+}
+
+.user-info-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid $gold;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+
+    .member-since {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: $gold;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .user-name {
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 1.85rem;
+      font-weight: 400;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .user-email {
+      font-size: 0.85rem;
+      color: $text-muted;
+      margin-top: 4px;
+    }
+  }
+}
+
+.stats-group {
+  display: flex;
+  gap: 40px;
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .stat-value {
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 1.6rem;
+      color: $text-light;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: $text-muted;
+      margin-top: 2px;
+    }
+  }
+}
+
+.tabs-nav {
+  display: flex;
+  gap: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  overflow-x: auto;
+
+  .tab-btn {
+    background: transparent;
+    border: none;
+    padding: 16px 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: $text-muted;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+
+    .icon {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+    }
+
+    .badge {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: $text-muted;
+      font-size: 0.65rem;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    &:hover {
+      color: $text-light;
+    }
+
+    &.active {
+      color: $gold;
+
+      .badge {
+        background-color: $gold-muted;
+        color: $gold;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: $gold;
+      }
+    }
+  }
+}
+
+// Full Width Content Area with Off-White Background
+.content-area {
+  width: 100%;
+  background-color: $bg-body;
+  padding-top: 40px;
+  padding-bottom: 60px;
+}
