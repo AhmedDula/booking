@@ -73,7 +73,7 @@ export class BookingConfirmationComponent implements OnInit {
 
       const bookingData = {
         ...this.booking(),
-        user: currentUser?.data?.user?.id,
+        user: currentUser.id,
       };
 
       const res = await this.bookingService.createBooking(bookingData);

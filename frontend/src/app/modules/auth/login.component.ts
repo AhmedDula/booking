@@ -46,17 +46,7 @@ export class LoginComponent {
   get loading() {
     return this.loginForm().submitting;
   }
-  logout(){
-    this.authService.logout().subscribe({
-      next: () => {
-        this.router.navigate(['/login']);
-        console.log('Logged out successfully')
-      },
-      error: (err) => {
-        console.error('Logout failed', err);
-      }
-    });
-  }
+ 
   togglePassword(): void {
     this.showPassword.update((v) => !v);
   }
