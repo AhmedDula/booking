@@ -10,9 +10,10 @@
 
   <div *ngIf="user() && !isLoading()">
 
+    <!-- Banner Header Card -->
     <div class="bg-slate-900 rounded-2xl px-8 py-10 flex items-center gap-5 mb-10">
       <img
-        [src]="user()!.avatar || 'https://i.pravatar.cc/150?u=' + user()!._id"
+        [src]="user()!.avatar || 'https://i.pravatar.cc/150?img=5'"
         alt="Profile"
         class="w-20 h-20 rounded-full object-cover border-2 border-amber-500">
 
@@ -29,6 +30,7 @@
       </div>
     </div>
 
+    <!-- Profile Details Card -->
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8">
 
       <div class="flex items-center justify-between mb-8">
@@ -42,11 +44,12 @@
         </button>
       </div>
 
+      <!-- View Mode -->
       <div *ngIf="!isEditing()" class="flex gap-10">
 
         <div class="flex flex-col items-center text-center w-48 shrink-0">
           <img
-            [src]="user()!.avatar || 'https://i.pravatar.cc/150?u=' + user()!._id"
+            [src]="user()!.avatar || 'https://i.pravatar.cc/150?img=5'"
             alt="Profile"
             class="w-28 h-28 rounded-full object-cover mb-4">
           <p class="font-medium text-slate-900">{{ user()!.name }}</p>
@@ -83,6 +86,7 @@
         </div>
       </div>
 
+      <!-- Edit Mode -->
       <div *ngIf="isEditing()" class="max-w-lg">
         <div class="space-y-5">
           <div>
