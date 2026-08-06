@@ -19,7 +19,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
 
-    path: '',
+    path: 'home',
     loadComponent: () => import('./features/home/home.component').then((m) => m.HomeComponent),
   },
   {
