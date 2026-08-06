@@ -2,9 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-
 import { reviewService } from './review.service';
-import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-review-form',
@@ -20,7 +18,6 @@ import { NavbarComponent } from '../../shared/components/navbar/navbar.component
 export class ReviewFormComponent  {
 
   private reviewService = inject(reviewService);
-  private route = inject(ActivatedRoute);
 
 
   rating = 5;
