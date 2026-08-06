@@ -9,14 +9,7 @@
 
       <h1 class="font-serif text-4xl text-slate-900 mb-2">Sign In to Aurelio</h1>
       <p class="text-sm text-slate-600 mb-8">
-        New here?  <button
-  type="button"
-  (click)="logout()"
-  class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
->
-  Button
-</button>
-        <a routerLink="/register" class="text-amber-600 font-medium hover:underline">Create an account</a>
+        New here? <a routerLink="/register" class="text-amber-600 font-medium hover:underline">Create an account</a>
       </p>
 
       @if (errorMessage()) {

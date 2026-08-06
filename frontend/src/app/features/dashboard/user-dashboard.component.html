@@ -1,1 +1,158 @@
+<div class="dashboard-wrapper">
 
+  <!-- Hero Banner -->
+  <header class="hero-banner">
+    <div class="inner-container">
+
+      <div class="profile-main">
+
+        <div class="user-info-group">
+
+          <img
+            src="https://i.pravatar.cc/150?img=5"
+            alt="User Avatar"
+            class="avatar"
+          />
+
+          <div class="details">
+
+            <span class="member-since">
+              AURELIO MEMBER
+            </span>
+
+            <h1 class="user-name">
+              {{ authService.currentUser()?.name }}
+            </h1>
+
+            <span class="user-email">
+              {{ authService.currentUser()?.email }}
+            </span>
+
+          </div>
+
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-group">
+
+          <div class="stat-item">
+            <span class="stat-value">4</span>
+            <span class="stat-label">Bookings</span>
+          </div>
+
+          <div class="stat-item">
+            <span class="stat-value">2</span>
+            <span class="stat-label">Reviews</span>
+          </div>
+
+          <div class="stat-item">
+            <span class="stat-value">0</span>
+            <span class="stat-label">Disputes</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Navigation -->
+      <nav class="tabs-nav">
+
+        <button
+          type="button"
+          class="tab-btn"
+          [class.active]="activeTab() === 'bookings'"
+          (click)="setTab('bookings')">
+
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+
+          <span>MY BOOKINGS</span>
+
+        </button>
+
+        <button
+          type="button"
+          class="tab-btn"
+          [class.active]="activeTab() === 'reviews'"
+          (click)="setTab('reviews')">
+
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+
+          <span>MY REVIEWS</span>
+
+        </button>
+
+        <button
+          type="button"
+          class="tab-btn"
+          [class.active]="activeTab() === 'disputes'"
+          (click)="setTab('disputes')">
+
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+
+          <span>DISPUTES</span>
+
+        </button>
+
+        <button
+          type="button"
+          class="tab-btn"
+          [class.active]="activeTab() === 'profile'"
+          (click)="setTab('profile')">
+
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+
+          <span>PROFILE</span>
+
+        </button>
+
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="content-area">
+
+    <div class="inner-container">
+
+      @if (activeTab() === 'bookings') {
+        <app-my-bookings></app-my-bookings>
+      }
+
+      @if (activeTab() === 'profile') {
+        <app-profile></app-profile>
+      }
+
+      @if (activeTab() === 'reviews') {
+        <div class="coming-soon">
+          <h2>Reviews Coming Soon</h2>
+          <p>This feature will be available soon.</p>
+        </div>
+      }
+
+      @if (activeTab() === 'disputes') {
+        <div class="coming-soon">
+          <h2>Disputes Coming Soon</h2>
+          <p>This feature will be available soon.</p>
+        </div>
+      }
+
+    </div>
+
+  </main>
+
+</div>
