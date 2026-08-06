@@ -30,7 +30,7 @@ export class BookingFormComponent {
     specialRequests: '',
   });
   ngOnInit(): void {
-    const roomId = this.route.snapshot.params['roomId']; ;
+    const roomId = this.route.snapshot.params['roomId'];
 
     this.bookingModel.update((booking) => ({
       ...booking,

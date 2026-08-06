@@ -1,4 +1,4 @@
-import { Component, inject, input} from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { Room } from '../../room.model';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -10,13 +10,12 @@ import { CommonModule } from '@angular/common';
   styleUrl: './room-card.component.scss',
 })
 export class RoomCardComponent {
-   room = input.required<Room>();
-   router = inject(Router);
+  room = input.required<Room>();
+  router = inject(Router);
 
- move() {
-    const room = this.room();
-    if (!room?._id) return;
+  move(roomId?: string) {
+    if (!roomId) return;
 
-    this.router.navigateByUrl(`/bookings/new/${room._id}`);
+    this.router.navigate(['/bookings/new', roomId]);
   }
 }
