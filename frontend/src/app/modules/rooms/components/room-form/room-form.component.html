@@ -1,0 +1,219 @@
+<div class="h-screen flex items-center justify-center bg-[#F8F6F2]" style="font-family: 'Inter', sans-serif;">
+  <div class="w-full max-w-2xl bg-white shadow-xl shadow-black/5 rounded-2xl p-8 flex flex-col justify-between h-[95vh] overflow-hidden">
+
+    <!-- Title -->
+    <div class="text-center mb-6">
+      <h1 class="text-3xl font-semibold text-[#171717]" style="font-family: 'Playfair Display', serif;">
+        Create Room
+      </h1>
+      <p class="text-sm text-[#171717]/60 mt-1">Add a new room to your property</p>
+    </div>
+
+    <!-- Form -->
+    <form (submit)="onSubmit($event)" class="grid grid-cols-2 gap-4 overflow-y-auto pr-1">
+      
+      <!-- Name -->
+      <div>
+        <label class="text-xs font-medium tracking-wide text-[#171717]/70">Room Name</label>
+
+        <input type="text"
+          [formField]="addRoom.name"
+          class="input-style"
+          placeholder="Room name"
+          [class.border-red-500]="(addRoom.name()?.touched() || addRoom.name()?.dirty()) && addRoom.name()?.errors()?.length">
+
+        @if ((addRoom.name()?.touched() || addRoom.name()?.dirty()) && addRoom.name()?.errors()?.length) {
+          <small class="text-red-500 text-xs mt-1 block">
+            {{ addRoom.name().errors()[0]?.message }}
+          </small>
+        }
+      </div>
+
+      <!-- Price -->
+      <div>
+        <label class="text-xs font-medium tracking-wide text-[#171717]/70">Price</label>
+
+        <input type="number"
+          [formField]="addRoom.price"
+          class="input-style"
+          placeholder="$"
+          [class.border-red-500]="(addRoom.price()?.touched() || addRoom.price()?.dirty()) && addRoom.price()?.errors()?.length">
+
+        @if ((addRoom.price()?.touched() || addRoom.price()?.dirty()) && addRoom.price()?.errors()?.length) {
+          <small class="text-red-500 text-xs mt-1 block">
+            {{ addRoom.price().errors()[0]?.message }}
+          </small>
+        }
+      </div>
+
+      <!-- Max Guests -->
+      <div>
+        <label class="text-xs font-medium tracking-wide text-[#171717]/70">Max Guests</label>
+
+        <input type="number"
+          [formField]="addRoom.maxGuests"
+          class="input-style"
+          [class.border-red-500]="(addRoom.maxGuests()?.touched() || addRoom.maxGuests()?.dirty()) && addRoom.maxGuests()?.errors()?.length">
+
+        @if ((addRoom.maxGuests()?.touched() || addRoom.maxGuests()?.dirty()) && addRoom.maxGuests()?.errors()?.length) {
+          <small class="text-red-500 text-xs mt-1 block">
+            {{ addRoom.maxGuests().errors()[0]?.message }}
+          </small>
+        }
+      </div>
+
+      <!-- Beds -->
+      <div>
+        <label class="text-xs font-medium tracking-wide text-[#171717]/70">Beds</label>
+
+        <input type="number"
+          [formField]="addRoom.beds"
+          class="input-style"
+          [class.border-red-500]="(addRoom.beds()?.touched() || addRoom.beds()?.dirty()) && addRoom.beds()?.errors()?.length">
+
+        @if ((addRoom.beds()?.touched() || addRoom.beds()?.dirty()) && addRoom.beds()?.errors()?.length) {
+          <small class="text-red-500 text-xs mt-1 block">
+            {{ addRoom.beds().errors()[0]?.message }}
+          </small>
+        }
+      </div>
+
+      <!-- Bathrooms -->
+      <div>
+        <label class="text-xs font-medium tracking-wide text-[#171717]/70">Bathrooms</label>
+
+        <input type="number"
+          [formField]="addRoom.bathrooms"
+          class="input-style"
+          [class.border-red-500]="(addRoom.bathrooms()?.touched() || addRoom.bathrooms()?.dirty()) && addRoom.bathrooms()?.errors()?.length">
+
+        @if ((addRoom.bathrooms()?.touched() || addRoom.bathrooms()?.dirty()) && addRoom.bathrooms()?.errors()?.length) {
+          <small class="text-red-500 text-xs mt-1 block">
+            {{ addRoom.bathrooms().errors()[0]?.message }}
+          </small>
+        }
+      </div>
+
+      <!-- Room Size -->
+      <div>
+        <label class="text-xs font-medium tracking-wide text-[#171717]/70">Room Size (m²)</label>
+
+        <input type="number"
+          [formField]="addRoom.roomSize"
+          class="input-style"
+          [class.border-red-500]="(addRoom.roomSize()?.touched() || addRoom.roomSize()?.dirty()) && addRoom.roomSize()?.errors()?.length">
+
+        @if ((addRoom.roomSize()?.touched() || addRoom.roomSize()?.dirty()) && addRoom.roomSize()?.errors()?.length) {
+          <small class="text-red-500 text-xs mt-1 block">
+            {{ addRoom.roomSize().errors()[0]?.message }}
+          </small>
+        }
+      </div>
+
+      <!-- Description -->
+      <div class="col-span-2">
+        <label class="text-xs font-medium tracking-wide text-[#171717]/70">Description</label>
+
+        <textarea
+          [formField]="addRoom.description"
+          class="input-style h-20 resize-none"
+          placeholder="Write description..."
+          [class.border-red-500]="(addRoom.description()?.touched() || addRoom.description()?.dirty()) && addRoom.description()?.errors()?.length">
+        </textarea>
+
+        @if ((addRoom.description()?.touched() || addRoom.description()?.dirty()) && addRoom.description()?.errors()?.length) {
+          <small class="text-red-500 text-xs mt-1 block">
+            {{ addRoom.description().errors()[0]?.message }}
+          </small>
+        }
+      </div>
+
+      <!-- Images -->
+      <div class="col-span-2">
+        <label class="text-xs font-medium tracking-wide text-[#171717]/70">Images URLs</label>
+
+        <input type="text"
+          [formField]="addRoom.images"
+          class="input-style"
+          placeholder="url1, url2"
+          [class.border-red-500]="(addRoom.images()?.touched() || addRoom.images()?.dirty()) && addRoom.images()?.errors()?.length">
+
+        @if ((addRoom.images()?.touched() || addRoom.images()?.dirty()) && addRoom.images()?.errors()?.length) {
+          <small class="text-red-500 text-xs mt-1 block">
+            {{ addRoom.images().errors()[0]?.message }}
+          </small>
+        }
+      </div>
+
+      <!-- Amenities -->
+      <div class="col-span-2">
+        <label class="text-xs font-medium tracking-wide text-[#171717]/70">Amenities</label>
+
+        <input type="text"
+          [formField]="addRoom.amenities"
+          class="input-style"
+          placeholder="wifi, tv, ac"
+          [class.border-red-500]="(addRoom.amenities()?.touched() || addRoom.amenities()?.dirty()) && addRoom.amenities()?.errors()?.length">
+
+        @if ((addRoom.amenities()?.touched() || addRoom.amenities()?.dirty()) && addRoom.amenities()?.errors()?.length) {
+          <small class="text-red-500 text-xs mt-1 block">
+            {{ addRoom.amenities().errors()[0]?.message }}
+          </small>
+        }
+      </div>
+
+      <!-- Available -->
+      <div class="col-span-2 flex items-center justify-between border border-[#E5E7EB] rounded-[10px] px-4 py-3 mt-1">
+        <label class="text-sm text-[#171717]">Available for booking</label>
+        <input type="checkbox" [formField]="addRoom.available" class="h-5 w-5 accent-[#C8A45D] cursor-pointer">
+      </div>
+
+      <!-- Submit -->
+      <div class="col-span-2 mt-2 mb-1">
+        <button type="submit" class="submit-btn">
+          Create Room
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<!-- Styles -->
+<style>
+  .input-style {
+    width: 100%;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-top: 4px;
+    font-size: 14px;
+    color: #171717;
+    outline: none;
+    transition: 0.2s ease;
+  }
+
+  .input-style::placeholder {
+    color: #9CA3AF;
+  }
+
+  .input-style:focus {
+    border-color: #C8A45D;
+    box-shadow: 0 0 0 3px rgba(200, 164, 93, 0.15);
+  }
+
+  .submit-btn {
+    width: 100%;
+    background-color: #C8A45D;
+    color: #FFFFFF;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+  }
+
+  .submit-btn:hover {
+    background-color: #C49A28;
+  }
+</style>

@@ -19,7 +19,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
 
-    path: '',
+    path: 'home',
     loadComponent: () => import('./features/home/home.component').then((m) => m.HomeComponent),
   },
   {
@@ -31,10 +31,15 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./modules/auth/register.component').then((m) => m.RegisterComponent),
   },
-  {
+  // {
+  //   path: 'properties',
+  //   loadComponent: () =>
+  //     import('./modules/properties/listings.component').then((m) => m.ListingsComponent),
+  // },
+   {
     path: 'properties',
     loadComponent: () =>
-      import('./modules/properties/listings.component').then((m) => m.ListingsComponent),
+      import('../app/shared/components/property-card/property-card').then((m) => m.PropertyCard),
   },
   {
     path: 'properties/:id',
@@ -72,17 +77,29 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./modules/bookings/my-bookings.component').then((m) => m.MyBookingsComponent),
   },
+   {
+    path: 'admin/rooms/new/:property',
+    canActivate: [authGuard, adminGuard],
+    loadComponent: () =>
+      import('./modules/rooms/components/room-form/room-form.component').then(
+        (m) => m.RoomFormComponent
+      )
+  },
   {
     path: 'disputes/raise/:bookingId',
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./modules/disputes/raise-dispute.component').then((m) => m.RaiseDisputeComponent),
+      import('./modules/disputes/raise-dispute/raise-dispute.component').then(
+        (m) => m.RaiseDisputeComponent
+      )
   },
   {
     path: 'my-disputes',
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./modules/disputes/my-disputes.component').then((m) => m.MyDisputesComponent),
+      import('./modules/disputes/my-disputes/my-disputes.component').then(
+        (m) => m.MyDisputesComponent
+      )
   },
   {
     path: 'profile',
@@ -97,10 +114,10 @@ export const routes: Routes = [
       import('./features/dashboard/user-dashboard.component').then((m) => m.UserDashboardComponent),
   },
   // {
-  //   path: 'admin',
-  //   canActivate: [authGuard, adminGuard],
-  //   children: [
-  //     {
+    // path: 'admin',
+    // canActivate: [authGuard, adminGuard],
+    //   children: [
+      // {
   //       path: '',
   //       loadComponent: () =>
   //         import('./modules/admin/admin-dashboard.component').then(
@@ -121,13 +138,13 @@ export const routes: Routes = [
   //           (m) => m.AdminBookingsComponent
   //         )
   //     },
-  //     {
-  //       path: 'disputes',
-  //       loadComponent: () =>
-  //         import('./modules/admin/admin-disputes.component').then(
-  //           (m) => m.AdminDisputesComponent
-  //         )
-  //     },
+      // {
+      //   path: 'disputes',
+      //   loadComponent: () =>
+      //     import('./modules/admin/admin.disputes').then(
+      //       (m) => m.AdminDisputesComponent
+      //     )
+      // },
   //     {
   //       path: 'users',
   //       loadComponent: () =>
@@ -135,18 +152,23 @@ export const routes: Routes = [
   //           (m) => m.AdminUsersComponent
   //         )
   //     },
-
+      
   //   ]
   // },
   {
-
-
           path: 'admin',
           canActivate: [adminGuard],
           loadChildren: () => import('./modules/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
+      },
+       {
+        path: 'disputes',
+        loadComponent: () =>
+          import('./modules/admin/admin.disputes').then(
+            (m) => m.AdminDisputesComponent
+          )
       },
   {
     path: '**',
     redirectTo: '',
   },
-];
+]

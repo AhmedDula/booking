@@ -1,6 +1,4 @@
 import { Injectable, inject, signal, Service } from '@angular/core';
-import { HttpClient, httpResource } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { BookingRequest, BookingResponse } from './booking.model';
 import { firstValueFrom } from 'rxjs';
 import { ApiService } from '../../core/services/api.service';
@@ -32,7 +30,7 @@ export class BookingService {
     };
   }> {
     return this.api.get<{
-      status: string;
+      status: string;                           
       bookings_num: number;
       data: {
         bookings: Booking[];

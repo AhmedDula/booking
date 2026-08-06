@@ -1,0 +1,110 @@
+<div class="min-h-screen bg-[#F8F6F2] p-6 font-[Inter]">
+
+  <!-- Title -->
+  <div class="max-w-4xl mx-auto mb-8">
+    <h1 class="text-3xl font-semibold text-[#171717]">
+      My Disputes
+    </h1>
+    <p class="text-sm text-[#171717]/60 mt-1">
+      View and track your submitted disputes
+    </p>
+  </div>
+
+  <!-- Content -->
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Empty State -->
+    @if (!disputes?.length) {
+      <div class="bg-white rounded-2xl border border-[#E5E7EB] p-10 text-center">
+        <p class="text-[#171717]/60 text-sm">
+          No disputes found.
+        </p>
+      </div>
+    }
+
+    <!-- Disputes List -->
+    @if (disputes?.length) {
+      <div class="space-y-5">
+
+        @for (d of disputes; track d._id) {
+          <div class="bg-white rounded-2xl border border-[#E5E7EB] shadow-sm hover:shadow-md transition p-6">
+
+            <!-- Header -->
+            <div class="flex justify-between items-start mb-3">
+              
+              <!-- Reason (MAIN TITLE) -->
+              <h2 class="text-lg font-semibold text-[#171717] capitalize">
+                {{ d.reason }}
+              </h2>
+
+              <!-- Status -->
+              <span
+                class="text-xs px-3 py-1 rounded-full font-medium capitalize"
+                [ngClass]="{
+                  'bg-yellow-100 text-yellow-700': d.status === 'pending',
+                  'bg-blue-100 text-blue-700': d.status === 'under_review',
+                  'bg-green-100 text-green-700': d.status === 'resolved',
+                  'bg-red-100 text-red-700': d.status === 'rejected'
+                }">
+                {{ d.status.replace('_', ' ') }}
+              </span>
+
+            </div>
+
+            <!-- Description -->
+            <p class="text-sm text-[#171717]/70 mb-4 leading-relaxed">
+              {{ d.description || 'No description provided.' }}
+            </p>
+
+            <!-- Evidence -->
+            @if (d.evidence?.length) {
+              <div class="mb-4">
+                <p class="text-xs font-medium text-[#171717]/70 mb-1">Evidence:</p>
+                <div class="flex flex-wrap gap-2">
+                  @for (img of d.evidence; track $index) {
+                    <a [href]="img" target="_blank"
+                      class="text-xs text-[#C8A45D] underline hover:text-[#a88645]">
+                      View file {{ $index + 1 }}
+                    </a>
+                  }
+                </div>
+              </div>
+            }
+
+            <!-- Resolution (only if resolved) -->
+            @if (d.status === 'resolved' || d.status === 'rejected') {
+              <div class="bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg p-3 mb-4">
+                <p class="text-xs font-medium text-[#171717]/70 mb-1">
+                  Resolution Notes:
+                </p>
+                <p class="text-sm text-[#171717]/70">
+                  {{ d.resolutionNotes || 'No notes provided.' }}
+                </p>
+              </div>
+            }
+
+            <!-- Dates -->
+            <div class="flex flex-wrap justify-between text-xs text-[#171717]/60 border-t border-[#E5E7EB] pt-3">
+
+              <div>
+                <span class="font-medium text-[#171717]/80">Created:</span>
+                {{ d._id ? (d._id | date:'medium') : 'N/A' }}
+              </div>
+
+              @if (d.resolvedAt) {
+                <div>
+                  <span class="font-medium text-[#171717]/80">Resolved:</span>
+                  {{ d.resolvedAt | date:'medium' }}
+                </div>
+              }
+
+            </div>
+
+          </div>
+        }
+
+      </div>
+    }
+
+  </div>
+</div>

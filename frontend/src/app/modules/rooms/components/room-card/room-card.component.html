@@ -1,0 +1,87 @@
+<div class="font-serif">
+  <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+
+    <!-- IMAGE -->
+    <div class="relative">
+      <img 
+        [src]="room().images?.[0] || 'assets/villa1.jpg'" 
+        class="w-full h-[300px] object-cover"
+      />
+
+      <!-- AVAILABLE BADGE -->
+      <span class="absolute top-4 left-4 bg-green-900 text-white text-sm px-4 py-1 rounded">
+        AVAILABLE
+      </span>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="p-6">
+
+      <!-- TITLE + PRICE -->
+      <div class="flex justify-between items-start mb-4">
+        <h2 class="text-2xl">
+          {{ room().name }}
+        </h2>
+
+        <div class="text-right">
+          <p class="text-2xl font-bold text-gray-900">
+            ${{ room().price }}
+          </p>
+          <span class="text-gray-500 text-sm">per night</span>
+        </div>
+      </div>
+
+      <!-- DESCRIPTION -->
+      <p class="text-gray-600 mb-4">
+        {{ room().description }}
+      </p>
+
+      <!-- ROOM INFO -->
+      <div class="flex flex-wrap gap-4 text-gray-600 text-sm mb-4">
+
+        <span>👤 {{ room().maxGuests }} guests</span>
+
+        <span>🛏 {{ room().beds }} beds</span>
+
+        <span>🛁 {{ room().bathrooms }} bathrooms</span>
+
+        <span>📐 {{ room().roomSize }} m²</span>
+
+      </div>
+
+      <!-- AMENITIES -->
+      <div class="flex flex-wrap gap-2 mb-6">
+        <span 
+          *ngFor="let amenity of room().amenities"
+          class="bg-gray-100 text-gray-700 px-3 py-1 text-sm rounded"
+        >
+          {{ amenity }}
+        </span>
+      </div>
+
+      <hr class="mb-4">
+
+      <!-- FOOTER -->
+      <div class="flex justify-between items-center">
+
+        <!-- ESTIMATE -->
+        <p class="text-gray-600">
+          Estimate for 7 nights:
+          <span class="font-semibold text-black">
+            ${{ room().price * 7 }}
+          </span>
+        </p>
+
+        <!-- BUTTON -->
+        <button 
+          (click)="move()"
+          class="bg-yellow-700 hover:bg-yellow-800 text-white px-6 py-2 rounded font-semibold tracking-wide"
+        >
+          BOOK NOW →
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>

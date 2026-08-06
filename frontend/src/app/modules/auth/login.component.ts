@@ -67,10 +67,12 @@ export class LoginComponent {
 
     await submit(this.loginForm, async (field) => {
       try {
+        
         await firstValueFrom(this.authService.login(field().value()));
 
         const returnUrl =
-          this.route.snapshot.queryParamMap.get('returnUrl') ?? '/home';
+          this.route.snapshot.queryParams['returnUrl'] ?? '/home';
+          
         this.router.navigateByUrl(returnUrl);
         return undefined;
       } catch (err) {

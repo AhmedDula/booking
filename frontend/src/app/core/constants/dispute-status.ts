@@ -1,3 +1,5 @@
-export const DISPUTE_STATUS = {
-  // TODO: define DISPUTE_STATUS
-} as const;
+export interface DisputeStatus {
+  PENDING: "pending";
+  RESOLVED: "resolved";
+  REJECTED: "rejected";
+}

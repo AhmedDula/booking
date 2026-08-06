@@ -12,6 +12,14 @@ const createRoom = async (propertyId, data) => {
   return await Room.create({...data, property: propertyId,});
 };
 
+const getRoomsByProperty = async (propertyId) => {
+  const property = await Property.findById(propertyId);
+  if (!property) {
+    throw ApiError.notFound("Property not found");
+  }
+  return await Room.find({ property: propertyId });
+};
+
 const getRooms = async (queryString) => {
   const features = new ApiFeatures(
     Room.find({ available: true }),
@@ -63,6 +71,7 @@ const deleteRoom = async (id) => {
 module.exports = {
   createRoom,
   getRooms,
+  getRoomsByProperty,
   getRoomById,
   updateRoom,
   deleteRoom,

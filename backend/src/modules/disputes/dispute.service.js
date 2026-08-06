@@ -1,44 +1,34 @@
 const Dispute = require("./dispute.model");
+const Booking = require("../bookings/booking.model");
 const ApiError = require("../../utils/ApiError");
-const Booking = require("../bookings/booking.model")
-const ApiFeatures = require("../../utils/ApiFeature");
 const disputeStatus = require("../../constants/disputes");
 
 
 const createDispute = async (data) => {
-  const booking = await Booking.findById(data.booking)
- if(!booking) throw ApiError.notFound(`booking not found has id: ${data.booking}` )
-  
-  const existing = await Dispute.findOne({ booking: booking._id });
-
-  if (existing) {
-    throw ApiError.conflict("A dispute already exists for this booking");
+  const booking = await Booking.findById(data.booking);
+  if (!booking) {
+    throw ApiError.notFound("Booking not found");
   }
+
+  const exists = await Dispute.findOne({ booking: data.booking });
+  if (exists) {
+    throw ApiError.conflict("Dispute already exists for this booking");
+  }
+
   return await Dispute.create(data);
 };
 
-const getDisputes = async (queryString, userId, role) => {
+
+const getDisputes = async (userId, role) => {
   let query = {};
 
   if (role !== "admin") {
     query.user = userId;
   }
 
-  const features = new ApiFeatures(
-    Dispute.find(query),
-    queryString).filter().sort().limitFields().paginate();
-
-  const disputes = await features.query;
-  const total = await Dispute.countDocuments(query);
-
-  return {
-    disputes,
-    total,
-    page: Number(queryString.page) || 1,
-    limit: Number(queryString.limit) || 10,
-    pages: Math.ceil(total / (Number(queryString.limit) || 10)),
-  };
+  return await Dispute.find(query);
 };
+
 
 const getDispute = async (id, userId, role) => {
   const dispute = await Dispute.findById(id);
@@ -46,11 +36,14 @@ const getDispute = async (id, userId, role) => {
   if (!dispute) {
     throw ApiError.notFound("Dispute not found");
   }
+
   if (role !== "admin" && dispute.user.toString() !== userId) {
-    throw ApiError.forbidden("You do not have permission to view this dispute");
+    throw ApiError.forbidden("Not allowed");
   }
+
   return dispute;
 };
+
 
 const updateDispute = async (id, data, userId, role) => {
   const dispute = await Dispute.findById(id);
@@ -60,18 +53,17 @@ const updateDispute = async (id, data, userId, role) => {
   }
 
   if (role !== "admin" && dispute.user.toString() !== userId) {
-    throw ApiError.forbidden("You do not have permission to update this dispute");
+    throw ApiError.forbidden("Not allowed");
   }
 
   Object.assign(dispute, data);
-  await dispute.save();
-
-  return dispute;
+  return await dispute.save();
 };
+
 
 const deleteDispute = async (id, role) => {
   if (role !== "admin") {
-    throw ApiError.forbidden("Only admins can delete disputes");
+    throw ApiError.forbidden("Only admin can delete");
   }
 
   const dispute = await Dispute.findByIdAndDelete(id);
@@ -83,9 +75,10 @@ const deleteDispute = async (id, role) => {
   return dispute;
 };
 
+
 const updateStatus = async (id, status, role, resolvedBy) => {
   if (role !== "admin") {
-    throw ApiError.forbidden("Only admins can update dispute status");
+    throw ApiError.forbidden("Only admin can update status");
   }
 
   const dispute = await Dispute.findById(id);
@@ -96,16 +89,17 @@ const updateStatus = async (id, status, role, resolvedBy) => {
 
   dispute.status = status;
   dispute.resolvedBy = resolvedBy;
-  dispute.resolvedAt =
+
+  if (
     status === disputeStatus.RESOLVED ||
     status === disputeStatus.REJECTED
-      ? new Date()
-      : null;
+  ) {
+    dispute.resolvedAt = new Date();
+  }
 
-  await dispute.save();
-
-  return dispute;
+  return await dispute.save();
 };
+
 
 module.exports = {
   createDispute,

@@ -18,6 +18,8 @@ const {
   remove,
 } = require("./properties.controller");
 
+const { getRoomsByProperty } = require("../rooms/room.controller");
+
 router
   .route("/")
   .post(
@@ -27,6 +29,9 @@ router
     create
   )
   .get(getAll);
+
+router
+  .route("/:id/rooms").get(getRoomsByProperty);  
 
 router
   .route("/soft-delete/:id")
