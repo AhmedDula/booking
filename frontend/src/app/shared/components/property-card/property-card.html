@@ -1,81 +1,96 @@
-<section class="max-w-7xl mx-auto px-4 py-12 bg-[var(--background-color)]">
+<div class="bg-[var(--background-color)] py-12">
+  <section class="max-w-7xl mx-auto px-4 py-12 bg-[var(--background-color)]">
 
-  <!-- Header -->
-  <div class="mb-10">
-    <span class="text-xs font-semibold tracking-[0.2em] text-[#b8977e] uppercase">
-      Curated Collection
-    </span>
+    <!-- Header -->
+    <div class="mb-10 relative">
+      <span class="text-xs font-semibold tracking-[0.2em] text-[#b8977e] uppercase">
+        Curated Collection
+      </span>
 
-    <h2 class="mt-2 text-4xl font-serif text-gray-900">
-      Featured Properties
-    </h2>
+      <h2 class="mt-2 text-4xl font-serif text-gray-900">
+        Featured Properties
+      </h2>
 
-    <p class="mt-2 text-gray-600 text-sm md:text-base">
-      Selected by our team for their extraordinary design, setting, and service.
-    </p>
-  </div>
+      <p class="mt-2 text-gray-600 text-sm md:text-base">
+        Selected by our team for their extraordinary design, setting, and service.
+      </p>
 
-  <!-- Empty State -->
-  @if (!properties.length) {
-    <p class="text-gray-500">No properties found.</p>
-  }
-
-  <!-- Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10 bg-[var(--background-color)]">
-
-    @for (property of properties; track property._id) {
-
-      <!-- ✅ CLICK HERE (correct place) -->
-      <div
-        class="group overflow-hidden rounded-2xl bg-white shadow-md transition hover:shadow-xl cursor-pointer"
-        (click)="goToDetails(property._id)"
-      >
-
-        <!-- Image -->
-        <div class="relative h-72 w-full">
-          <img
-            [src]="property.images?.[0] || images[$index % images.length]"
-            [alt]="property.title"
-            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-
-          <!-- Property Type -->
-          <span class="absolute top-4 left-4 text-xs font-bold tracking-widest text-[var(--primary-color)] drop-shadow-md uppercase">
-            {{ property.propertyType }}
-          </span>
-
-          <!-- ✅ Prevent navigation when clicking heart -->
-          <button
-            (click)="$event.stopPropagation()"
-            class="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-lg bg-black/30 backdrop-blur-md text-white transition hover:bg-black/50"
-          >
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.684a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-            </svg>
-          </button>
-        </div>
-
-        <!-- Details -->
-        <div class="p-5">
-
-          <p class="text-sm text-gray-500">
-            {{ property.location.city }}, {{ property.location.country }}
-          </p>
-
-          <h3 class="mt-2 text-xl font-semibold text-gray-800">
-            {{ property.title }}
-          </h3>
-
-          <p class="mt-2 text-sm text-gray-700 font-medium">
-            {{ property.pricePerNight ? ('$' + property.pricePerNight + ' / night') : 'Price not available' }}
-          </p>
-
-          <p class="text-xs text-gray-500 mt-1">
-            ⭐ {{ property.rating }} ({{ property.reviewsCount }} reviews)
-          </p>
-        </div>
+      <!-- ✅ SORT DROPDOWN -->
+      <div class="absolute right-0 top-0">
+        <select
+          [(ngModel)]="selectedSort"
+          (change)="sortProperties()"
+          class="rounded-xl border border-gray-300 bg-white px-5 py-3 text-sm font-medium shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#b8977e]"
+        >
+          <option value="">Sort By</option>
+          <option value="name">Name A → Z</option>
+          <option value="-name">Name Z → A</option>
+          <option value="price">Price Low → High</option>
+          <option value="-price">Price High → Low</option>
+        </select>
       </div>
+    </div>
+
+    <!-- Empty -->
+    @if (!properties.length) {
+      <p class="text-gray-500">No properties found.</p>
     }
-  </div>
-</section>
+
+    <!-- Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
+
+      @for (property of properties; track property._id) {
+
+        <!-- ✅ CARD -->
+        <div
+          class="group overflow-hidden rounded-2xl bg-white shadow-md transition hover:shadow-xl cursor-pointer"
+          (click)="goToDetails(property._id)"
+        >
+
+          <!-- Image -->
+          <div class="relative h-72 w-full">
+            <img
+              [src]="property.images?.[0] || images[$index % images.length]"
+              [alt]="property.title"
+              class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+
+            <!-- Type -->
+            <span class="absolute top-4 left-4 text-xs font-bold tracking-widest text-[var(--primary-color)] uppercase">
+              {{ property.propertyType }}
+            </span>
+
+            <!-- Heart -->
+            <button
+              (click)="$event.stopPropagation()"
+              class="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-lg bg-black/30 text-white hover:bg-black/50"
+            >
+              ❤️
+            </button>
+          </div>
+
+          <!-- Details -->
+          <div class="p-5">
+            <p class="text-sm text-gray-500">
+              {{ property.location?.city }}, {{ property.location?.country }}
+            </p>
+
+            <h3 class="mt-2 text-xl font-semibold text-gray-800">
+              {{ property.title }}
+            </h3>
+
+            <p class="mt-2 text-sm text-gray-700 font-medium">
+              {{ property.pricePerNight ? ('$' + property.pricePerNight + ' / night') : 'Price not available' }}
+            </p>
+
+            <p class="text-xs text-gray-500 mt-1">
+              ⭐ {{ property.rating }} ({{ property.reviewsCount }} reviews)
+            </p>
+          </div>
+
+        </div>
+      }
+    </div>
+
+  </section>
+</div>

@@ -9,15 +9,14 @@ export class PropertyService {
   private api = inject(ApiService);
     private endpoint = 'properties';
 
-  // getProperties(): Observable<any> {
-  //   return this.api.get<APIResponse<Property[]>>(this.endpoint)
+  getProperties(): Observable<any> {
+    return this.api.get<APIResponse<Property[]>>(this.endpoint)
 
-  // }
-
-  getProperties():Promise<Property[]>{
-    return firstValueFrom(this.api.get<APIResponse<Property[]>>(`${this.endpoint}`))
-    .then(res => res.data);
   }
+  // getProperties():Promise<Property[]>{
+  //   return firstValueFrom(this.api.get<APIResponse<Property[]>>(`${this.endpoint}`))
+  //   .then(res => res.data);
+  // }
   getPropertyById(id: string): Promise<Property> {
     return firstValueFrom(
       this.api.get<APIResponse<Property>>(`${this.endpoint}/update/${id}`)
