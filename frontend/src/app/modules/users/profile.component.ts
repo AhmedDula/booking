@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit {
     this.errorMessage.set('');
     console.log(currentUser);
 
-    this.userService.getUserById(currentUser.data.user.id).subscribe({
+    this.userService.getUserById(currentUser.id).subscribe({
       next: (res) => {
         this.user.set(res.data);
         this.isLoading.set(false);
