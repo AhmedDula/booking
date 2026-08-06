@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { DisputeService } from '../dispute.service';
 import { CommonModule } from '@angular/common';
@@ -11,24 +11,26 @@ import { CommonModule } from '@angular/common';
   styleUrl: './my-disputes.component.scss'
 })
 export class MyDisputesComponent implements OnInit {
-  private readonly currentUser = inject(AuthService).currentUser();
+
+  private readonly authService = inject(AuthService);
   private readonly disputeService = inject(DisputeService);
 
-  disputes: any[] = [];
+  currentUser = this.authService.currentUser();
 
-  ngOnInit() {
-    if (this.currentUser) {
-      this.disputeService.getDisputes().subscribe({
-        next: (res:any) => {
-          console.log(res);
-          this.disputes = res.data || res;
-        },
-        error: (err) => {
-          console.error(err);
-        },
-      });
+  disputes = signal<any[]>([]);
+
+  ngOnInit(): void {
+    if (!this.currentUser) {
+      return;
     }
-  }
-  
-}
 
+    this.disputeService.getDisputes().subscribe({
+      next: (res: any) => {
+        this.disputes.set(res.data);
+      },
+      error: (err: any) => {
+        console.error('Error loading disputes:', err);
+      }
+    });
+  }
+}
