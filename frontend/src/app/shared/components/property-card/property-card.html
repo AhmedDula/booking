@@ -15,7 +15,7 @@
         Selected by our team for their extraordinary design, setting, and service.
       </p>
 
-      <!-- Sort Dropdown -->
+      <!-- SORT DROPDOWN -->
       <div class="absolute right-0 top-0">
         <select
           [(ngModel)]="selectedSort"
@@ -31,7 +31,12 @@
       </div>
     </div>
 
-    <!-- Empty State -->
+    <!-- Loading -->
+    @if (loading) {
+      <p class="text-gray-500">Loading properties...</p>
+    }
+
+    <!-- Empty -->
     @if (!properties.length) {
       <p class="text-gray-500">No properties found.</p>
     }
@@ -39,9 +44,9 @@
     <!-- Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
 
-      @for (property of properties; track property._id) {
+      @for (property of properties(); track property._id) {
 
-        <!-- Property Card -->
+        <!-- ✅ CARD -->
         <div
           class="group overflow-hidden rounded-2xl bg-[#F8F6F2] border border-[#E8E2D9] shadow-md transition-all duration-300 hover:shadow-xl cursor-pointer"
           (click)="goToDetails(property._id)"
