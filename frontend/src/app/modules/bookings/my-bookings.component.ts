@@ -15,7 +15,7 @@ export class MyBookingsComponent implements OnInit {
   router = inject(Router);
   ngOnInit(): void {
     this.bookingService.getMyBookings().subscribe((res: any) => {
-      console.log(res);
+      console.log(res.data.bookings);
       const activeBookings = res.data.bookings.filter(
         (booking: any) => booking.status !== 'cancelled',
       );
@@ -24,7 +24,7 @@ export class MyBookingsComponent implements OnInit {
   }
 
   goToProperties() {
-   this.router.navigateByUrl('/properties');
+    this.router.navigateByUrl('/properties');
   }
   cancelBooking(id: string) {
     this.bookingService.cancelBooking(id).subscribe({
