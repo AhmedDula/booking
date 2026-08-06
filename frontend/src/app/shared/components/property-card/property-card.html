@@ -1,3 +1,19 @@
+<!-- <div class="flex justify-end mt-8 md-8 mr-16">
+  <select
+    [(ngModel)]="selectedSort"
+    (change)="sortProperties()"
+    class="rounded-lg border border-gray-300 p-2">
+
+    <option value="">Sort By</option>
+    <option value="name">Name A → Z</option>
+    <option value="-name">Name Z → A</option>
+    <option value="price">Price Low → High</option>
+    <option value="-price">Price High → Low</option>
+
+  </select>
+</div> -->
+
+<div class="bg-[var(--background-color)] py-12">
 <section class="max-w-7xl mx-auto px-4 py-12 bg[var(--background-color)]">
 
   <!-- Section Header -->
@@ -11,29 +27,40 @@
     <p class="mt-2 text-gray-600 text-sm md:text-base">
       Selected by our team for their extraordinary design, setting, and service.
     </p>
+    <div class="ml-auto mr-8 -mt-16 w-fit">
+  <select
+    [(ngModel)]="selectedSort"
+    (change)="sortProperties()"
+    class="rounded-xl border border-gray-300 bg-white px-5 py-3 text-sm font-medium shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#b8977e]">
+    <option value="">Sort By</option>
+    <option value="name">Name A → Z</option>
+    <option value="-name">Name Z → A</option>
+    <option value="price">Price Low → High</option>
+    <option value="-price">Price High → Low</option>
+  </select>
+</div>
+
   </div>
   <!-- Cards Grid -->
-  <!-- @let images = ['/assets/villa1.jpg', '/assets/villa2.jpg', '/assets/villa3.jpg', '/assets/villa4.jpg']; -->
-
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10  bg[var(--background-color)]">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10  bg-[var(--background-color)]">
     @for (property of properties; track property.id||property._id||$index) {
-      <div class="group overflow-hidden rounded-2xl bg-white shadow-md transition hover:shadow-xl">
+      <div class="group overflow-hidden rounded-2xl bg-[var(--background-color)] shadow-md transition hover:shadow-xl">
 
-        <!-- الحاوية المتميزة للصورة مع العناصر المضافة فوقها -->
+
         <div class="relative h-72 w-full">
-          <!-- الصورة -->
+
           <img
             [src]="images[$index % images.length]"
             [alt]="property.title"
             class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
 
-          <!-- الكلمة فوق الصورة على اليسار -->
+
           <span class="absolute top-4 left-4 text-xs font-bold tracking-widest text-[var(--primary-color)] drop-shadow-md uppercase">
             Villa
           </span>
 
-          <!-- زر المفضلة (القلب) على اليمين -->
+
           <button class="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-lg bg-black/30 backdrop-blur-md text-white transition hover:bg-black/50">
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.684a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
@@ -41,7 +68,7 @@
           </button>
         </div>
 
-        <!-- تفاصيل الكارت السفلية -->
+
         <div class="p-5">
           <p class="text-sm text-gray-500">
             {{ property.location?.city }}, {{ property.location?.country }}
@@ -57,3 +84,4 @@
   </div>
 
 </section>
+</div>

@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component,  OnInit } from '@angular/core';
 import{PropertyService}from '../../../modules/properties/property.service';
-
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-property-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './property-card.html'
 })
 export class PropertyCard  implements OnInit{
@@ -16,6 +16,7 @@ export class PropertyCard  implements OnInit{
     '/assets/villa4.jpg'
   ];
   properties:any[]=[]
+  selectedSort='';
   constructor(private service:PropertyService)
   {
 
@@ -34,6 +35,27 @@ ngOnInit(): void {
       console.log(err);
     }
   });
+}sortProperties() {
+  switch (this.selectedSort) {
+    case 'name':
+      this.properties.sort((a, b) => a.title.localeCompare(b.title));
+      break;
+
+    case '-name':
+      this.properties.sort((a, b) => b.title.localeCompare(a.title));
+      break;
+
+    case 'price':
+      this.properties.sort((a, b) => a.pricePerNight - b.pricePerNight);
+      break;
+
+    case '-price':
+      this.properties.sort((a, b) => b.pricePerNight - a.pricePerNight);
+      break;
+  }
+
+  // علشان Angular يلاحظ التغيير
+  this.properties = [...this.properties];
 }
 
   }

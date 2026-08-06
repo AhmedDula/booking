@@ -18,7 +18,7 @@ export class Hero {
 
   types: string[] = ['All Types', 'Villa', 'Cabin', 'House'];
   countries: string[] = ['All Countries', 'Paris', 'Italy', 'Spain', 'Greece'];
-  cities: string[] = ['All Cities', 'Nice', 'Florence', 'Marbella', 'Mykonos'];
+  cities: string[] = ['All Cities', 'Cairo', 'Faraya', 'Sheikh', 'Hurghada'];
 
   onSearch(): void {
     console.log('Searching for:', {
