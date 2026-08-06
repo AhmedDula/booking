@@ -1,107 +1,77 @@
-// import { CommonModule } from '@angular/common';
-// import { Component,  OnInit } from '@angular/core';
-
-// import{PropertyService}from '../../../modules/properties/property.service';
-
-// @Component({
-//   selector: 'app-property-card',
-//   standalone: true,
-//   imports: [CommonModule],
-//   templateUrl: './property-card.html'
-// })
-// export class PropertyCard  implements OnInit{
-//   images: string[] = [
-//     'assets/villa1.jpg',
-//     '/assets/villa2.jpg',
-//     '/assets/villa3.jpg',
-//     '/assets/villa4.jpg'
-//   ];
-//   properties:any[]=[]
-//   constructor(private service:PropertyService,
-//     private router: Router
-//   ){}
-
-//   loading: boolean = true;
-
-// async ngOnInit(): Promise<void> {
-//   try {
-//     this.loading = true;
-
-//     this.properties = await this.service.getProperties();
-
-//   } catch (err) {
-//     console.error(err);
-//   } finally {
-//     this.loading = false; 
-//   }
-// }
-
-
-
-//   }
-
 import { CommonModule } from '@angular/common';
-import { Component,  OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import{PropertyService}from '../../../modules/properties/property.service';
+import { PropertyService } from '../../../modules/properties/property.service';
 import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-property-card',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './property-card.html'
 })
-export class PropertyCard  implements OnInit{
+export class PropertyCard implements OnInit {
+  readonly properties = signal<any[]>([]);
+
   images: string[] = [
     'assets/villa1.jpg',
     '/assets/villa2.jpg',
     '/assets/villa3.jpg',
     '/assets/villa4.jpg'
   ];
-  properties:any[]=[]
-  selectedSort='';
-  constructor(private service:PropertyService,private router: Router)
-  {
 
+  selectedSort = '';
+  loading = true;
+
+  constructor(
+    private service: PropertyService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.loading = true;
+
+    this.service.getProperties().subscribe({
+      next: (res) => {
+        this.properties.set(res.data);
+        this.loading = false;
+      },
+      error: (err) => {
+        console.log(err);
+        this.loading = false;
+      }
+    });
   }
 
+  sortProperties(): void {
+    const sorted = [...this.properties()];
 
+    switch (this.selectedSort) {
+      case 'name':
+        sorted.sort((a, b) => a.title.localeCompare(b.title));
+        break;
 
-ngOnInit(): void {
-  this.service.getProperties().subscribe({
-    next: (res) => {
-      this.properties =res.data;
-      console.log( res.data);
+      case '-name':
+        sorted.sort((a, b) => b.title.localeCompare(a.title));
+        break;
 
-    },
-    error: (err) => {
-      console.log(err);
+      case 'price':
+        sorted.sort((a, b) => a.pricePerNight - b.pricePerNight);
+        break;
+
+      case '-price':
+        sorted.sort((a, b) => b.pricePerNight - a.pricePerNight);
+        break;
+
+      default:
+        // 'Sort By' selected — leave order as-is
+        break;
     }
-  });
-}sortProperties() {
-  switch (this.selectedSort) {
-    case 'name':
-      this.properties.sort((a, b) => a.title.localeCompare(b.title));
-      break;
 
-    case '-name':
-      this.properties.sort((a, b) => b.title.localeCompare(a.title));
-      break;
-
-    case 'price':
-      this.properties.sort((a, b) => a.pricePerNight - b.pricePerNight);
-      break;
-
-    case '-price':
-      this.properties.sort((a, b) => b.pricePerNight - a.pricePerNight);
-      break;
+    this.properties.set(sorted);
   }
 
-  
-  this.properties = [...this.properties];
-}
-goToDetails(id: string) {
-  this.router.navigate(['/properties', id]);
-}
-
+  goToDetails(id: string): void {
+    this.router.navigate(['/properties', id]);
   }
+}

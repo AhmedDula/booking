@@ -8,6 +8,7 @@ import{ PropertyCard } from'../../shared/components/property-card/property-card'
 import { WhyAurelio } from '../../features/why-aurelio/why-aurelio';
 import { Testimonials } from '../../features/testimonials/testimonials';
 import { Cta } from '../../features/cta/cta';
+import { ReviewCardComponent } from '../../modules/reviews/review-card.component';
 //import { Hero } from '../../features/home/components/hero/hero.component';
 //import { HttpClient } from '@angular/common/http';
 //import { environment } from '../../../environments/environment';
@@ -22,7 +23,7 @@ import { Cta } from '../../features/cta/cta';
     WhyAurelio,
     Testimonials,
     Cta,
-    Footer,PropertyCard
+    Footer,PropertyCard,ReviewCardComponent
   ],
   templateUrl: './home.html',
   styleUrl: './home.css'
