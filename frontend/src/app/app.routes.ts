@@ -113,10 +113,10 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/dashboard/user-dashboard.component').then((m) => m.UserDashboardComponent),
   },
-  {
-    path: 'admin',
-    canActivate: [authGuard, adminGuard],
-      children: [
+  // {
+    // path: 'admin',
+    // canActivate: [authGuard, adminGuard],
+    //   children: [
       // {
   //       path: '',
   //       loadComponent: () =>
@@ -138,13 +138,13 @@ export const routes: Routes = [
   //           (m) => m.AdminBookingsComponent
   //         )
   //     },
-      {
-        path: 'disputes',
-        loadComponent: () =>
-          import('./modules/admin/admin.disputes').then(
-            (m) => m.AdminDisputesComponent
-          )
-      },
+      // {
+      //   path: 'disputes',
+      //   loadComponent: () =>
+      //     import('./modules/admin/admin.disputes').then(
+      //       (m) => m.AdminDisputesComponent
+      //     )
+      // },
   //     {
   //       path: 'users',
   //       loadComponent: () =>
@@ -156,15 +156,19 @@ export const routes: Routes = [
   //   ]
   // },
   {
-
-
           path: 'admin',
           canActivate: [adminGuard],
           loadChildren: () => import('./modules/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
+      },
+       {
+        path: 'disputes',
+        loadComponent: () =>
+          import('./modules/admin/admin.disputes').then(
+            (m) => m.AdminDisputesComponent
+          )
       },
   {
     path: '**',
     redirectTo: '',
   },
-],}
 ]
