@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "luxury-booking-frontend": {
+    "frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
