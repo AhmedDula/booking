@@ -29,9 +29,9 @@ const envSchema = Joi.object({
   PEPPER: Joi.string().min(32).required(),
 
   // Cloudinary
-  CLOUDINARY_CLOUD_NAME: Joi.string().required(),
-  CLOUDINARY_API_KEY: Joi.string().required(),
-  CLOUDINARY_API_SECRET: Joi.string().required(),
+  // CLOUDINARY_CLOUD_NAME: Joi.string().required(),
+  // CLOUDINARY_API_KEY: Joi.string().required(),
+  // CLOUDINARY_API_SECRET: Joi.string().required(),
 
   // Client
   CLIENT_URL: Joi.string().uri().required(),
@@ -67,11 +67,11 @@ const env = {
     bcryptSaltRounds: value.BCRYPT_SALT_ROUNDS,
     pepper: value.PEPPER,
   },
-  cloudinary: {
-    cloudName: value.CLOUDINARY_CLOUD_NAME,
-    apiKey: value.CLOUDINARY_API_KEY,
-    apiSecret: value.CLOUDINARY_API_SECRET,
-  },
+  // cloudinary: {
+  //   cloudName: value.CLOUDINARY_CLOUD_NAME,
+  //   apiKey: value.CLOUDINARY_API_KEY,
+  //   apiSecret: value.CLOUDINARY_API_SECRET,
+  // },
   client: {
     url: value.CLIENT_URL,
   },
